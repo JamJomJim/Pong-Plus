@@ -37,6 +37,7 @@ public class Paddle extends InputAdapter {
         fixtureDef.restitution = 0.0f;
 
         body.createFixture(fixtureDef);
+        shape.dispose();
     }
 
     public void draw(SpriteBatch sb) {

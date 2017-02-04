@@ -88,6 +88,8 @@ public class MenuState implements State {
 	@Override
 	public void dispose() {
 		stage.dispose();
+		skin.dispose();
+		batch.dispose();
 	}
 
 }

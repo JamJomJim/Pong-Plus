@@ -44,24 +44,23 @@ public class PlayState implements State {
 
 		//create physics world and contactlistener
 		world = new World(new Vector2(0, GRAVITY), true);
-		//create paddle(s) in physics world
-		p1 = new PlayerPaddle("ClassicPaddle.png", 0, 0, world);
-
-		//create InputMultiplexer, to handle input on multiple paddles and the ui
-		InputMultiplexer multiplexer = new InputMultiplexer();
-		multiplexer.addProcessor(p1);
 
 		contactListener = new MyContactListener();
 		world.setContactListener(contactListener);
 
 		//cam stuff
-		//using a constant viewport solves the problem of scaling on different resolutions
+		//using a constant-size viewport solves the problem of scaling on different resolutions
 		worldCam = new OrthographicCamera(PowerPong.WIDTH / PowerPong.PIXELS_IN_METER,
 				PowerPong.HEIGHT / PowerPong.PIXELS_IN_METER); //scale camera viewport to meters
-		System.out.println(Gdx.graphics.getHeight());
-		//worldCam.position.set(p1.getX(), p1.getY(), 0); //center camera on player
 		uiCam = new OrthographicCamera(PowerPong.WIDTH, PowerPong.HEIGHT);
-		//uiCam.position.set(player.getCenter().x, player.getCenter().y, 0); //center camera on player
+
+		//create paddle(s) in physics world
+		p1 = new PlayerPaddle("PinkPaddle.png", 0, 0, world, worldCam);
+
+		//create InputMultiplexer, to handle input on multiple paddles and the ui
+		InputMultiplexer multiplexer = new InputMultiplexer();
+		Gdx.input.setInputProcessor(multiplexer);
+		multiplexer.addProcessor(p1);
 
 		debugRenderer = new Box2DDebugRenderer();
 
