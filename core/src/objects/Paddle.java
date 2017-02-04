@@ -11,12 +11,12 @@ import com.powerpong.game.PowerPong;
  * Created by Nick on 2/3/2017.
  */
 public class Paddle extends InputAdapter {
-    private static final float NORM_MS = 5; //the paddle's normal/usual movespeed, in meters/second
+    protected static final float NORM_MS = 10; //the paddle's normal/usual movespeed, in meters/second
 
     protected Texture texture;
     protected Body body;
 
-    protected float movespeed;
+    protected float movespeed; //movespeed is a separate variable from NORM_MS so that paddle speed can be changed by powerups etc.
     protected Vector2 destination;
 
     public Paddle() {
@@ -34,7 +34,7 @@ public class Paddle extends InputAdapter {
         body.setUserData(this);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(texture.getWidth() / 2 / PowerPong.PIXELS_IN_METER, texture.getHeight() / 2 / PowerPong.PIXELS_IN_METER);
+        shape.setAsBox(texture.getWidth() / 2 / PowerPong.PPM, texture.getHeight() / 2 / PowerPong.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -49,7 +49,15 @@ public class Paddle extends InputAdapter {
         destination = new Vector2(x, y);
     }
 
+    /*
+    Apply the necessary physics stuff to the paddle to get it to move toward's it's destination.
+     */
     public void update() {
+        //if the distance between the paddle and it's destination is less than or equal to the distance it can travel in a single world.step(),
+        //then just move the paddle to the destination. This prevents jitter caused by overshooting the destination repeatedly.
+        float distance = Math.abs(destination.x - body.getPosition().x);
+        if (distance <= movespeed * .016 && distance > 0)
+            body.setTransform(destination.x, body.getPosition().y, 0);
         if (destination.x < body.getPosition().x)
             body.setLinearVelocity(-movespeed, 0);
         else if (destination.x > body.getPosition().x)
@@ -58,20 +66,28 @@ public class Paddle extends InputAdapter {
             body.setLinearVelocity(0, 0);
     }
 
+    /*
+    Draw the paddle, centered at body.x and body.y
+     */
     public void draw(SpriteBatch sb) {
         sb.draw(texture,
-                body.getPosition().x - texture.getWidth() / 2 / PowerPong.PIXELS_IN_METER,
-                body.getPosition().y - texture.getHeight() / 2 / PowerPong.PIXELS_IN_METER,
-                texture.getWidth() / PowerPong.PIXELS_IN_METER,
-                texture.getHeight() / PowerPong.PIXELS_IN_METER);
+                body.getPosition().x - texture.getWidth() / 2 / PowerPong.PPM,
+                body.getPosition().y - texture.getHeight() / 2 / PowerPong.PPM,
+                texture.getWidth() / PowerPong.PPM,
+                texture.getHeight() / PowerPong.PPM);
     }
 
+    //note that these methods return the x and y coords of the center of the body, in box2d coords/measurements
     public float getX() {
         return body.getPosition().x;
     }
 
     public float getY() {
         return body.getPosition().y;
+    }
+
+    public Vector2 getDest() {
+        return destination;
     }
 
     public void dispose() {
