@@ -9,7 +9,8 @@ import com.powerpong.game.PowerPong;
 public class Ball {
     protected Texture texture;
     protected Body body;
-
+    private int initialDirection = 1;  //(int)Math.floor(Math.random() * 2);
+    private int initialBallSpeed = (int)Math.floor(Math.random() * 10) + 1;
     public Ball() {
     }
 
@@ -43,6 +44,12 @@ public class Ball {
                 body.getPosition().y - texture.getHeight() / 2 / PowerPong.PIXELS_IN_METER,
                 texture.getWidth() / PowerPong.PIXELS_IN_METER,
                 texture.getHeight() / PowerPong.PIXELS_IN_METER);
+        if(initialDirection == 0){
+            body.setLinearVelocity(0, (float)initialBallSpeed); // Moves up
+        }
+        else if(initialDirection == 1){
+            body.setLinearVelocity(0, -(float)initialBallSpeed); // Moves down
+        }
     }
 
     public float getX() {

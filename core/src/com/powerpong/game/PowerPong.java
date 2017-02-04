@@ -9,8 +9,8 @@ public class PowerPong extends ApplicationAdapter {
 	//physics simulation. So whenever you draw, you have to divide both the coordinates and the dimensions by PIXELS_IN_METER
 	//tbh it is pretty confusing
 
-	public static int WIDTH = 1080;
-	public static int HEIGHT = 1920;
+	public static int WIDTH = 1440;
+	public static int HEIGHT = 2560;
 	private GameStateManager gsm;
 
 	@Override
