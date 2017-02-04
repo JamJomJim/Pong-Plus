@@ -3,6 +3,7 @@ package objects;
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
 
@@ -10,8 +11,13 @@ import com.powerpong.game.PowerPong;
  * Created by Nick on 2/3/2017.
  */
 public class Paddle extends InputAdapter {
+    private static final float NORM_MS = 5; //the paddle's normal/usual movespeed, in meters/second
+
     protected Texture texture;
     protected Body body;
+
+    protected float movespeed;
+    protected Vector2 destination;
 
     public Paddle() {
     }
@@ -34,10 +40,22 @@ public class Paddle extends InputAdapter {
         fixtureDef.shape = shape;
         fixtureDef.density = 0f;
         fixtureDef.friction = 0f; //set friction to 0 so that moving into a wall while falling will not slow the player
-        fixtureDef.restitution = 0.0f;
+        fixtureDef.restitution = 1f; //1 restitution so that the ball rebounds perfectly
 
         body.createFixture(fixtureDef);
         shape.dispose();
+
+        movespeed = NORM_MS;
+        destination = new Vector2(x, y);
+    }
+
+    public void update() {
+        if (destination.x < body.getPosition().x)
+            body.setLinearVelocity(-movespeed, 0);
+        else if (destination.x > body.getPosition().x)
+            body.setLinearVelocity(movespeed, 0);
+        else
+            body.setLinearVelocity(0, 0);
     }
 
     public void draw(SpriteBatch sb) {
