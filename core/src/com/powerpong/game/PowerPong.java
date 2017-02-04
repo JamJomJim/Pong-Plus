@@ -12,7 +12,7 @@ public class PowerPong extends ApplicationAdapter {
 	public static int WIDTH = 1080;
 	public static int HEIGHT = 1920;
 	private GameStateManager gsm;
-	
+
 	@Override
 	public void create () {
 		gsm = new GameStateManager();

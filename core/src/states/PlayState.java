@@ -17,6 +17,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.powerpong.game.MapBodyManager;
 import com.powerpong.game.MyContactListener;
 import com.powerpong.game.PowerPong;
+import objects.Ball;
 import objects.Paddle;
 import objects.PlayerPaddle;
 
@@ -24,6 +25,7 @@ public class PlayState implements State {
 	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
 
 	private Paddle p1;
+	private Ball ball;
 
 	private SpriteBatch batch;
 	private World world;
@@ -56,6 +58,7 @@ public class PlayState implements State {
 
 		//create paddle(s) in physics world
 		p1 = new PlayerPaddle("PinkPaddle.png", 0, 0, world, worldCam);
+		ball = new Ball("Ball.png", 0, 0, world);
 
 		//create InputMultiplexer, to handle input on multiple paddles and the ui
 		InputMultiplexer multiplexer = new InputMultiplexer();
@@ -95,6 +98,7 @@ public class PlayState implements State {
 		batch.setProjectionMatrix(worldCam.combined);
 		batch.begin();
 		p1.draw(batch);
+		ball.draw(batch);
 		batch.end();
 
 		//draw the ui; positions in this are relative to the screen, regardless of where the worldCam might be.
