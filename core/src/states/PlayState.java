@@ -50,9 +50,11 @@ public class PlayState implements State {
 
 		//cam stuff
 		//using a constant-size viewport solves the problem of scaling on different resolutions
-		worldCam = new OrthographicCamera(PowerPong.WIDTH / PowerPong.PIXELS_IN_METER,
-				PowerPong.HEIGHT / PowerPong.PIXELS_IN_METER); //scale camera viewport to meters
-		uiCam = new OrthographicCamera(PowerPong.WIDTH, PowerPong.HEIGHT);
+		//the viewport will be sized to take up the entire space of what the application is occupying
+		//down/up-scaling will be done automatically
+		worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PIXELS_IN_METER,
+				PowerPong.NATIVE_HEIGHT / PowerPong.PIXELS_IN_METER); //scale camera viewport to meters
+		uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
 
 		//create paddle(s) in physics world
 		p1 = new PlayerPaddle("PinkPaddle.png", 0, 0, world, worldCam);
@@ -73,6 +75,7 @@ public class PlayState implements State {
 		//schedule physics simulation to run every ~1/60th of a second
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			public void run() { //the stuff it does each time it runs
+				p1.update();
 				world.step(0.016f, 6, 2);
 			}
 		}
@@ -106,7 +109,7 @@ public class PlayState implements State {
 		batch.setProjectionMatrix(uiCam.combined);
 		batch.begin();
 		//draw something in top left for debug purposes
-		font.draw(batch, "hi", -PowerPong.WIDTH / 2 + 5, PowerPong.HEIGHT / 2 - 10);
+		font.draw(batch, "hi", -PowerPong.NATIVE_WIDTH / 2 + 5, PowerPong.NATIVE_HEIGHT / 2 - 10);
 		batch.end();
 
 		//render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
