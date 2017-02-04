@@ -41,6 +41,7 @@ public class PlayState implements State {
 		this.gsm = gsm;
 		batch = new SpriteBatch();
 		font = new BitmapFont();
+		font.getData().setScale(2);
 
 		//create physics world and contactlistener
 		world = new World(new Vector2(0, GRAVITY), true);
@@ -52,12 +53,12 @@ public class PlayState implements State {
 		//using a constant-size viewport solves the problem of scaling on different resolutions
 		//the viewport will be sized to take up the entire space of what the application is occupying
 		//down/up-scaling will be done automatically
-		worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PIXELS_IN_METER,
-				PowerPong.NATIVE_HEIGHT / PowerPong.PIXELS_IN_METER); //scale camera viewport to meters
+		worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
+				PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
 		uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
 
 		//create paddle(s) in physics world
-		p1 = new PlayerPaddle("PinkPaddle.png", 0, 0, world, worldCam);
+		p1 = new PlayerPaddle("PinkPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
 
 		//create InputMultiplexer, to handle input on multiple paddles and the ui
 		InputMultiplexer multiplexer = new InputMultiplexer();
@@ -67,9 +68,9 @@ public class PlayState implements State {
 		debugRenderer = new Box2DDebugRenderer();
 
 		//load map and create static bodies for its tiles
-		/*mbm = new MapBodyManager(world, PowerPong.PIXELS_IN_METER, null, 1);
+		/*mbm = new MapBodyManager(world, PowerPong.PPM, null, 1);
 		tiledMap = new TmxMapLoader().load("jamesMap.tmx");
-		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PowerPong.PIXELS_IN_METER);
+		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PowerPong.PPM);
 		mbm.createPhysics(tiledMap);*/
 
 		//schedule physics simulation to run every ~1/60th of a second
@@ -86,7 +87,7 @@ public class PlayState implements State {
 
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(0, 0, 1, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//draw the TiledMap
@@ -109,7 +110,7 @@ public class PlayState implements State {
 		batch.setProjectionMatrix(uiCam.combined);
 		batch.begin();
 		//draw something in top left for debug purposes
-		font.draw(batch, "hi", -PowerPong.NATIVE_WIDTH / 2 + 5, PowerPong.NATIVE_HEIGHT / 2 - 10);
+		font.draw(batch, "location x: " + p1.getX() + "  destination x: " + p1.getDest().x, -PowerPong.NATIVE_WIDTH / 2 + 5, PowerPong.NATIVE_HEIGHT / 2 - 10);
 		batch.end();
 
 		//render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
