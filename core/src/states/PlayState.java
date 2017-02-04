@@ -3,6 +3,7 @@ package states;
 import java.util.Timer;
 import java.util.TimerTask;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -10,49 +11,56 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.maps.tiled.TiledMap;
 import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
-import com.badlogic.gdx.maps.tiled.TmxMapLoader;
-import com.badlogic.gdx.maps.tiled.renderers.OrthogonalTiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.powerpong.game.MapBodyManager;
 import com.powerpong.game.MyContactListener;
 import com.powerpong.game.PowerPong;
+import objects.Paddle;
+import objects.PlayerPaddle;
 
 public class PlayState implements State {
-	static final float GRAVITY = -9.8f; //-9.8 is -9.8m/s^2, as in real life. I think.
+	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
 
-	SpriteBatch batch;
-	World world;
-	Vector3 playerVector3;
-	OrthographicCamera worldCam, uiCam;
-	Box2DDebugRenderer debugRenderer;
-	MapBodyManager mbm;
-	MyContactListener contactListener;
-	FPSLogger fps = new FPSLogger();
-	TiledMap tiledMap;
-	TiledMapRenderer tiledMapRenderer;
-	BitmapFont font;
-	GameStateManager gsm;
+	private Paddle p1;
+
+	private SpriteBatch batch;
+	private World world;
+	private OrthographicCamera worldCam, uiCam;
+	private Box2DDebugRenderer debugRenderer;
+	private MyContactListener contactListener;
+	private FPSLogger fps = new FPSLogger();
+	private MapBodyManager mbm;
+	private TiledMap tiledMap;
+	private TiledMapRenderer tiledMapRenderer;
+	private BitmapFont font;
+	private GameStateManager gsm;
 
 	public PlayState(GameStateManager gsm) {
 		this.gsm = gsm;
 		batch = new SpriteBatch();
 		font = new BitmapFont();
-		playerVector3 = new Vector3(0, 0, 0);
 
 		//create physics world and contactlistener
 		world = new World(new Vector2(0, GRAVITY), true);
-		//create player in physics world
+		//create paddle(s) in physics world
+		p1 = new PlayerPaddle("ClassicPaddle.png", 0, 0, world);
+
+		//create InputMultiplexer, to handle input on multiple paddles and the ui
+		InputMultiplexer multiplexer = new InputMultiplexer();
+		multiplexer.addProcessor(p1);
 
 		contactListener = new MyContactListener();
 		world.setContactListener(contactListener);
 
 		//cam stuff
-		worldCam = new OrthographicCamera(1080 / PowerPong.PIXELS_IN_METER, 1920 / PowerPong.PIXELS_IN_METER); //scale camera viewport to meters
-		//worldCam.position.set(player.getCenter().x, player.getCenter().y, 0); //center camera on player
-		uiCam = new OrthographicCamera(640, 480);
+		//using a constant viewport solves the problem of scaling on different resolutions
+		worldCam = new OrthographicCamera(PowerPong.WIDTH / PowerPong.PIXELS_IN_METER,
+				PowerPong.HEIGHT / PowerPong.PIXELS_IN_METER); //scale camera viewport to meters
+		System.out.println(Gdx.graphics.getHeight());
+		//worldCam.position.set(p1.getX(), p1.getY(), 0); //center camera on player
+		uiCam = new OrthographicCamera(PowerPong.WIDTH, PowerPong.HEIGHT);
 		//uiCam.position.set(player.getCenter().x, player.getCenter().y, 0); //center camera on player
 
 		debugRenderer = new Box2DDebugRenderer();
@@ -65,7 +73,7 @@ public class PlayState implements State {
 
 		//schedule physics simulation to run every ~1/60th of a second
 		new Timer().scheduleAtFixedRate(new TimerTask() {
-			public void run() {
+			public void run() { //the stuff it does each time it runs
 				world.step(0.016f, 6, 2);
 			}
 		}
@@ -76,7 +84,7 @@ public class PlayState implements State {
 
 	@Override
 	public void render() {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClearColor(0, 0, 1, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		//draw the TiledMap
@@ -84,8 +92,10 @@ public class PlayState implements State {
 		tiledMapRenderer.render();*/
 
 		//draw the world
+		//current coordinate system is 0,0 is the center of the screen, positive y is up
 		batch.setProjectionMatrix(worldCam.combined);
 		batch.begin();
+		p1.draw(batch);
 		batch.end();
 
 		//draw the ui; positions in this are relative to the screen, regardless of where the worldCam might be.
@@ -97,7 +107,7 @@ public class PlayState implements State {
 		batch.setProjectionMatrix(uiCam.combined);
 		batch.begin();
 		//draw something in top left for debug purposes
-		font.draw(batch, "hi", -Gdx.graphics.getWidth() / 2 + 5, Gdx.graphics.getHeight() / 2 - 5);
+		font.draw(batch, "hi", -PowerPong.WIDTH / 2 + 5, PowerPong.HEIGHT / 2 - 10);
 		batch.end();
 
 		//render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
@@ -108,5 +118,9 @@ public class PlayState implements State {
 
 	public void dispose() {
 		batch.dispose();
+		world.dispose();
+		p1.dispose();
+		font.dispose();
+		debugRenderer.dispose();
 	}
 }

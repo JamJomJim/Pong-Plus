@@ -18,9 +18,10 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
 
+//TODO: Menu doesn't scale with resolution; will appear smaller on higher resolution devices
 public class MenuState implements State {
-	SpriteBatch batch;
-	OrthographicCamera worldCam, uiCam;
+	private SpriteBatch batch;
+	private OrthographicCamera worldCam, uiCam;
 	private Stage stage;
 	private Table table;
 	private Skin skin;
