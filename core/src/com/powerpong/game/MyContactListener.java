@@ -5,8 +5,8 @@ import com.badlogic.gdx.physics.box2d.*;
 import objects.Ball;
 import objects.Paddle;
 public class MyContactListener implements ContactListener {
-	private float ANGLE_MULTIPLIER = 4; //Increase the angle of the balls bounce
-	private float SPEED_ADDED = 2; //Increases speed of the ball every bounce in order to make the gameplay speed up
+	private float ANGLE_MULTIPLIER = 5; //Increase the angle of the balls bounce
+	private float SPEED_ADDED = 3; //Increases speed of the ball every bounce in order to make the gameplay speed up
 
 	public MyContactListener() {
 	}
@@ -17,17 +17,22 @@ public class MyContactListener implements ContactListener {
 		Object objectB = contact.getFixtureB().getBody().getUserData();
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
-		/*
-		TODO: ball's angle of inflection affects its angle of reflection; it shouldn't. Contact with the exact center of the paddle
-		TODO: should cause the ball to bounce exactly vertically, regardless of it's previous x velocity. And so on
-		 */
-        if (objectA instanceof Paddle && objectB instanceof Ball){
+		//if the collision is between a paddle and the ball
+        if (objectA instanceof Paddle && objectB instanceof Ball) {
 		    float posDiff = bodyB.getPosition().x - bodyA.getPosition().x; //Checks the relative positions of the ball to the paddle
-            bodyB.applyLinearImpulse(new Vector2(posDiff * ANGLE_MULTIPLIER, -SPEED_ADDED), bodyB.getLocalCenter(), true); //SPEED_ADDED increases the speed when it is negative. I think it applies the impulse before it "bounces".
+			float curSpeed = (float)Math.sqrt(Math.pow(bodyB.getLinearVelocity().x, 2) + Math.pow(bodyB.getLinearVelocity().y, 2)); //calculate the ball's current speed
+			System.out.println(curSpeed);
+			curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
+			//sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
+			//together, the x and y component have a magnitude equal to that of curSpeed
+            bodyB.setLinearVelocity(posDiff * ANGLE_MULTIPLIER, (float)Math.sqrt(Math.pow(curSpeed, 2) - Math.pow(posDiff * ANGLE_MULTIPLIER, 2)));
 		}
-		else if (objectB instanceof Paddle && objectA instanceof Ball){
-            float posDiff = bodyA.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
-            bodyB.applyLinearImpulse(new Vector2(posDiff * ANGLE_MULTIPLIER, -SPEED_ADDED), bodyA.getLocalCenter(), true);
+		else if (objectB instanceof Paddle && objectA instanceof Ball) {
+			float posDiff = bodyB.getPosition().x - bodyA.getPosition().x;
+			float curSpeed = (float)Math.sqrt(Math.pow(bodyB.getLinearVelocity().x, 2) + Math.pow(bodyB.getLinearVelocity().y, 2));
+			System.out.println(curSpeed);
+			curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
+			bodyB.setLinearVelocity(posDiff * ANGLE_MULTIPLIER, (float)Math.sqrt(Math.pow(curSpeed, 2) - Math.pow(posDiff * ANGLE_MULTIPLIER, 2)));
 		}
 		System.out.println(bodyB.getLinearVelocity());
 	}

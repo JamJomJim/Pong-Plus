@@ -11,7 +11,7 @@ import com.powerpong.game.PowerPong;
  * Created by Nick on 2/3/2017.
  */
 public class Paddle extends InputAdapter {
-    protected static final float NORM_MS = 10; //the paddle's normal/usual movespeed, in meters/second
+    protected static final float NORM_MS = 13; //the paddle's normal/usual movespeed, in meters/second
 
     protected Texture texture;
     protected Body body;

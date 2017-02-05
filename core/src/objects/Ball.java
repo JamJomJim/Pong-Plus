@@ -1,13 +1,12 @@
 package objects;
 
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
 import states.PlayState;
-import states.State;
 
+//TODO: something is up with the ball, it seems to jitter while moving, more so when moving faster
 public class Ball {
     protected Texture texture;
     protected Body body;
@@ -33,8 +32,8 @@ public class Ball {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0f;
-        fixtureDef.friction = 0f; //set friction to 0 so that moving into a wall while falling will not slow the player
-        fixtureDef.restitution = 0.0f;
+        fixtureDef.friction = 0f;
+        fixtureDef.restitution = 1f;
 
         body.createFixture(fixtureDef);
         shape.dispose();
@@ -79,6 +78,10 @@ public class Ball {
 
     public float getY() {
         return body.getPosition().y;
+    }
+
+    public Body getBody() {
+        return body;
     }
 
     public void dispose() {

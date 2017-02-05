@@ -60,22 +60,30 @@ public class MenuState implements State {
 		stage.addActor(table);
 
 		// Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
-		final TextButton button = new TextButton("Click me!", skin);
-		table.add(button);
+		final TextButton button1P = new TextButton("One Player", skin);
+		table.add(button1P).width(250).height(250);
+		final TextButton button2P = new TextButton("Two Player", skin);
+		table.add(button2P).width(250).height(250);
 
 		// Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
 		// Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
 		// ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
 		// revert the checked state.
-		button.addListener(new ChangeListener() {
+		button1P.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				gsm.set(new PlayState(gsm));
+				gsm.set(new PlayState(gsm, "1P"));
+			}
+		});
+		button2P.addListener(new ChangeListener() {
+			public void changed (ChangeEvent event, Actor actor) {
+				gsm.set(new PlayState(gsm, "2P"));
 			}
 		});
 
 		// Add an image actor. Have to set the size, else it would be the size of the drawable (which is the 1x1 texture).
-		table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);
-		table.add(new Image(skin.newDrawable("white", Color.BLUE))).size(64);
+		//these are just colored boxes
+		/*table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);
+		table.add(new Image(skin.newDrawable("white", Color.BLUE))).size(64);*/
 
 		table.setDebug(true);
 	}

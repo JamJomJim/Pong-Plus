@@ -24,7 +24,7 @@ public class PlayState implements State {
 	private int BALL_DIRECTION = 270; //in degrees  //(int)Math.floor(Math.random() * 2);
 	private float BALL_SPEED = 500; //(float)Math.floor(Math.random() * 1000) + 100;
 
-	private Paddle p1, ai;
+	private Paddle p1, p2;
 	private Ball ball;
 
 	private int topScore, botScore;
@@ -41,7 +41,7 @@ public class PlayState implements State {
 	private BitmapFont font;
 	private GameStateManager gsm;
 
-	public PlayState(GameStateManager gsm) {
+	public PlayState(GameStateManager gsm, String mode) {
 		this.gsm = gsm;
 		batch = new SpriteBatch();
 		font = new BitmapFont();
@@ -62,8 +62,11 @@ public class PlayState implements State {
 		uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
 
 		ball = new Ball("Ball.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
-		p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
-		ai = new AIPaddle("ClassicPaddle.png", 0, 1200 / PowerPong.PPM, world, ball);
+		p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
+		if (mode.equals("1P"))
+			p2 = new AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball);
+		else if (mode.equals("2P"))
+			p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
 
 		topScore = 0;
 		botScore = 0;
@@ -77,6 +80,8 @@ public class PlayState implements State {
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		Gdx.input.setInputProcessor(multiplexer);
 		multiplexer.addProcessor(p1);
+		if (mode.equals("2P"))
+			multiplexer.addProcessor(p2);
 
 		debugRenderer = new Box2DDebugRenderer();
 
@@ -91,7 +96,7 @@ public class PlayState implements State {
 			public void run() { //the stuff it does each time it runs
 				p1.update();
 				ball.update();
-				ai.update();
+				p2.update();
 				world.step(0.016f, 6, 2);
 			}
 		}
@@ -114,7 +119,7 @@ public class PlayState implements State {
 		batch.setProjectionMatrix(worldCam.combined);
 		batch.begin();
 		p1.draw(batch);
-		ai.draw(batch);
+		p2.draw(batch);
 		ball.draw(batch);
 		batch.end();
 		//draw the ui; positions in this are relative to the screen, regardless of where the worldCam might be.
