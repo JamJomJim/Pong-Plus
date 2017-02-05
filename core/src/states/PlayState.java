@@ -24,14 +24,13 @@ import objects.Wall;
 
 public class PlayState implements State {
 	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
+	private int BALL_DIRECTION = 270; //in degrees  //(int)Math.floor(Math.random() * 2);
+	private float BALL_SPEED = 500; //(float)Math.floor(Math.random() * 1000) + 100;
 
 	private Paddle p1;
 	private Ball ball;
-	private Wall wall;
 
-	private int initialDirection = 1;  //(int)Math.floor(Math.random() * 2);
-	private float initialBallSpeed = (float)Math.floor(Math.random() * 1000) + 100;
-
+	private int topScore, botScore;
 
 	private SpriteBatch batch;
 	private World world;
@@ -65,26 +64,20 @@ public class PlayState implements State {
 				PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
 		uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
 
-		//create paddle(s) in physics world
-<<<<<<<<< Temporary merge branch 1
+		ball = new Ball("Ball.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
 		p1 = new PlayerPaddle("PinkPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
+		topScore = 0;
+		botScore = 0;
+		//right wall
+		new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
+		//left wall
+		new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
 
-=========
-		ball = new Ball("Ball.png", 0, 0, world);
-		p1 = new PlayerPaddle("PinkPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
-		wall = new Wall("PinkPaddle.png", world);
 		//create InputMultiplexer, to handle input on multiple paddles and the ui
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		Gdx.input.setInputProcessor(multiplexer);
 		multiplexer.addProcessor(p1);
 
-		//Applies initial force to start ball moving.
-		if(initialDirection == 0){
-			ball.applyForce(0, initialBallSpeed); // Moves up
-		}
-		else if(initialDirection == 1){
-			ball.applyForce(0, -initialBallSpeed); // Moves down
-		}
 		debugRenderer = new Box2DDebugRenderer();
 
 		//load map and create static bodies for its tiles
@@ -93,10 +86,12 @@ public class PlayState implements State {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PowerPong.PPM);
 		mbm.createPhysics(tiledMap);*/
 
+		State temp = this;
 		//schedule physics simulation to run every ~1/60th of a second
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			public void run() { //the stuff it does each time it runs
 				p1.update();
+				ball.update();
 				world.step(0.016f, 6, 2);
 			}
 		}
@@ -130,13 +125,20 @@ public class PlayState implements State {
 		batch.setProjectionMatrix(uiCam.combined);
 		batch.begin();
 		//draw something in top left for debug purposes
-		font.draw(batch, "location x: " + p1.getX() + "  destination x: " + p1.getDest().x, -PowerPong.NATIVE_WIDTH / 2 + 5, PowerPong.NATIVE_HEIGHT / 2 - 10);
+		font.draw(batch, "top score: " + topScore + "  bot score: " + botScore, -PowerPong.NATIVE_WIDTH / 2 + 5, PowerPong.NATIVE_HEIGHT / 2 - 10);
 		batch.end();
 
 		//render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
 		debugRenderer.render(world, worldCam.combined);
 		//log fps to console
 		//fps.log();
+	}
+
+	public void score(String side) {
+		if (side.equals("top"))
+			topScore += 1;
+		else if (side.equals("bot"))
+			botScore += 1;
 	}
 
 	public void dispose() {

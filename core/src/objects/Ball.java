@@ -5,15 +5,19 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
+import states.PlayState;
+import states.State;
 
 public class Ball {
     protected Texture texture;
     protected Body body;
-    public Ball() {
-    }
+    protected PlayState state;
+    private float initialSpeed;
 
-    public Ball(String textureName, float x, float y, World world) {
+    public Ball(String textureName, float x, float y, float initialDirection, float initialSpeed, World world, PlayState state) {
         this.texture = new Texture(textureName);
+        this.state = state;
+        this.initialSpeed = initialSpeed;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -34,6 +38,25 @@ public class Ball {
 
         body.createFixture(fixtureDef);
         shape.dispose();
+
+        //Applies initial force to start ball moving.
+        applyForce(initialSpeed, initialDirection);
+    }
+
+    public void update() {
+        float angle;
+        if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+            state.score("top");
+            angle = -90;
+        }
+        else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+            state.score("bot");
+            angle = 90;
+        }
+        else return;
+        body.setTransform(0, 0, 0);
+        body.setLinearVelocity(0, 0);
+        applyForce(initialSpeed, angle);
     }
 
     public void draw(SpriteBatch sb) {
@@ -43,9 +66,13 @@ public class Ball {
                 texture.getWidth() / PowerPong.PPM,
                 texture.getHeight() / PowerPong.PPM);
     }
-    public void applyForce(float a, float b){
-        body.applyForceToCenter(a, b, true );
+
+    //pass angle as degrees
+    public void applyForce(float magnitude, float angle) {
+        angle = (float)(angle / 180 * Math.PI);
+        body.applyForceToCenter((float)Math.cos(angle) * magnitude, (float)Math.sin(angle) * magnitude, true );
     }
+
     public float getX() {
         return body.getPosition().x;
     }
