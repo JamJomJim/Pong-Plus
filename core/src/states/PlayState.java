@@ -17,17 +17,14 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.powerpong.game.MapBodyManager;
 import com.powerpong.game.MyContactListener;
 import com.powerpong.game.PowerPong;
-import objects.Ball;
-import objects.Paddle;
-import objects.PlayerPaddle;
-import objects.Wall;
+import objects.*;
 
 public class PlayState implements State {
 	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
 	private int BALL_DIRECTION = 270; //in degrees  //(int)Math.floor(Math.random() * 2);
 	private float BALL_SPEED = 500; //(float)Math.floor(Math.random() * 1000) + 100;
 
-	private Paddle p1;
+	private Paddle p1, ai;
 	private Ball ball;
 
 	private int topScore, botScore;
@@ -65,9 +62,12 @@ public class PlayState implements State {
 		uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
 
 		ball = new Ball("Ball.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
-		p1 = new PlayerPaddle("PinkPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
+		p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
+		ai = new AIPaddle("ClassicPaddle.png", 0, 1200 / PowerPong.PPM, world, ball);
+
 		topScore = 0;
 		botScore = 0;
+
 		//right wall
 		new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
 		//left wall
@@ -86,12 +86,12 @@ public class PlayState implements State {
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PowerPong.PPM);
 		mbm.createPhysics(tiledMap);*/
 
-		State temp = this;
 		//schedule physics simulation to run every ~1/60th of a second
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			public void run() { //the stuff it does each time it runs
 				p1.update();
 				ball.update();
+				ai.update();
 				world.step(0.016f, 6, 2);
 			}
 		}
@@ -114,6 +114,7 @@ public class PlayState implements State {
 		batch.setProjectionMatrix(worldCam.combined);
 		batch.begin();
 		p1.draw(batch);
+		ai.draw(batch);
 		ball.draw(batch);
 		batch.end();
 		//draw the ui; positions in this are relative to the screen, regardless of where the worldCam might be.

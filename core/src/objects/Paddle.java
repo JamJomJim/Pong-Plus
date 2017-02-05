@@ -50,7 +50,7 @@ public class Paddle extends InputAdapter {
     }
 
     /*
-    Apply the necessary physics stuff to the paddle to get it to move toward's it's destination.
+    Apply the necessary physics stuff to the paddle to get it to move towards it's destination.
      */
     public void update() {
         //if the distance between the paddle and it's destination is less than or equal to the distance it can travel in a single world.step(),

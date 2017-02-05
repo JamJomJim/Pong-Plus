@@ -6,6 +6,7 @@ import objects.Ball;
 import objects.Paddle;
 public class MyContactListener implements ContactListener {
 	private float ANGLE_MULTIPLIER = 4; //Increase the angle of the balls bounce
+	private float SPEED_ADDED = 2; //Increases speed of the ball every bounce in order to make the gameplay speed up
 
 	public MyContactListener() {
 	}
@@ -16,16 +17,17 @@ public class MyContactListener implements ContactListener {
 		Object objectB = contact.getFixtureB().getBody().getUserData();
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
-        float speedAdded = 2; //Increases speed of the ball every bounce in order to make the gameplay speed up
-
+		/*
+		TODO: ball's angle of inflection affects its angle of reflection; it shouldn't. Contact with the exact center of the paddle
+		TODO: should cause the ball to bounce exactly vertically, regardless of it's previous x velocity. And so on
+		 */
         if (objectA instanceof Paddle && objectB instanceof Ball){
 		    float posDiff = bodyB.getPosition().x - bodyA.getPosition().x; //Checks the relative positions of the ball to the paddle
-            bodyB.applyLinearImpulse(new Vector2(posDiff * ANGLE_MULTIPLIER, -speedAdded), bodyB.getLocalCenter(), true); //speedAdded increases the speed when it is negative. I think it applies the impulse before it "bounces".
+            bodyB.applyLinearImpulse(new Vector2(posDiff * ANGLE_MULTIPLIER, -SPEED_ADDED), bodyB.getLocalCenter(), true); //SPEED_ADDED increases the speed when it is negative. I think it applies the impulse before it "bounces".
 		}
-
 		else if (objectB instanceof Paddle && objectA instanceof Ball){
             float posDiff = bodyA.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
-            bodyB.applyLinearImpulse(new Vector2(posDiff * ANGLE_MULTIPLIER, -speedAdded), bodyA.getLocalCenter(), true);
+            bodyB.applyLinearImpulse(new Vector2(posDiff * ANGLE_MULTIPLIER, -SPEED_ADDED), bodyA.getLocalCenter(), true);
 		}
 		System.out.println(bodyB.getLinearVelocity());
 	}
