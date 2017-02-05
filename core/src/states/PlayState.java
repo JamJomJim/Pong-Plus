@@ -20,12 +20,14 @@ import com.powerpong.game.PowerPong;
 import objects.Ball;
 import objects.Paddle;
 import objects.PlayerPaddle;
+import objects.Wall;
 
 public class PlayState implements State {
 	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
 
 	private Paddle p1;
 	private Ball ball;
+	private Wall wall;
 
 	private int initialDirection = 1;  //(int)Math.floor(Math.random() * 2);
 	private float initialBallSpeed = (float)Math.floor(Math.random() * 1000) + 100;
@@ -64,8 +66,13 @@ public class PlayState implements State {
 		uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
 
 		//create paddle(s) in physics world
+<<<<<<<<< Temporary merge branch 1
+		p1 = new PlayerPaddle("PinkPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
+
+=========
 		ball = new Ball("Ball.png", 0, 0, world);
 		p1 = new PlayerPaddle("PinkPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
+		wall = new Wall("PinkPaddle.png", world);
 		//create InputMultiplexer, to handle input on multiple paddles and the ui
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		Gdx.input.setInputProcessor(multiplexer);
