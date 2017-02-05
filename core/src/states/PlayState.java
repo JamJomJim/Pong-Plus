@@ -27,6 +27,10 @@ public class PlayState implements State {
 	private Paddle p1;
 	private Ball ball;
 
+	private int initialDirection = 1;  //(int)Math.floor(Math.random() * 2);
+	private float initialBallSpeed = (float)Math.floor(Math.random() * 1000) + 100;
+
+
 	private SpriteBatch batch;
 	private World world;
 	private OrthographicCamera worldCam, uiCam;
@@ -62,12 +66,18 @@ public class PlayState implements State {
 		//create paddle(s) in physics world
 		ball = new Ball("Ball.png", 0, 0, world);
 		p1 = new PlayerPaddle("PinkPaddle.png", 0, -1200 / PowerPong.PPM, world, worldCam);
-
 		//create InputMultiplexer, to handle input on multiple paddles and the ui
 		InputMultiplexer multiplexer = new InputMultiplexer();
 		Gdx.input.setInputProcessor(multiplexer);
 		multiplexer.addProcessor(p1);
 
+		//Applies initial force to start ball moving.
+		if(initialDirection == 0){
+			ball.applyForce(0, initialBallSpeed); // Moves up
+		}
+		else if(initialDirection == 1){
+			ball.applyForce(0, -initialBallSpeed); // Moves down
+		}
 		debugRenderer = new Box2DDebugRenderer();
 
 		//load map and create static bodies for its tiles
@@ -102,8 +112,8 @@ public class PlayState implements State {
 		batch.setProjectionMatrix(worldCam.combined);
 		batch.begin();
 		p1.draw(batch);
+		ball.draw(batch);
 		batch.end();
-
 		//draw the ui; positions in this are relative to the screen, regardless of where the worldCam might be.
 		//drawing something at (0, 0) will draw it in the center of the screen
 		//drawing something at (-Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2) will draw it in the top left

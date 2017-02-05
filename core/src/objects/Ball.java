@@ -9,8 +9,6 @@ import com.powerpong.game.PowerPong;
 public class Ball {
     protected Texture texture;
     protected Body body;
-    private int initialDirection = 1;  //(int)Math.floor(Math.random() * 2);
-    private int initialBallSpeed = (int)Math.floor(Math.random() * 10) + 1;
     public Ball() {
     }
 
@@ -18,7 +16,7 @@ public class Ball {
         this.texture = new Texture(textureName);
 
         BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.KinematicBody;
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
         bodyDef.position.set(x, y); //note that the origin for bodys is at the center; so the player will initially be centered at the passed x and y coordinates
 
@@ -26,7 +24,7 @@ public class Ball {
         body.setUserData(this);
 
         CircleShape shape = new CircleShape();
-        shape.setRadius(texture.getWidth() / 2 / PowerPong.PIXELS_IN_METER);
+        shape.setRadius(texture.getWidth() / 2 / PowerPong.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -40,18 +38,14 @@ public class Ball {
 
     public void draw(SpriteBatch sb) {
         sb.draw(texture,
-                body.getPosition().x - texture.getWidth() / 2 / PowerPong.PIXELS_IN_METER,
-                body.getPosition().y - texture.getHeight() / 2 / PowerPong.PIXELS_IN_METER,
-                texture.getWidth() / PowerPong.PIXELS_IN_METER,
-                texture.getHeight() / PowerPong.PIXELS_IN_METER);
-        if(initialDirection == 0){
-            body.setLinearVelocity(0, (float)initialBallSpeed); // Moves up
-        }
-        else if(initialDirection == 1){
-            body.setLinearVelocity(0, -(float)initialBallSpeed); // Moves down
-        }
+                body.getPosition().x - texture.getWidth() / 2 / PowerPong.PPM,
+                body.getPosition().y - texture.getHeight() / 2 / PowerPong.PPM,
+                texture.getWidth() / PowerPong.PPM,
+                texture.getHeight() / PowerPong.PPM);
     }
-
+    public void applyForce(float a, float b){
+        body.applyForceToCenter(a, b, true );
+    }
     public float getX() {
         return body.getPosition().x;
     }
