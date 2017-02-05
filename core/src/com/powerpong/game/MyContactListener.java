@@ -13,19 +13,18 @@ public class MyContactListener implements ContactListener {
 		Object objectB = contact.getFixtureB().getBody().getUserData();
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
-		if (objectA instanceof Paddle && objectB instanceof Ball){
+        float speedAdded = 2; //Increases speed of the ball every bounce in order to make the gameplay speed up
+        float angleMultiplier = 1; //Increase the angle of the balls bounce
+        if (objectA instanceof Paddle && objectB instanceof Ball){
 		    float posDiff = bodyB.getPosition().x - bodyA.getPosition().x; //Checks the relative positions of the ball to the paddle
-            float angleMultiplier = 1; //Increase the angle of the balls bounce
-            float speedAdded = 10; //Increases speed of the ball every bounce in order to make the gameplay speed up
-            bodyB.applyLinearImpulse(new Vector2(posDiff * angleMultiplier, speedAdded), bodyB.getLocalCenter(), true);
+            bodyB.applyLinearImpulse(new Vector2(posDiff * angleMultiplier, -speedAdded), bodyB.getLocalCenter(), true); //speedAdded increases the speed when it is negative. I think it applies the impulse before it "bounces".
 		}
 
 		else if (objectB instanceof Paddle && objectA instanceof Ball){
             float posDiff = bodyA.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
-            float angleMultiplier = 1; //Increase the angle of the balls bounce
-            float speedAdded = 10; //Increases speed of the ball every bounce in order to make the gameplay speed up
-            bodyB.applyLinearImpulse(new Vector2(posDiff * angleMultiplier, speedAdded), bodyA.getLocalCenter(), true);
+            bodyB.applyLinearImpulse(new Vector2(posDiff * angleMultiplier, -speedAdded), bodyA.getLocalCenter(), true);
 		}
+		System.out.println(bodyB.getLinearVelocity());
 	}
 
 	@Override
