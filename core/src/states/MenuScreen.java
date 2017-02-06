@@ -1,6 +1,7 @@
 package states;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -10,25 +11,24 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener.ChangeEvent;
+import com.powerpong.game.PowerPong;
 
 //TODO: Menu doesn't scale with resolution; will appear smaller on higher resolution devices
-public class MenuState implements State {
+public class MenuScreen implements Screen {
 	private SpriteBatch batch;
 	private OrthographicCamera worldCam, uiCam;
 	private Stage stage;
 	private Table table;
 	private Skin skin;
-	private GameStateManager gsm;
+	private PowerPong game;
 
-	public MenuState(final GameStateManager gsm) {
-		this.gsm = gsm;
+	public MenuScreen(final PowerPong game) {
+		this.game = game;
 		stage = new Stage();
 		Gdx.input.setInputProcessor(stage);
 
@@ -71,12 +71,12 @@ public class MenuState implements State {
 		// revert the checked state.
 		button1P.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				gsm.set(new PlayState(gsm, "1P"));
+				game.setScreen(new PlayScreen(game, "1P"));
 			}
 		});
 		button2P.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				gsm.set(new PlayState(gsm, "2P"));
+				game.setScreen(new PlayScreen(game, "2P"));
 			}
 		});
 
@@ -87,10 +87,36 @@ public class MenuState implements State {
 
 		table.setDebug(true);
 	}
+
 	@Override
-	public void render() {
-		stage.act(Gdx.graphics.getDeltaTime());
+	public void show() {
+
+	}
+
+	@Override
+	public void render(float dt) {
+		stage.act(dt);
 		stage.draw();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	@Override
+	public void hide() {
+
 	}
 
 	@Override

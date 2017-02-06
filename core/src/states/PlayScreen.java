@@ -4,6 +4,7 @@ import java.util.Timer;
 import java.util.TimerTask;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -20,7 +21,7 @@ import com.powerpong.game.MyContactListener;
 import com.powerpong.game.PowerPong;
 import objects.*;
 
-public class PlayState implements State {
+public class PlayScreen implements Screen {
 	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
 	private int BALL_DIRECTION = 270; //in degrees
 	private float BALL_SPEED = 300;
@@ -44,10 +45,10 @@ public class PlayState implements State {
 	private TiledMap tiledMap;
 	private TiledMapRenderer tiledMapRenderer;
 	private BitmapFont font;
-	private GameStateManager gsm;
+	private PowerPong game;
 
-	public PlayState(GameStateManager gsm, String mode) {
-		this.gsm = gsm;
+	public PlayScreen(PowerPong game, String mode) {
+		this.game = game;
 		batch = new SpriteBatch();
 		font = new BitmapFont();
 		font.getData().setScale(2);
@@ -98,12 +99,17 @@ public class PlayState implements State {
 	}
 
 	@Override
-	public void render() {
+	public void show() {
+
+	}
+
+	@Override
+	public void render(float dt) {
 		p1.update();
 		p2.update();
 		ball.update();
 		//step the physics world the amount of time since the last frame, up to 0.25s
-		world.step((float)Math.min(Gdx.graphics.getDeltaTime(), 0.25), 6 ,2);
+		world.step((float)Math.min(dt, 0.25), 6 ,2);
 
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -136,6 +142,26 @@ public class PlayState implements State {
 		debugRenderer.render(world, worldCam.combined);
 		//log fps to console
 		//fps.log();
+	}
+
+	@Override
+	public void resize(int width, int height) {
+
+	}
+
+	@Override
+	public void pause() {
+
+	}
+
+	@Override
+	public void resume() {
+
+	}
+
+	@Override
+	public void hide() {
+
 	}
 
 	public void score(String side) {

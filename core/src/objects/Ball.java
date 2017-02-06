@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
-import states.PlayState;
+import states.PlayScreen;
 
 public class Ball {
     private float ANGLE_MULTIPLIER = 5; //Increase the angle of the balls bounce
@@ -12,10 +12,10 @@ public class Ball {
 
     protected Texture texture;
     protected Body body;
-    protected PlayState state;
+    protected PlayScreen state;
     private float initialSpeed;
 
-    public Ball(String textureName, float x, float y, float initialDirection, float initialSpeed, World world, PlayState state) {
+    public Ball(String textureName, float x, float y, float initialDirection, float initialSpeed, World world, PlayScreen state) {
         this.texture = new Texture(textureName);
         this.state = state;
         this.initialSpeed = initialSpeed;
