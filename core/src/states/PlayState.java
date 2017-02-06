@@ -14,6 +14,7 @@ import com.badlogic.gdx.maps.tiled.TiledMapRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.TimeUtils;
 import com.powerpong.game.MapBodyManager;
 import com.powerpong.game.MyContactListener;
 import com.powerpong.game.PowerPong;
@@ -21,8 +22,12 @@ import objects.*;
 
 public class PlayState implements State {
 	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
-	private int BALL_DIRECTION = 270; //in degrees  //(int)Math.floor(Math.random() * 2);
-	private float BALL_SPEED = 500; //(float)Math.floor(Math.random() * 1000) + 100;
+	private int BALL_DIRECTION = 270; //in degrees
+	private float BALL_SPEED = 300;
+	private static final float STEP = 1 / 60f;
+
+	private double currentTime;
+	private double accumulator;
 
 	private Paddle p1, p2;
 	private Ball ball;
@@ -90,23 +95,16 @@ public class PlayState implements State {
 		tiledMap = new TmxMapLoader().load("jamesMap.tmx");
 		tiledMapRenderer = new OrthogonalTiledMapRenderer(tiledMap, 1 / PowerPong.PPM);
 		mbm.createPhysics(tiledMap);*/
-
-		//schedule physics simulation to run every ~1/60th of a second
-		new Timer().scheduleAtFixedRate(new TimerTask() {
-			public void run() { //the stuff it does each time it runs
-				p1.update();
-				ball.update();
-				p2.update();
-				world.step(0.016f, 6, 2);
-			}
-		}
-		, 0L //delay before first run, in milliseconds
-		, 16L //time between runs, in milliseconds; value of 16 results in 62.5 runs per second
-				);
 	}
 
 	@Override
 	public void render() {
+		p1.update();
+		p2.update();
+		ball.update();
+		//step the physics world the amount of time since the last frame, up to 0.25s
+		world.step((float)Math.min(Gdx.graphics.getDeltaTime(), 0.25), 6 ,2);
+
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

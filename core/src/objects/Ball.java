@@ -6,8 +6,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
 import states.PlayState;
 
-//TODO: something is up with the ball, it seems to jitter while moving, more so when moving faster
 public class Ball {
+    private float ANGLE_MULTIPLIER = 5; //Increase the angle of the balls bounce
+    private float SPEED_ADDED = 1; //Increases speed of the ball every bounce in order to make the gameplay speed up
+
     protected Texture texture;
     protected Body body;
     protected PlayState state;
@@ -70,6 +72,16 @@ public class Ball {
     public void applyForce(float magnitude, float angle) {
         angle = (float)(angle / 180 * Math.PI);
         body.applyForceToCenter((float)Math.cos(angle) * magnitude, (float)Math.sin(angle) * magnitude, true );
+    }
+
+    public void paddleRebound(Body bodyB) {
+        float posDiff = body.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
+        float curSpeed = (float)Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2)); //calculate the ball's current speed
+        System.out.println(curSpeed);
+        curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
+        //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
+        //together, the x and y component have a magnitude equal to that of curSpeed
+        body.setLinearVelocity(posDiff * ANGLE_MULTIPLIER, (float)Math.sqrt(Math.pow(curSpeed, 2) - Math.pow(posDiff * ANGLE_MULTIPLIER, 2)));
     }
 
     public float getX() {
