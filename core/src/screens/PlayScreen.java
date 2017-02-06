@@ -1,4 +1,4 @@
-package states;
+package screens;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -25,17 +25,12 @@ public class PlayScreen implements Screen {
 	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
 	private int BALL_DIRECTION = 270; //in degrees
 	private float BALL_SPEED = 300;
-	private static final float STEP = 1 / 60f;
-
-	private double currentTime;
-	private double accumulator;
 
 	private Paddle p1, p2;
 	private Ball ball;
 
 	private int topScore, botScore;
 
-	private SpriteBatch batch;
 	private World world;
 	private OrthographicCamera worldCam, uiCam;
 	private Box2DDebugRenderer debugRenderer;
@@ -49,7 +44,6 @@ public class PlayScreen implements Screen {
 
 	public PlayScreen(PowerPong game, String mode) {
 		this.game = game;
-		batch = new SpriteBatch();
 		font = new BitmapFont();
 		font.getData().setScale(2);
 
@@ -120,28 +114,35 @@ public class PlayScreen implements Screen {
 
 		//draw the world
 		//current coordinate system is 0,0 is the center of the screen, positive y is up
-		batch.setProjectionMatrix(worldCam.combined);
-		batch.begin();
-		p1.draw(batch);
-		p2.draw(batch);
-		ball.draw(batch);
-		batch.end();
+		game.batch.setProjectionMatrix(worldCam.combined);
+		game.batch.begin();
+		p1.draw(game.batch);
+		p2.draw(game.batch);
+		ball.draw(game.batch);
+		game.batch.end();
 		//draw the ui; positions in this are relative to the screen, regardless of where the worldCam might be.
 		//drawing something at (0, 0) will draw it in the center of the screen
 		//drawing something at (-Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2) will draw it in the top left
 		//and so on
 		//note that text is drawn starting at the top left corner of it. So if you try drawing in any corner besides the top left without accounting for that,
 		//the text will be off-screen
-		batch.setProjectionMatrix(uiCam.combined);
-		batch.begin();
+		game.batch.setProjectionMatrix(uiCam.combined);
+		game.batch.begin();
 		//draw something in top left for debug purposes
-		font.draw(batch, "top score: " + topScore + "  bot score: " + botScore, -PowerPong.NATIVE_WIDTH / 2 + 5, PowerPong.NATIVE_HEIGHT / 2 - 10);
-		batch.end();
+		font.draw(game.batch, "top score: " + topScore + "  bot score: " + botScore, -PowerPong.NATIVE_WIDTH / 2 + 5, PowerPong.NATIVE_HEIGHT / 2 - 10);
+		game.batch.end();
 
 		//render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
 		debugRenderer.render(world, worldCam.combined);
 		//log fps to console
 		//fps.log();
+	}
+
+	public void score(String side) {
+		if (side.equals("top"))
+			topScore += 1;
+		else if (side.equals("bot"))
+			botScore += 1;
 	}
 
 	@Override
@@ -164,15 +165,7 @@ public class PlayScreen implements Screen {
 
 	}
 
-	public void score(String side) {
-		if (side.equals("top"))
-			topScore += 1;
-		else if (side.equals("bot"))
-			botScore += 1;
-	}
-
 	public void dispose() {
-		batch.dispose();
 		world.dispose();
 		p1.dispose();
 		font.dispose();

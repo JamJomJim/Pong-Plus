@@ -1,8 +1,7 @@
 package com.powerpong.game;
 
-import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Game;
-import states.*;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
 public class PowerPong extends Game {
 	public static final float PPM = 300f; //The number of pixels in one meter
@@ -13,11 +12,12 @@ public class PowerPong extends Game {
 	public static int NATIVE_WIDTH = 1440;
 	public static int NATIVE_HEIGHT = 2560;
 
-	private Game game;
+	public SpriteBatch batch;
 
 	@Override
 	public void create () {
-		this.setScreen(new MenuScreen(this));
+		batch = new SpriteBatch();
+		this.setScreen(new screens.MenuScreen(this));
 	}
 
 	@Override
@@ -27,6 +27,6 @@ public class PowerPong extends Game {
 	
 	@Override
 	public void dispose () {
-		game.dispose();
+		batch.dispose();
 	}
 }

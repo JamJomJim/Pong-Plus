@@ -4,7 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
-import states.PlayScreen;
+import screens.PlayScreen;
 
 public class Ball {
     private float ANGLE_MULTIPLIER = 5; //Increase the angle of the balls bounce
