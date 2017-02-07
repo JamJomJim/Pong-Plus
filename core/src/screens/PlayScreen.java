@@ -23,8 +23,8 @@ import objects.*;
 
 public class PlayScreen implements Screen {
 	static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
-	private int BALL_DIRECTION = 270; //in degrees
-	private float BALL_SPEED = 300;
+	private int BALL_DIRECTION = -90; //(int)(Math.floor(Math.random() * 2) * 2 - 1) * 90; //in degrees
+	private float BALL_SPEED = 5;
 
 	private Paddle p1, p2;
 	private Ball ball;
@@ -60,7 +60,6 @@ public class PlayScreen implements Screen {
 		worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
 				PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
 		uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
-
 		ball = new Ball("Ball.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
 		p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
 		if (mode.equals("1P"))

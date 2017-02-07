@@ -41,23 +41,24 @@ public class Ball {
         shape.dispose();
 
         //Applies initial force to start ball moving.
-        applyForce(initialSpeed, initialDirection);
+        body.setLinearVelocity(0, -5);
+        //applyForce(initialSpeed, initialDirection);
     }
 
     public void update() {
         float angle;
         if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
             state.score("top");
-            angle = -90;
+            angle = -1;
         }
         else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
             state.score("bot");
-            angle = 90;
+            angle = 1;
         }
         else return;
         body.setTransform(0, 0, 0);
-        body.setLinearVelocity(0, 0);
-        applyForce(initialSpeed, angle);
+        body.setLinearVelocity(0, initialSpeed * angle);
+        //applyForce(initialSpeed, angle);
     }
 
     public void draw(SpriteBatch sb) {
