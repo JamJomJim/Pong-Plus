@@ -2,6 +2,7 @@ package com.powerpong.game;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import objects.AIPaddle;
 import objects.Ball;
 import objects.Paddle;
 public class MyContactListener implements ContactListener {
@@ -21,6 +22,11 @@ public class MyContactListener implements ContactListener {
 		}
 		else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound(bodyB);
+		}
+		if (objectA instanceof AIPaddle && objectB instanceof Ball
+				|| objectB instanceof AIPaddle && objectA instanceof Ball){
+			if(objectA instanceof AIPaddle)((AIPaddle)objectA).resetOffset();
+			else((AIPaddle)objectB).resetOffset();
 		}
 		System.out.println(bodyB.getLinearVelocity());
 	}
