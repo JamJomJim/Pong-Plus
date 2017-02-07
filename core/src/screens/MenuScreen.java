@@ -35,7 +35,7 @@ public class MenuScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 
 		// Load skin from JSON file
-		skin = new Skin(Gdx.files.internal("skins/neon/skin/neon-ui.json"));
+		skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
 
 		//add the menu background image to the skin, under the name background
 		skin.add("background", new Texture("MenuBackground.png"));
@@ -43,7 +43,7 @@ public class MenuScreen implements Screen {
 		// Generate a font and add it to the skin under the name "Xcelsion"
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Xcelsion.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 60;
+		parameter.size = 70;
 		skin.add("Xcelsion", generator.generateFont(parameter));
 
 		//get the TextButtonStyle defined in the JSON under the name "default" and then modify it by changing the font
@@ -51,7 +51,7 @@ public class MenuScreen implements Screen {
 		style.font = skin.getFont("Xcelsion");
 
 		// Create a table that fills the screen. Everything else will go inside this table.
-		Table table = new Table();
+		table = new Table();
 		table.setSkin(skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
 		table.setBackground("background");
 		table.setFillParent(true);
