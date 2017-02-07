@@ -143,8 +143,6 @@ public class PlayScreen implements Screen {
 		else if (side.equals("bot"))
 			botScore += 1;
 		//resets the offset of the AIPaddle
-		if(p2 instanceof AIPaddle)
-			((AIPaddle)p2).resetOffset();
 	}
 
 	@Override

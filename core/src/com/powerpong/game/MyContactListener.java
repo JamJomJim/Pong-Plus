@@ -23,11 +23,6 @@ public class MyContactListener implements ContactListener {
 		else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound(bodyB);
 		}
-		if (objectA instanceof AIPaddle && objectB instanceof Ball
-				|| objectB instanceof AIPaddle && objectA instanceof Ball){
-			if(objectA instanceof AIPaddle)((AIPaddle)objectA).resetOffset();
-			else((AIPaddle)objectB).resetOffset();
-		}
 		System.out.println(bodyB.getLinearVelocity());
 	}
 
