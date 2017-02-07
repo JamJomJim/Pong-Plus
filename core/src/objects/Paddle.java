@@ -36,6 +36,8 @@ public class Paddle extends InputAdapter {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(texture.getWidth() / 2 / PowerPong.PPM, texture.getHeight() / 2 / PowerPong.PPM);
 
+        System.out.println("Paddle width = " + texture.getHeight());
+
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0f;
