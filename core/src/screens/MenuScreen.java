@@ -2,6 +2,7 @@ package screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.assets.loaders.SkinLoader;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Pixmap;
@@ -22,56 +23,45 @@ import com.badlogic.gdx.utils.viewport.ScreenViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.powerpong.game.PowerPong;
 
-//TODO: Menu doesn't scale with resolution; will appear smaller on higher resolution devices
 public class MenuScreen implements Screen {
 	private Stage stage;
 	private Table table;
 	private Skin skin;
 	private PowerPong game;
-	private Texture background;
 
 	public MenuScreen(final PowerPong game) {
 		this.game = game;
-		background = new Texture("MenuBackground.png");
 		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT));
 		Gdx.input.setInputProcessor(stage);
 
-		// A skin can be loaded via JSON or defined programmatically, either is fine. Using a skin is optional but strongly
-		// recommended solely for the convenience of getting a texture, region, etc as a drawable, tinted drawable, etc.
-		skin = new Skin();
+		// Load skin from JSON file
+		skin = new Skin(Gdx.files.internal("skins/neon/skin/neon-ui.json"));
 
-		// Generate a 1x1 white texture and store it in the skin named "white".
-		Pixmap pixmap = new Pixmap(1, 1, Format.RGBA8888);
-		pixmap.setColor(Color.WHITE);
-		pixmap.fill();
-		skin.add("white", new Texture(pixmap));
+		//add the menu background image to the skin, under the name background
+		skin.add("background", new Texture("MenuBackground.png"));
 
-		// Generate a font
+		// Generate a font and add it to the skin under the name "Xcelsion"
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Xcelsion.ttf"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		parameter.size = 60;
+		skin.add("Xcelsion", generator.generateFont(parameter));
 
-		skin.add("default", generator.generateFont(parameter));
-
-		// Configure a TextButtonStyle and name it "default". Skin resources are stored by type, so this doesn't overwrite the font.
-		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.up = skin.newDrawable("white", Color.DARK_GRAY);
-		textButtonStyle.down = skin.newDrawable("white", Color.DARK_GRAY);
-		textButtonStyle.checked = skin.newDrawable("white", Color.BLUE);
-		textButtonStyle.over = skin.newDrawable("white", Color.LIGHT_GRAY);
-		textButtonStyle.font = skin.getFont("default");
-		skin.add("default", textButtonStyle);
+		//get the TextButtonStyle defined in the JSON under the name "default" and then modify it by changing the font
+		TextButtonStyle style = skin.get("default", TextButtonStyle.class);
+		style.font = skin.getFont("Xcelsion");
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		Table table = new Table();
+		table.setSkin(skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
+		table.setBackground("background");
 		table.setFillParent(true);
 		stage.addActor(table);
 
-		// Create a button with the "default" TextButtonStyle. A 3rd parameter can be used to specify a name other than "default".
+		// Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
 		final TextButton button1P = new TextButton("One Player", skin);
 		table.add(button1P).width(1000).height(150);
 		final TextButton button2P = new TextButton("Two Player", skin);
-		table.row();
+		table.row(); //advance to the next row of the table
 		table.add(button2P).width(1000).height(150);
 
 		// Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
@@ -89,11 +79,6 @@ public class MenuScreen implements Screen {
 			}
 		});
 
-		// Add an image actor. Have to set the size, else it would be the size of the drawable (which is the 1x1 texture).
-		//these are just colored boxes
-		/*table.add(new Image(skin.newDrawable("white", Color.RED))).size(64);
-		table.add(new Image(skin.newDrawable("white", Color.BLUE))).size(64);*/
-
 		table.setDebug(true);
 	}
 
@@ -105,9 +90,6 @@ public class MenuScreen implements Screen {
 	@Override
 	public void render(float dt) {
 		stage.act(dt);
-		game.batch.begin();
-		game.batch.draw(background, 0, 0);
-		game.batch.end();
 		stage.draw();
 	}
 
