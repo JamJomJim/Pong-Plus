@@ -2,23 +2,21 @@ package objects;
 
 import com.badlogic.gdx.physics.box2d.World;
 import com.powerpong.game.PowerPong;
+import screens.PlayScreen;
 
 public class AIPaddle extends Paddle {
     private float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
 
-    public enum Diff {
-        EASY, MEDIUM, HARD, SKYNET, IMPOSSIBLE
-    }
-    private Diff diff;
     private Ball ball;
+    private PlayScreen.AI difficulty;
 
     private float offset;
 
-    public AIPaddle(String textureName, float x, float y, World world, Ball ball, Diff difficulty) {
+    public AIPaddle(String textureName, float x, float y, World world, Ball ball, PlayScreen.AI difficulty) {
         super(textureName, x, y, world);
         this.ball = ball;
-        this.diff = difficulty;
-        switch(diff){
+        this.difficulty = difficulty;
+        switch (difficulty){
             case EASY:
                 maxOffset = 0;
                 movespeed = 2;

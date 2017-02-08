@@ -20,7 +20,10 @@ public class PlayScreen implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
     private int BALL_DIRECTION = -90;
     private float BALL_SPEED = 5;
-    
+
+    public enum AI {
+        NONE, EASY, MEDIUM, HARD, SKYNET, IMPOSSIBLE
+    }
 
     private Paddle p1, p2;
     private Ball ball;
@@ -35,7 +38,7 @@ public class PlayScreen implements Screen {
     private PowerPong game;
     private InputMultiplexer multiplexer;
 
-    public PlayScreen(PowerPong game, String mode) {
+    public PlayScreen(PowerPong game, AI ai) {
         this.game = game;
         font = new BitmapFont();
         font.getData().setScale(2);
@@ -55,10 +58,10 @@ public class PlayScreen implements Screen {
         uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
         p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
-        if (mode.equals("1P"))
-            p2 = new AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, AIPaddle.Diff.HARD);
-        else if (mode.equals("2P"))
+        if (ai == AI.NONE)
             p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
+        else
+            p2 = new AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, ai);
 
         topScore = 0;
         botScore = 0;
@@ -72,7 +75,7 @@ public class PlayScreen implements Screen {
         multiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(multiplexer);
         multiplexer.addProcessor(p1);
-        if (mode.equals("2P"))
+        if (ai == AI.NONE)
             multiplexer.addProcessor(p2);
 
         debugRenderer = new Box2DDebugRenderer();
