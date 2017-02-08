@@ -20,7 +20,7 @@ public class MyContactListener implements ContactListener {
 
 		//if the collision is between a paddle and the ball, rebound the ball appropriately
         if (objectA instanceof Paddle && objectB instanceof Ball) {
-			((Ball)objectB).paddleRebound(bodyA);
+			((Ball) objectB).paddleRebound(bodyA);
 		}
 		else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound(bodyB);

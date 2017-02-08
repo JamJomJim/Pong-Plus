@@ -28,7 +28,8 @@ public class PlayScreen implements Screen {
     private Paddle p1, p2;
     private Ball ball;
 
-    private int topScore, botScore;
+    private int topScore = 0;
+    private int botScore = 0;
 
     private World world;
     private OrthographicCamera worldCam, uiCam;
@@ -41,7 +42,7 @@ public class PlayScreen implements Screen {
     public PlayScreen(PowerPong game, AI ai) {
         this.game = game;
         font = new BitmapFont();
-        font.getData().setScale(2);
+        font.getData().setScale(8);
 
         //create physics world and contactlistener
         world = new World(new Vector2(0, GRAVITY), true);
@@ -106,7 +107,8 @@ public class PlayScreen implements Screen {
         game.batch.setProjectionMatrix(uiCam.combined);
         game.batch.begin();
         //draw something in top left for debug purposes
-        font.draw(game.batch, "top score: " + topScore + "  bot score: " + botScore, -PowerPong.NATIVE_WIDTH / 2 + 5, PowerPong.NATIVE_HEIGHT / 2 - 10);
+        font.draw(game.batch, Integer.toString(botScore), 0, PowerPong.NATIVE_HEIGHT / -4);
+        font.draw(game.batch, Integer.toString(topScore), 0, PowerPong.NATIVE_HEIGHT / 4);
         game.batch.end();
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
