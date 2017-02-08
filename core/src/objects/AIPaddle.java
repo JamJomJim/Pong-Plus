@@ -17,16 +17,16 @@ public class AIPaddle extends Paddle {
     }
 
     public float calcFinalDestination(float xPos, float yPos, float xVel, float yVel){
-        float timeToPaddle = (this.getY() - 30 / PowerPong.PPM - yPos) / yVel;
+        float timeToPaddle = (this.getY() - this.getTexture().getHeight() / PowerPong.PPM - yPos) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
         if (finalDestination < -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
-            yPos = yPos + ((-PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos + 75 / PowerPong.PPM) / xVel) * yVel;
+            yPos = yPos + ((-PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos + ball.getTexture().getWidth() / PowerPong.PPM) / xVel) * yVel;
             xPos = -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
         }
         else if (finalDestination > PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
-            yPos = yPos + ((PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos - 75 / PowerPong.PPM) / xVel) * yVel;
+            yPos = yPos + ((PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos - ball.getTexture().getWidth() / PowerPong.PPM) / xVel) * yVel;
             xPos = PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
