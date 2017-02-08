@@ -152,5 +152,6 @@ public class PlayScreen implements Screen {
         p1.dispose();
         font.dispose();
         debugRenderer.dispose();
+        ball.dispose();
     }
 }
