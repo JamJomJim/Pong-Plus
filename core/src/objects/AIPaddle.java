@@ -15,7 +15,7 @@ public class AIPaddle extends Paddle {
         super(textureName, x, y, world);
         this.ball = ball;
         this.difficulty = difficulty;
-        switch (difficulty){
+        switch (difficulty) {
             case EASY:
                 maxOffset = 0;
                 movespeed = 2;

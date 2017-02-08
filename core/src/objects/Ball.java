@@ -7,7 +7,7 @@ import com.powerpong.game.PowerPong;
 import screens.PlayScreen;
 
 public class Ball {
-    private float ANGLE_MULTIPLIER = 7; //Increase the angle of the balls bounce
+    private float ANGLE_MULTIPLIER = 6; //Increase the angle of the balls bounce
     private float SPEED_ADDED = 1; //Increases speed of the ball every bounce in order to make the gameplay speed up
 
     protected Texture texture;
@@ -66,12 +66,6 @@ public class Ball {
                 body.getPosition().y - texture.getHeight() / 2 / PowerPong.PPM,
                 texture.getWidth() / PowerPong.PPM,
                 texture.getHeight() / PowerPong.PPM);
-    }
-
-    //pass angle as degrees
-    public void applyForce(float magnitude, float angle) {
-        angle = (float)(angle / 180 * Math.PI);
-        body.applyForceToCenter((float)Math.cos(angle) * magnitude, (float)Math.sin(angle) * magnitude, true );
     }
 
     //NOTE: If the screen goes black when the ball hits far from the paddle center, its because posDiff * ANGLE_MULTIPLIER is too big.
