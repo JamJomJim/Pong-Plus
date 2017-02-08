@@ -7,14 +7,19 @@ public class AIPaddle extends Paddle {
     private float OFFSET_MAX = 160; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
     private float AI_MOVESPEED = 8; //movespeed is a separate variable from NORM_MS so that paddle speed can be changed by powerups etc.
 
+    public enum Diff {
+        EASY, MEDIUM, HARD, SKYNET
+    }
+    private Diff diff;
     private Ball ball;
 
     private float offset;
 
-    public AIPaddle(String textureName, float x, float y, World world, Ball ball) {
+    public AIPaddle(String textureName, float x, float y, World world, Ball ball, Diff difficulty) {
         super(textureName, x, y, world);
         movespeed = AI_MOVESPEED;
         this.ball = ball;
+        this.diff = difficulty;
     }
     public void update(float dt) {
         float finalDestination = calcFinalDestination(ball.getX(), ball.getY(), ball.getBody().getLinearVelocity().x, ball.getBody().getLinearVelocity().y);
