@@ -23,7 +23,10 @@ public class MyContactListener implements ContactListener {
 		else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound(bodyB);
 		}
-		System.out.println(bodyB.getLinearVelocity());
+		if (objectA instanceof AIPaddle && objectB instanceof Ball) {
+			((AIPaddle) objectA).randomizeOffset();
+		}
+		else if (objectB instanceof AIPaddle && objectA instanceof Ball) ((AIPaddle) objectB).randomizeOffset();;
 	}
 
 	@Override

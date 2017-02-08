@@ -11,6 +11,8 @@ public class PlayerPaddle extends Paddle {
 
     private static final float INPUT_CAPTURE_HEIGHT = 5; //this is half of the y-height (in meters) that input within (relative to this paddle's y-position) will be handled by this paddle
 
+    protected float movespeed; //movespeed is a separate variable from NORM_MS so that paddle speed can be changed by powerups etc.
+
     private Vector3 touchPos, touchDraggedPos;
     private OrthographicCamera worldCam;
 

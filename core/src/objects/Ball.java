@@ -31,8 +31,6 @@ public class Ball {
         CircleShape shape = new CircleShape();
         shape.setRadius(texture.getWidth() / 2 / PowerPong.PPM);
 
-        System.out.println("ball width = " + texture.getWidth());
-
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0f;
@@ -99,9 +97,7 @@ public class Ball {
         return body;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
+    public Texture getTexture() { return texture; }
 
     public void dispose() {
         texture.dispose();

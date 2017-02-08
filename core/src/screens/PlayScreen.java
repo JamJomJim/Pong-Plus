@@ -98,12 +98,11 @@ public class PlayScreen implements Screen {
 
 	@Override
 	public void render(float dt) {
-		p1.update();
-		p2.update();
-		ball.update();
 		//step the physics world the amount of time since the last frame, up to 0.25s
 		world.step((float)Math.min(dt, 0.25), 6 ,2);
-
+		p1.update(dt);
+		p2.update(dt);
+		ball.update();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 

@@ -36,8 +36,6 @@ public class Paddle extends InputAdapter {
         PolygonShape shape = new PolygonShape();
         shape.setAsBox(texture.getWidth() / 2 / PowerPong.PPM, texture.getHeight() / 2 / PowerPong.PPM);
 
-        System.out.println("Paddle width = " + texture.getHeight());
-
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0f;
@@ -47,6 +45,7 @@ public class Paddle extends InputAdapter {
         body.createFixture(fixtureDef);
         shape.dispose();
 
+        System.out.println(texture.getWidth());
         movespeed = NORM_MS;
         destination = new Vector2(x, y);
     }
@@ -54,11 +53,11 @@ public class Paddle extends InputAdapter {
     /*
     Apply the necessary physics stuff to the paddle to get it to move towards it's destination.
      */
-    public void update() {
+    public void update(float dt) {
         //if the distance between the paddle and it's destination is less than or equal to the distance it can travel in a single world.step(),
         //then just move the paddle to the destination. This prevents jitter caused by overshooting the destination repeatedly.
         float distance = Math.abs(destination.x - body.getPosition().x);
-        if (distance <= movespeed * .016 && distance > 0)
+        if (distance <= movespeed * dt && distance > 0)
             body.setTransform(destination.x, body.getPosition().y, 0);
         if (destination.x < body.getPosition().x)
             body.setLinearVelocity(-movespeed, 0);
