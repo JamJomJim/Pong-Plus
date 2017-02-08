@@ -5,12 +5,11 @@ import com.powerpong.game.PowerPong;
 import screens.PlayScreen;
 
 public class AIPaddle extends Paddle {
-    private float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
+    private static float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
+    private static float offset;
 
     private Ball ball;
     private PlayScreen.AI difficulty;
-
-    private float offset;
 
     public AIPaddle(String textureName, float x, float y, World world, Ball ball, PlayScreen.AI difficulty) {
         super(textureName, x, y, world);
@@ -40,12 +39,18 @@ public class AIPaddle extends Paddle {
         }
     }
     public void update(float dt) {
-        float finalDestination = calcFinalDestination(ball.getX(), ball.getY(), ball.getBody().getLinearVelocity().x, ball.getBody().getLinearVelocity().y);
-        destination.set(finalDestination + offset, this.getY());
+        if (ball.getBody().getLinearVelocity().y > 0)
+            destination.set(calcFinalDestination(
+                    ball.getX(),
+                    ball.getY(),
+                    ball.getBody().getLinearVelocity().x,
+                    ball.getBody().getLinearVelocity().y) + offset,
+                    this.getY());
+        //move towards the destination
         super.update(dt);
     }
 
-    public float calcFinalDestination(float xPos, float yPos, float xVel, float yVel){
+    public float calcFinalDestination(float xPos, float yPos, float xVel, float yVel) {
         float timeToPaddle = (this.getY() - this.getTexture().getHeight() / PowerPong.PPM - yPos) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
         if (finalDestination < -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
@@ -62,7 +67,8 @@ public class AIPaddle extends Paddle {
         }
         else return finalDestination;
     }
-    public void randomizeOffset(){
-        this.offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
+
+    public static void randomizeOffset() {
+        offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
     }
 }

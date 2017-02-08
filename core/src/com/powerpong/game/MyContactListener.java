@@ -1,14 +1,15 @@
 package com.powerpong.game;
 
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import objects.AIPaddle;
 import objects.Ball;
 import objects.Paddle;
+import objects.PlayerPaddle;
+
 public class MyContactListener implements ContactListener {
 
-	public MyContactListener() {
-	}
+    public MyContactListener() {
+    }
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -16,17 +17,22 @@ public class MyContactListener implements ContactListener {
 		Object objectB = contact.getFixtureB().getBody().getUserData();
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
-		//if the collision is between a paddle and the ball
+
+		//if the collision is between a paddle and the ball, rebound the ball appropriately
         if (objectA instanceof Paddle && objectB instanceof Ball) {
 			((Ball)objectB).paddleRebound(bodyA);
 		}
 		else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound(bodyB);
 		}
-		if (objectA instanceof AIPaddle && objectB instanceof Ball) {
-			((AIPaddle) objectA).randomizeOffset();
+
+
+		if (objectA instanceof PlayerPaddle && objectB instanceof Ball) {
+			AIPaddle.randomizeOffset();
 		}
-		else if (objectB instanceof AIPaddle && objectA instanceof Ball) ((AIPaddle) objectB).randomizeOffset();;
+		else if (objectB instanceof PlayerPaddle && objectA instanceof Ball) {
+        	AIPaddle.randomizeOffset();
+		}
 	}
 
 	@Override

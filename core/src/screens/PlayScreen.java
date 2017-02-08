@@ -45,7 +45,6 @@ public class PlayScreen implements Screen {
 
         //create physics world and contactlistener
         world = new World(new Vector2(0, GRAVITY), true);
-
         contactListener = new MyContactListener();
         world.setContactListener(contactListener);
 
