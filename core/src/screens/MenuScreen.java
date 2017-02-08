@@ -61,12 +61,12 @@ public class MenuScreen implements Screen {
 		// revert the checked state.
 		button1P.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new ClassicPlayScreen(game, "1P"));
+				game.setScreen(new ClassicPlayScreen(game, PlayScreen.AI.MEDIUM));
 			}
 		});
 		button2P.addListener(new ChangeListener() {
 			public void changed (ChangeEvent event, Actor actor) {
-				game.setScreen(new ClassicPlayScreen(game, "2P"));
+				game.setScreen(new ClassicPlayScreen(game, PlayScreen.AI.NONE));
 			}
 		});
 

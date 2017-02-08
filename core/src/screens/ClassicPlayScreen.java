@@ -23,7 +23,7 @@ import objects.*;
 
 public class ClassicPlayScreen extends PlayScreen {
 
-	public ClassicPlayScreen(PowerPong game, String mode, AI ai) {
+	public ClassicPlayScreen(PowerPong game, AI ai) {
 		super(game, ai);
 	}
 }
