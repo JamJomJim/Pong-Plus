@@ -99,6 +99,10 @@ public class Ball {
         return body;
     }
 
+    public Texture getTexture() {
+        return texture;
+    }
+
     public void dispose() {
         texture.dispose();
     }

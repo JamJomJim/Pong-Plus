@@ -91,7 +91,7 @@ public class Paddle extends InputAdapter {
     public Vector2 getDest() {
         return destination;
     }
-
+    public Texture getTexture() { return texture; }
     public void dispose() {
         texture.dispose();
     }
