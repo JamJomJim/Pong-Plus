@@ -18,8 +18,8 @@ import objects.*;
  */
 public class PlayScreen implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
-    private int BALL_DIRECTION = -90;
-    private float BALL_SPEED = 5;
+    private float BALL_DIRECTION = (float)Math.PI * 3 / 2;
+    private float BALL_SPEED = 3;
 
     public enum AI {
         NONE, EASY, MEDIUM, HARD, SKYNET, IMPOSSIBLE

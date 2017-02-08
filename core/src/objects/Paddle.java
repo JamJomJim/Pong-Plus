@@ -45,7 +45,6 @@ public class Paddle extends InputAdapter {
         body.createFixture(fixtureDef);
         shape.dispose();
 
-        System.out.println(texture.getWidth());
         movespeed = NORM_MS;
         destination = new Vector2(x, y);
     }

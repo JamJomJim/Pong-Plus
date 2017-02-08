@@ -40,9 +40,8 @@ public class Ball {
         body.createFixture(fixtureDef);
         shape.dispose();
 
-        //Applies initial force to start ball moving.
-        body.setLinearVelocity(0, -3);
-        //applyForce(initialSpeed, initialDirection);
+        body.setLinearVelocity((float)Math.cos(initialDirection) * initialSpeed,
+                (float)Math.sin(initialDirection) * initialSpeed);
     }
 
     public void update() {
@@ -81,7 +80,6 @@ public class Ball {
     public void paddleRebound(Body bodyB) {
         float posDiff = body.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
         float curSpeed = (float)Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2)); //calculate the ball's current speed
-        System.out.println(curSpeed);
         curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
         //together, the x and y component have a magnitude equal to that of curSpeed
@@ -100,7 +98,9 @@ public class Ball {
         return body;
     }
 
-    public Texture getTexture() { return texture; }
+    public Texture getTexture() {
+        return texture;
+    }
 
     public void dispose() {
         texture.dispose();
