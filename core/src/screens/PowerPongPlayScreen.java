@@ -1,5 +1,6 @@
 package screens;
 
+import com.badlogic.gdx.Screen;
 import com.powerpong.game.PowerPong;
 
 public class PowerPongPlayScreen extends PlayScreen {

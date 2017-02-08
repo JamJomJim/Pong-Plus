@@ -1,14 +1,15 @@
 package screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.powerpong.game.MyContactListener;
 import com.powerpong.game.PowerPong;
 import objects.*;
@@ -16,7 +17,7 @@ import objects.*;
 /**
  * Created by Nick on 2/7/2017.
  */
-public class PlayScreen implements Screen {
+public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
     private float BALL_DIRECTION = (float)Math.PI * 3 / 2;
     private float BALL_SPEED = 3;
@@ -38,9 +39,12 @@ public class PlayScreen implements Screen {
     private BitmapFont font;
     private PowerPong game;
     private InputMultiplexer multiplexer;
+    private Stage stage;
+    private Screen menu;
 
     protected PlayScreen(PowerPong game, AI ai) {
         this.game = game;
+        this.menu = menu;
         font = new BitmapFont();
         font.getData().setScale(8);
 
@@ -49,13 +53,10 @@ public class PlayScreen implements Screen {
         contactListener = new MyContactListener();
         world.setContactListener(contactListener);
 
-        //cam stuff
-        //using a constant-size viewport solves the problem of scaling on different resolutions
-        //the viewport will be sized to take up the entire space of what the application is occupying
-        //down/up-scaling will be done automatically
         worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
                 PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
         uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
+        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
         p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
         if (ai == AI.NONE)
@@ -71,10 +72,15 @@ public class PlayScreen implements Screen {
         //left wall
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
 
+        //create the stage and override it's keydown method, so it handles the back button
+        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
+
         //create InputMultiplexer, to handle input on multiple paddles and the ui
         multiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(multiplexer);
         multiplexer.addProcessor(p1);
+        multiplexer.addProcessor(stage);
+        multiplexer.addProcessor(this);
         if (ai == AI.NONE)
             multiplexer.addProcessor(p2);
 
@@ -126,6 +132,7 @@ public class PlayScreen implements Screen {
     public void show() {
         game.batch.setProjectionMatrix(worldCam.combined);
         Gdx.input.setInputProcessor(multiplexer);
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
@@ -155,5 +162,15 @@ public class PlayScreen implements Screen {
         font.dispose();
         debugRenderer.dispose();
         ball.dispose();
+        stage.dispose();
+    }
+
+    @Override
+    public boolean keyDown(int keyCode) {
+        dispose();
+        if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
+            game.setScreen(new MenuScreen(game));
+        }
+        return super.keyDown(keyCode);
     }
 }

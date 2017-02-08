@@ -24,7 +24,7 @@ public class MenuScreen implements Screen {
 
 	public MenuScreen(final PowerPong game) {
 		this.game = game;
-		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT));
+		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
 		stage.setDebugAll(true);
 		Gdx.input.setInputProcessor(stage);
 
@@ -96,7 +96,7 @@ public class MenuScreen implements Screen {
         });
         button2P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                game.setScreen(new ClassicPlayScreen(game, PlayScreen.AI.NONE));
+                startPlay(PlayScreen.AI.NONE);
             }
         });
 
@@ -116,34 +116,22 @@ public class MenuScreen implements Screen {
 
         buttonEasy.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                if (mode.equals("classic"))
-                    game.setScreen(new ClassicPlayScreen(game, PlayScreen.AI.EASY));
-                else if (mode.equals("power"))
-                    game.setScreen(new PowerPongPlayScreen(game, PlayScreen.AI.EASY));
+                startPlay(PlayScreen.AI.EASY);
             }
         });
         buttonMedium.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                if (mode.equals("classic"))
-                    game.setScreen(new ClassicPlayScreen(game, PlayScreen.AI.MEDIUM));
-                else if (mode.equals("power"))
-                    game.setScreen(new PowerPongPlayScreen(game, PlayScreen.AI.MEDIUM));
+                startPlay(PlayScreen.AI.MEDIUM);
             }
         });
         buttonHard.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                if (mode.equals("classic"))
-                    game.setScreen(new ClassicPlayScreen(game, PlayScreen.AI.HARD));
-                else if (mode.equals("power"))
-                    game.setScreen(new PowerPongPlayScreen(game, PlayScreen.AI.HARD));
+                startPlay(PlayScreen.AI.HARD);
             }
         });
         buttonSkynet.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                if (mode.equals("classic"))
-                    game.setScreen(new ClassicPlayScreen(game, PlayScreen.AI.SKYNET));
-                else if (mode.equals("power"))
-                    game.setScreen(new PowerPongPlayScreen(game, PlayScreen.AI.SKYNET));
+                startPlay(PlayScreen.AI.SKYNET);
             }
         });
 
@@ -189,5 +177,13 @@ public class MenuScreen implements Screen {
 		stage.dispose();
 		skin.dispose();
 	}
+
+	public void startPlay(PlayScreen.AI ai) {
+        dispose();
+        if (mode.equals("classic"))
+            game.setScreen(new ClassicPlayScreen(game, ai));
+        else if (mode.equals("power"))
+            game.setScreen(new PowerPongPlayScreen(game, ai));
+    }
 
 }
