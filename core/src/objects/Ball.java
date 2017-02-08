@@ -9,7 +9,7 @@ import screens.ClassicPlayScreen;
 import screens.PlayScreen;
 
 public class Ball {
-    private float ANGLE_MULTIPLIER = 5; //Increase the angle of the balls bounce
+    private float ANGLE_MULTIPLIER = 7; //Increase the angle of the balls bounce
     private float SPEED_ADDED = 1; //Increases speed of the ball every bounce in order to make the gameplay speed up
 
     protected Texture texture;
@@ -43,7 +43,7 @@ public class Ball {
         shape.dispose();
 
         //Applies initial force to start ball moving.
-        body.setLinearVelocity(0, -5);
+        body.setLinearVelocity(0, -3);
         //applyForce(initialSpeed, initialDirection);
     }
 
