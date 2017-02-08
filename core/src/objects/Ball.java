@@ -7,7 +7,7 @@ import com.powerpong.game.PowerPong;
 import screens.PlayScreen;
 
 public class Ball {
-    private float ANGLE_MULTIPLIER = 7; //Increase the angle of the balls bounce
+    private float ANGLE_MULTIPLIER = 6; //Increase the angle of the balls bounce
     private float SPEED_ADDED = 1; //Increases speed of the ball every bounce in order to make the gameplay speed up
 
     protected Texture texture;
@@ -57,7 +57,6 @@ public class Ball {
         else return;
         body.setTransform(0, 0, 0);
         body.setLinearVelocity(0, initialSpeed * angle);
-        //applyForce(initialSpeed, angle);
     }
 
     public void draw(SpriteBatch sb) {
@@ -68,14 +67,8 @@ public class Ball {
                 texture.getHeight() / PowerPong.PPM);
     }
 
-    //pass angle as degrees
-    public void applyForce(float magnitude, float angle) {
-        angle = (float)(angle / 180 * Math.PI);
-        body.applyForceToCenter((float)Math.cos(angle) * magnitude, (float)Math.sin(angle) * magnitude, true );
-    }
-
     //NOTE: If the screen goes black when the ball hits far from the paddle center, its because posDiff * ANGLE_MULTIPLIER is too big.
-    //(Because if posDiff * ANGLE_MULTIPLIER is greater than curSpeed squared, then it will be trying to take the sqrt of a negative number.
+    //Because if posDiff * ANGLE_MULTIPLIER is greater than curSpeed squared, then it will be trying to take the sqrt of a negative number.
     //Changing PPM will affect this, since a smaller PPM will mean the posDiff will be larger.
     public void paddleRebound(Body bodyB) {
         float posDiff = body.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
@@ -83,6 +76,7 @@ public class Ball {
         curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
         //together, the x and y component have a magnitude equal to that of curSpeed
+        //TODO: ball is hit at more dramatic angles at slower speeds due to how the new linearvelocity is calculated
         body.setLinearVelocity(posDiff * ANGLE_MULTIPLIER, (float)Math.sqrt(Math.pow(curSpeed, 2) - Math.pow(posDiff * ANGLE_MULTIPLIER, 2)));
     }
 

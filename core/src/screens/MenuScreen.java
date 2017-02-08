@@ -2,6 +2,7 @@ package screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.scenes.scene2d.Actor;
@@ -26,7 +27,7 @@ public class MenuScreen implements Screen {
 		Gdx.input.setInputProcessor(stage);
 
 		// Load skin from JSON file
-		skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
+		skin = new Skin(Gdx.files.internal("skins/quantum-horizon/quantum-horizon-ui.json"));
 
 		//add the menu background image to the skin, under the name background
 		skin.add("background", new Texture("MenuBackground.png"));
@@ -81,6 +82,8 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void render(float dt) {
+		Gdx.gl.glClearColor(0, 0, 0, 1);
+		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		stage.act(dt);
 		stage.draw();
 	}

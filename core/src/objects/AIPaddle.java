@@ -1,5 +1,6 @@
 package objects;
 
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.powerpong.game.PowerPong;
 import screens.PlayScreen;
@@ -10,9 +11,11 @@ public class AIPaddle extends Paddle {
 
     private Ball ball;
     private PlayScreen.AI difficulty;
+    private Vector2 prevVel;
 
     public AIPaddle(String textureName, float x, float y, World world, Ball ball, PlayScreen.AI difficulty) {
         super(textureName, x, y, world);
+        this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
         this.ball = ball;
         this.difficulty = difficulty;
         switch (difficulty){
@@ -39,7 +42,7 @@ public class AIPaddle extends Paddle {
         }
     }
     public void update(float dt) {
-        if (ball.getBody().getLinearVelocity().y > 0)
+        if (ball.getBody().getLinearVelocity().y > 0 && !prevVel.isCollinear(ball.getBody().getLinearVelocity()))
             destination.set(calcFinalDestination(
                     ball.getX(),
                     ball.getY(),
@@ -65,7 +68,8 @@ public class AIPaddle extends Paddle {
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
         }
-        else return finalDestination;
+        prevVel.set(ball.getBody().getLinearVelocity());
+        return finalDestination;
     }
 
     public static void randomizeOffset() {
