@@ -4,8 +4,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.powerpong.game.PowerPong;
 
 public class AIPaddle extends Paddle {
-    private float OFFSET_MAX = 160; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
-    private float AI_MOVESPEED; //movespeed is a separate variable from NORM_MS so that paddle speed can be changed by powerups etc.
+    private float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
 
     public enum Diff {
         EASY, MEDIUM, HARD, SKYNET, IMPOSSIBLE
@@ -21,27 +20,26 @@ public class AIPaddle extends Paddle {
         this.diff = difficulty;
         switch(diff){
             case EASY:
-                OFFSET_MAX = 0;
-                AI_MOVESPEED = 2;
+                maxOffset = 0;
+                movespeed = 2;
                 break;
             case MEDIUM:
-                OFFSET_MAX = 80;
-                AI_MOVESPEED = 3;
+                maxOffset = 80;
+                movespeed = 3;
                 break;
             case HARD:
-                OFFSET_MAX = 160;
-                AI_MOVESPEED = 4;
+                maxOffset = 160;
+                movespeed = 4;
                 break;
             case SKYNET:
-                OFFSET_MAX = 160;
-                AI_MOVESPEED = 6;
+                maxOffset = 160;
+                movespeed = 6;
                 break;
             case IMPOSSIBLE:
-                OFFSET_MAX = 160;
-                AI_MOVESPEED = 15;
+                maxOffset = 160;
+                movespeed = 15;
                 break;
         }
-        movespeed = AI_MOVESPEED;
     }
     public void update(float dt) {
         float finalDestination = calcFinalDestination(ball.getX(), ball.getY(), ball.getBody().getLinearVelocity().x, ball.getBody().getLinearVelocity().y);
@@ -67,6 +65,6 @@ public class AIPaddle extends Paddle {
         else return finalDestination;
     }
     public void randomizeOffset(){
-        this.offset = (float)Math.floor(Math.random() * (OFFSET_MAX * 2 + 1) - OFFSET_MAX) / PowerPong.PPM;
+        this.offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
     }
 }
