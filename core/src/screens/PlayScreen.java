@@ -22,7 +22,7 @@ public class PlayScreen implements Screen {
     private float BALL_SPEED = 3;
 
     public enum AI {
-        NONE, EASY, MEDIUM, HARD, SKYNET, IMPOSSIBLE
+        NONE, EASY, MEDIUM, HARD, SKYNET
     }
 
     private Paddle p1, p2;
@@ -39,7 +39,7 @@ public class PlayScreen implements Screen {
     private PowerPong game;
     private InputMultiplexer multiplexer;
 
-    public PlayScreen(PowerPong game, AI ai) {
+    protected PlayScreen(PowerPong game, AI ai) {
         this.game = game;
         font = new BitmapFont();
         font.getData().setScale(8);

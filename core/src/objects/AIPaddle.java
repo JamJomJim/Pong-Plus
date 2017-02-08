@@ -33,10 +33,6 @@ public class AIPaddle extends Paddle {
                 break;
             case SKYNET:
                 maxOffset = 160;
-                movespeed = 6;
-                break;
-            case IMPOSSIBLE:
-                maxOffset = 160;
                 movespeed = 15;
                 break;
         }
