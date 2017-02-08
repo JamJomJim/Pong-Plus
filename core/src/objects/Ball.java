@@ -1,9 +1,11 @@
 package objects;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
+import screens.ClassicPlayScreen;
 import screens.PlayScreen;
 
 public class Ball {
@@ -12,12 +14,12 @@ public class Ball {
 
     protected Texture texture;
     protected Body body;
-    protected PlayScreen state;
+    protected PlayScreen screen;
     private float initialSpeed;
 
-    public Ball(String textureName, float x, float y, float initialDirection, float initialSpeed, World world, PlayScreen state) {
+    public Ball(String textureName, float x, float y, float initialDirection, float initialSpeed, World world, PlayScreen screen) {
         this.texture = new Texture(textureName);
-        this.state = state;
+        this.screen = screen;
         this.initialSpeed = initialSpeed;
 
         BodyDef bodyDef = new BodyDef();
@@ -48,11 +50,11 @@ public class Ball {
     public void update() {
         float angle;
         if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
-            state.score("top");
+            screen.score("top");
             angle = -1;
         }
         else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
-            state.score("bot");
+            screen.score("bot");
             angle = 1;
         }
         else return;
