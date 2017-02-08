@@ -77,7 +77,6 @@ public class Ball {
         curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
         //together, the x and y component have a magnitude equal to that of curSpeed
-        //TODO: ball is hit at more dramatic angles at slower speeds due to how the new linearvelocity is calculated
         body.setLinearVelocity((float) (curSpeed * Math.sin(Math.toRadians(reboundAngle))), (float) (curSpeed * Math.cos(Math.toRadians(reboundAngle))));
     }
 
