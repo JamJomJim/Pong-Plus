@@ -1,6 +1,7 @@
 package screens;
 
 import com.badlogic.gdx.*;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -46,7 +47,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected Label topScoreText;
     protected Label botScoreText;
     protected World world;
-    protected OrthographicCamera worldCam, uiCam;
+    protected OrthographicCamera worldCam;
 
     protected PlayScreen() {
     }
@@ -63,7 +64,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
                 PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
-        uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
+
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
 
         topScore = 0;
@@ -77,31 +78,30 @@ public class PlayScreen extends InputAdapter implements Screen {
         //stage stuff for the ui
         skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
         // Generate a font and add it to the skin under the name "Xcelsion"
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/Xcelsion.ttf"));
+        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 50;
-        skin.add("Xcelsion", generator.generateFont(parameter));
+        parameter.size = 150;
+        skin.add("Arial", generator.generateFont(parameter));
 
         //get the TextButtonStyle defined in the JSON under the name "default" and then modify it
-        TextButton.TextButtonStyle style = skin.get("default", TextButton.TextButtonStyle.class);
-        style.font = skin.getFont("Xcelsion");
+        Label.LabelStyle style = skin.get("default", Label.LabelStyle.class);
+        style.font = skin.getFont("Arial");
+        style.fontColor = Color.WHITE;
 
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         stage.setDebugAll(true);
         Table table = new Table();
         table.setFillParent(true);
-        table.align(Align.left);
+        table.align(Align.right);
         stage.addActor(table);
 
         VerticalGroup score = new VerticalGroup();
         //table.add(score);
         topScoreText = new Label(Integer.toString(topScore), skin);
         botScoreText = new Label(Integer.toString(botScore), skin);
-        topScoreText.setFontScale(5);
-        botScoreText.setFontScale(10);
-        table.add(topScoreText);
-        table.row();
-        table.add(botScoreText);
+        score.addActor(topScoreText);
+        score.addActor(botScoreText);
+        table.add(score);
 
         debugRenderer = new Box2DDebugRenderer();
     }
@@ -126,18 +126,6 @@ public class PlayScreen extends InputAdapter implements Screen {
         p1.draw(game.batch);
         p2.draw(game.batch);
         ball.draw(game.batch);
-        game.batch.end();
-        //draw the ui; positions in this are relative to the screen, regardless of where the worldCam might be.
-        //drawing something at (0, 0) will draw it in the center of the screen
-        //drawing something at (-Gdx.graphics.getWidth() / 2, Gdx.graphics.getHeight() / 2) will draw it in the top left
-        //and so on
-        //note that text is drawn starting at the top left corner of it. So if you try drawing in any corner besides the top left without accounting for that,
-        //the text will be off-screen
-        game.batch.setProjectionMatrix(uiCam.combined);
-        game.batch.begin();
-        //draw something in top left for debug purposes
-        font.draw(game.batch, Integer.toString(botScore), 0, PowerPong.NATIVE_HEIGHT / -4);
-        font.draw(game.batch, Integer.toString(topScore), 0, PowerPong.NATIVE_HEIGHT / 4);
         game.batch.end();
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
