@@ -19,32 +19,30 @@ import objects.*;
  */
 public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
-    private float BALL_DIRECTION = (float)Math.PI * 3 / 2;
-    private float BALL_SPEED = 3;
+    protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
+    protected float BALL_SPEED = 3;
 
     public enum AI {
         NONE, EASY, MEDIUM, HARD, SKYNET
     }
 
-    private Paddle p1, p2;
-    private Ball ball;
+    protected Paddle p1, p2;
+    protected Ball ball;
 
     private int topScore = 0;
     private int botScore = 0;
 
-    private World world;
-    private OrthographicCamera worldCam, uiCam;
+    protected World world;
+    protected OrthographicCamera worldCam, uiCam;
     private Box2DDebugRenderer debugRenderer;
     private MyContactListener contactListener;
     private BitmapFont font;
     private PowerPong game;
-    private InputMultiplexer multiplexer;
-    private Stage stage;
-    private Screen menu;
+    protected InputMultiplexer multiplexer;
+    protected Stage stage;
 
     protected PlayScreen(PowerPong game, AI ai) {
         this.game = game;
-        this.menu = menu;
         font = new BitmapFont();
         font.getData().setScale(8);
 
@@ -57,12 +55,6 @@ public class PlayScreen extends InputAdapter implements Screen {
                 PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
         uiCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT);
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-        ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
-        p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
-        if (ai == AI.NONE)
-            p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
-        else
-            p2 = new AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, ai);
 
         topScore = 0;
         botScore = 0;
@@ -74,15 +66,6 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //create the stage and override it's keydown method, so it handles the back button
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-
-        //create InputMultiplexer, to handle input on multiple paddles and the ui
-        multiplexer = new InputMultiplexer();
-        Gdx.input.setInputProcessor(multiplexer);
-        multiplexer.addProcessor(p1);
-        multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(this);
-        if (ai == AI.NONE)
-            multiplexer.addProcessor(p2);
 
         debugRenderer = new Box2DDebugRenderer();
     }
@@ -163,12 +146,13 @@ public class PlayScreen extends InputAdapter implements Screen {
         debugRenderer.dispose();
         ball.dispose();
         stage.dispose();
+        p2.dispose();
     }
 
     @Override
     public boolean keyDown(int keyCode) {
-        dispose();
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
+            dispose();
             game.setScreen(new MenuScreen(game));
         }
         return super.keyDown(keyCode);
