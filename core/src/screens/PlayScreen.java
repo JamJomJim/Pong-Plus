@@ -84,24 +84,23 @@ public class PlayScreen extends InputAdapter implements Screen {
         skin.add("Arial", generator.generateFont(parameter));
 
         //get the TextButtonStyle defined in the JSON under the name "default" and then modify it
-        Label.LabelStyle style = skin.get("default", Label.LabelStyle.class);
-        style.font = skin.getFont("Arial");
-        style.fontColor = Color.WHITE;
+        Label.LabelStyle labelStyle = skin.get("default", Label.LabelStyle.class);
+        labelStyle.font = skin.getFont("Arial");
+        labelStyle.fontColor = Color.WHITE;
 
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         stage.setDebugAll(true);
         Table table = new Table();
-        table.setFillParent(true);
-        table.align(Align.right);
+        table.setFillParent(true);;
         stage.addActor(table);
 
         VerticalGroup score = new VerticalGroup();
-        //table.add(score);
         topScoreText = new Label(Integer.toString(topScore), skin);
         botScoreText = new Label(Integer.toString(botScore), skin);
         score.addActor(topScoreText);
         score.addActor(botScoreText);
         table.add(score);
+        table.right();
 
         debugRenderer = new Box2DDebugRenderer();
     }

@@ -55,9 +55,9 @@ public class MenuScreen implements Screen {
 		skin.add("Xcelsion", generator.generateFont(parameter));
 
 		//get the TextButtonStyle defined in the JSON under the name "default" and then modify it
-		TextButtonStyle style = skin.get("default", TextButtonStyle.class);
-		style.font = skin.getFont("Xcelsion");
-		style.checked = style.down;
+		TextButtonStyle textButtonStyle = skin.get("default", TextButtonStyle.class);
+		textButtonStyle.font = skin.getFont("Xcelsion");
+		textButtonStyle.checked = textButtonStyle.down;
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
