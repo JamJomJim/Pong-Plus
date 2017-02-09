@@ -25,7 +25,7 @@ public class MenuScreen implements Screen {
     public static Mode mode;
 	private Stage stage;
 	private Table table;
-	private VerticalGroup left, mid, right;
+	private Table left, mid, right;
 	private Skin skin;
 	private PowerPong game;
 	private AIBattle ai;
@@ -68,15 +68,16 @@ public class MenuScreen implements Screen {
 		stage.addActor(table);
 
 		//mid stuff; one or two player options, or online
-        mid = new VerticalGroup();
+        mid = new Table();
         mid.setVisible(false);
-        mid.fill();
         final TextButton button1P = new TextButton("One\nPlayer", skin);
-        mid.addActor(button1P);
+        mid.add(button1P);
+        mid.row();
         final TextButton button2P = new TextButton("Two\nPlayer", skin);
-        mid.addActor(button2P);
-        final TextButton buttonOnline = new TextButton("Online\nMode", skin); //Kind of fixed this by adding "\nMode"
-        mid.addActor(buttonOnline);
+        mid.add(button2P);
+        mid.row();
+        final TextButton buttonOnline = new TextButton("Online", skin);
+        mid.add(buttonOnline).fillX().prefHeight(button2P.getPrefHeight());
         button1P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 right.setVisible(!right.isVisible());
@@ -94,13 +95,13 @@ public class MenuScreen implements Screen {
         });
 
         //stuff for the left VerticalGroup; gamemodes, options, etc
-        left = new VerticalGroup();
-        left.fill();
+        left = new Table();
         // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
         final TextButton classicButton = new TextButton("Classic\nPong", skin);
-        left.addActor(classicButton);
+        left.add(classicButton);
+        left.row();
         final TextButton powerButton = new TextButton("Power\nPong", skin);
-        left.addActor(powerButton);
+        left.add(powerButton).fillX();
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
         // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
@@ -131,17 +132,19 @@ public class MenuScreen implements Screen {
         });
 
         //right stuff; ai difficulties
-        right = new VerticalGroup();
-        right.fill();
+        right = new Table();
         right.setVisible(false);
         final TextButton buttonEasy = new TextButton("Easy", skin);
-        right.addActor(buttonEasy);
+        right.add(buttonEasy).fillX().prefHeight(button1P.getPrefHeight());
+        right.row();
         final TextButton buttonMedium = new TextButton("Medium", skin);
-        right.addActor(buttonMedium);
+        right.add(buttonMedium).fillX().prefHeight(button1P.getPrefHeight());
+        right.row();
         final TextButton buttonHard = new TextButton("Hard", skin);
-        right.addActor(buttonHard);
+        right.add(buttonHard).fillX().prefHeight(button1P.getPrefHeight());
+        right.row();
         final TextButton buttonSkynet = new TextButton("Skynet", skin);
-        right.addActor(buttonSkynet);
+        right.add(buttonSkynet).fillX().prefHeight(button1P.getPrefHeight());
 
         buttonEasy.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
