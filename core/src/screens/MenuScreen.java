@@ -24,7 +24,7 @@ public class MenuScreen implements Screen {
 	private VerticalGroup left, mid, right;
 	private Skin skin;
 	private PowerPong game;
-	public String mode;
+	public static String mode;
 
 	public MenuScreen(final PowerPong game) {
 		this.game = game;

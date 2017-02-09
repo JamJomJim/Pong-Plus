@@ -12,7 +12,7 @@ public class PowerPongPlayScreen extends PlayScreen {
 	public PowerPongPlayScreen(PowerPong game, AI ai) {
 		super(game, ai);
 		ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
-		p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
+		p1 = new AIPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, ball, ai); // This also needs to change once the AI battle is on the menu screen.
 		if (ai == AI.NONE)
 			p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
 		else
