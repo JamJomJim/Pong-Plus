@@ -41,6 +41,9 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected InputMultiplexer multiplexer;
     protected Stage stage;
 
+    protected PlayScreen() {
+    }
+
     protected PlayScreen(PowerPong game, AI ai) {
         this.game = game;
         font = new BitmapFont();

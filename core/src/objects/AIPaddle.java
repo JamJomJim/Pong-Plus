@@ -33,12 +33,12 @@ public class AIPaddle extends Paddle {
                 break;
             case SKYNET:
                 maxOffset = 160;
-                movespeed = 100;
+                movespeed = 15;
                 break;
         }
     }
     public void update(float dt) {
-       // if (ball.getBody().getLinearVelocity().y > 0 && !prevVel.isCollinear(ball.getBody().getLinearVelocity()))
+       if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()))
             destination.set(calcFinalDestination(
                     ball.getX(),
                     ball.getY(),

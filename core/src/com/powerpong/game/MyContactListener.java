@@ -25,6 +25,7 @@ public class MyContactListener implements ContactListener {
 		} else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound(bodyB);
 		}
+
 		if (MenuScreen.mode == "classic") {
 			if (objectA instanceof PlayerPaddle && objectB instanceof Ball) {
 				AIPaddle.randomizeOffset();

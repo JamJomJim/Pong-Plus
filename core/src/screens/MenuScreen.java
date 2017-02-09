@@ -24,6 +24,7 @@ public class MenuScreen implements Screen {
 	private VerticalGroup left, mid, right;
 	private Skin skin;
 	private PowerPong game;
+	private AIBattle ai;
 	public static String mode;
 
 	public MenuScreen(final PowerPong game) {
@@ -58,7 +59,7 @@ public class MenuScreen implements Screen {
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
 		table.setSkin(skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
-		table.setBackground("background");
+		//table.setBackground("background");
 		table.setFillParent(true);
 		table.align(Align.left);
 		stage.addActor(table);
@@ -164,6 +165,8 @@ public class MenuScreen implements Screen {
         table.add(mid).top();
         table.add(right).top();
 
+        ai = new AIBattle(game, PlayScreen.AI.SKYNET);
+
 		table.setDebug(true);
 	}
 
@@ -178,13 +181,14 @@ public class MenuScreen implements Screen {
 	public void render(float dt) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+		ai.render(dt);
 		stage.act(dt);
 		stage.draw();
 	}
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width,height,true);
+		stage.getViewport().update(width, height,true);
 	}
 
 	@Override
@@ -204,6 +208,7 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
+	    ai.dispose();
 		stage.dispose();
 		skin.dispose();
 	}
