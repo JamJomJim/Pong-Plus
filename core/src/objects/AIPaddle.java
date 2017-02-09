@@ -24,15 +24,15 @@ public class AIPaddle extends Paddle {
                 movespeed = 2;
                 break;
             case MEDIUM:
-                maxOffset = 80;
+                maxOffset = texture.getWidth() / 4;
                 movespeed = 3;
                 break;
             case HARD:
-                maxOffset = 160;
-                movespeed = 4;
+                maxOffset = texture.getWidth() / 2;
+                movespeed = 5;
                 break;
             case SKYNET:
-                maxOffset = 160;
+                maxOffset = texture.getWidth() / 2;
                 movespeed = 15;
                 break;
         }
@@ -68,6 +68,7 @@ public class AIPaddle extends Paddle {
         return finalDestination;
     }
 
+    //TODO: find a good way to make this non-static and call it from within the contactlistener
     public static void randomizeOffset() {
         offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
     }

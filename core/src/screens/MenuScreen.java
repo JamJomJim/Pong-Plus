@@ -19,13 +19,16 @@ import com.powerpong.game.PowerPong;
 import com.badlogic.gdx.graphics.Color;
 
 public class MenuScreen implements Screen {
+    public enum Mode {
+        CLASSIC, POWER
+    }
+    public static Mode mode;
 	private Stage stage;
 	private Table table;
 	private VerticalGroup left, mid, right;
 	private Skin skin;
 	private PowerPong game;
 	private AIBattle ai;
-	public static String mode;
 
 	public MenuScreen(final PowerPong game) {
 		this.game = game;
@@ -111,7 +114,7 @@ public class MenuScreen implements Screen {
                     button1P.setChecked(false);
                     right.setVisible(false);
                 }
-                mode = "classic";
+                mode = Mode.CLASSIC;
             }
         });
         powerButton.addListener(new ClickListener() {
@@ -123,7 +126,7 @@ public class MenuScreen implements Screen {
                     button1P.setChecked(false);
                     right.setVisible(false);
                 }
-                mode = "power";
+                mode = Mode.POWER;
             }
         });
 
@@ -166,8 +169,6 @@ public class MenuScreen implements Screen {
         table.add(right).top();
 
         ai = new AIBattle(game, PlayScreen.AI.SKYNET);
-
-		table.setDebug(true);
 	}
 
 	@Override
@@ -215,9 +216,9 @@ public class MenuScreen implements Screen {
 
 	public void startPlay(PlayScreen.AI ai) {
         dispose();
-        if (mode.equals("classic"))
+        if (mode == Mode.CLASSIC)
             game.setScreen(new ClassicPlayScreen(game, ai));
-        else if (mode.equals("power"))
+        else if (mode == Mode.POWER)
             game.setScreen(new PowerPongPlayScreen(game, ai));
     }
 

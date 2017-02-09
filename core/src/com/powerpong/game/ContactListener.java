@@ -7,9 +7,9 @@ import objects.Paddle;
 import objects.PlayerPaddle;
 import screens.MenuScreen;
 
-public class MyContactListener implements ContactListener {
+public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
 
-    public MyContactListener() {
+    public ContactListener() {
     }
 
 	@Override
@@ -25,8 +25,8 @@ public class MyContactListener implements ContactListener {
 		} else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound(bodyB);
 		}
-
-		if (MenuScreen.mode == "classic") {
+		//kind of a bad way to check this, tbh idk what is going on here kinda or what purpose it serves
+		if (MenuScreen.mode == MenuScreen.Mode.CLASSIC) {
 			if (objectA instanceof PlayerPaddle && objectB instanceof Ball) {
 				AIPaddle.randomizeOffset();
 			} else if (objectB instanceof PlayerPaddle && objectA instanceof Ball) {
