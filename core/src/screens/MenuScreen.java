@@ -71,7 +71,7 @@ public class MenuScreen implements Screen {
         mid.addActor(button1P);
         final TextButton button2P = new TextButton("Two\nPlayer", skin);
         mid.addActor(button2P);
-        final TextButton buttonOnline = new TextButton("Online", skin); //TODO: find out how to make Online button same height as others
+        final TextButton buttonOnline = new TextButton("Online\nMode", skin); //Kind of fixed this by adding "\nMode"
         mid.addActor(buttonOnline);
         button1P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
