@@ -28,17 +28,17 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		//kind of a bad way to check this, tbh idk what is going on here kinda or what purpose it serves
 		if (MenuScreen.mode == MenuScreen.Mode.CLASSIC) {
 			if (objectA instanceof PlayerPaddle && objectB instanceof Ball) {
-				AIPaddle.randomizeOffset();
+				((AIPaddle) objectA).randomizeOffset();
 			} else if (objectB instanceof PlayerPaddle && objectA instanceof Ball) {
-				AIPaddle.randomizeOffset();
+				((AIPaddle) objectB).randomizeOffset();
 			}
 		}
 		//This is temporary. Need to change once the AI battle is on the menu screen.
 		else {
 			if (objectA instanceof AIPaddle && objectB instanceof Ball) {
-				AIPaddle.randomizeOffset();
+				((AIPaddle) objectA).randomizeOffset();
 			} else if (objectB instanceof AIPaddle && objectA instanceof Ball) {
-				AIPaddle.randomizeOffset();
+				((AIPaddle) objectB).randomizeOffset();
 			}
 		}
 	}
