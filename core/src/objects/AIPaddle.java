@@ -38,9 +38,8 @@ public class AIPaddle extends Paddle {
         }
     }
     public void update(float dt) {
-       if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()) && //if the ball's velocity has changed
-               Math.abs(body.getPosition().y - ball.getY()) > Math.abs(body.getPosition().y - ball.getY() - ball.getBody().getLinearVelocity().y)) //and it's moving towards the paddle
-            destination.set(calcFinalDestination(
+       if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()))
+           destination.set(calcFinalDestination(
                     ball.getX(),
                     ball.getY(),
                     ball.getBody().getLinearVelocity().x,
@@ -51,7 +50,11 @@ public class AIPaddle extends Paddle {
     }
 
     public float calcFinalDestination(float xPos, float yPos, float xVel, float yVel) {
-        float timeToPaddle = (this.getY() - this.getTexture().getHeight() / PowerPong.PPM - yPos) / yVel;
+        float timeToPaddle;
+        if (this.getY() > yPos)
+            timeToPaddle = (this.getY() - this.getTexture().getHeight() / PowerPong.PPM - yPos) / yVel;
+        else
+            timeToPaddle = (this.getY() + this.getTexture().getHeight() / PowerPong.PPM - yPos) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
         if (finalDestination < -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
             yPos = yPos + ((-PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos + ball.getTexture().getWidth() / PowerPong.PPM) / xVel) * yVel;
