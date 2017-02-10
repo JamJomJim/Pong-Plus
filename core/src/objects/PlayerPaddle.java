@@ -4,9 +4,6 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
 
-/**
- * Created by Nick on 2/3/2017.
- */
 public class PlayerPaddle extends Paddle {
 
     private static final float INPUT_CAPTURE_HEIGHT = 5; //this is half of the y-height (in meters) that input within (relative to this paddle's y-position) will be handled by this paddle

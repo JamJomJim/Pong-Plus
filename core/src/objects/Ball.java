@@ -67,8 +67,6 @@ public class Ball {
                 texture.getHeight() / PowerPong.PPM);
     }
 
-    //NOTE: If the screen goes black when the ball hits far from the paddle center, its because posDiff * ANGLE_MULTIPLIER is too big.
-    //Because if posDiff * ANGLE_MULTIPLIER is greater than curSpeed squared, then it will be trying to take the sqrt of a negative number.
     //Changing PPM will affect this, since a smaller PPM will mean the posDiff will be larger.
     public void paddleRebound(Body bodyB) {
         float posDiff = body.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle

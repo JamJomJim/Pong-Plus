@@ -5,9 +5,6 @@ import com.powerpong.game.PowerPong;
 import objects.AIPaddle;
 import objects.Ball;
 
-/**
- * Created by Nick on 2/8/2017.
- */
 public class AIBattle extends PlayScreen {
 
     private ContactListener contactListener;

@@ -12,13 +12,9 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
-import com.powerpong.game.ContactListener;
 import com.powerpong.game.PowerPong;
 import objects.*;
 
-/**
- * Created by Nick on 2/7/2017.
- */
 public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
 
@@ -88,7 +84,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         stage.setDebugAll(true);
         Table table = new Table();
-        table.setFillParent(true);;
+        table.setFillParent(true);
         stage.addActor(table);
 
         //create the table and the labels that will display the score

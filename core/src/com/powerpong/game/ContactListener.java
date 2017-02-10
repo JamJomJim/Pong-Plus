@@ -4,8 +4,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import objects.AIPaddle;
 import objects.Ball;
 import objects.Paddle;
-import objects.PlayerPaddle;
-import screens.MenuScreen;
+
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
 	private Paddle paddleOne, paddleTwo;

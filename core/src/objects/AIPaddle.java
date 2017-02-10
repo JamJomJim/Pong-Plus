@@ -68,7 +68,6 @@ public class AIPaddle extends Paddle {
         return finalDestination;
     }
 
-    //TODO: find a good way to make this non-static and call it from within the contactlistener
     public void randomizeOffset() {
         offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
     }

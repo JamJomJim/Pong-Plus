@@ -7,9 +7,6 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
 
-/**
- * Created by Nick on 2/3/2017.
- */
 public class Paddle extends InputAdapter {
 
     protected Texture texture;
