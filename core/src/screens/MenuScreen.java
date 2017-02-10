@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
@@ -39,12 +38,6 @@ public class MenuScreen implements Screen {
 		// Load skin from JSON file
 		skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
 
-		//add a 1x1 texture to the skin
-        Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
-        pixmap.setColor(Color.WHITE);
-        pixmap.fill();
-        skin.add("white", new Texture(pixmap));
-
 		//add the menu background image to the skin, under the name background
 		skin.add("background", new Texture("MenuBackground.png"));
 
@@ -55,7 +48,7 @@ public class MenuScreen implements Screen {
 		skin.add("Xcelsion", generator.generateFont(parameter));
 
 		//get the TextButtonStyle defined in the JSON under the name "default" and then modify it
-		TextButtonStyle textButtonStyle = skin.get("default", TextButtonStyle.class);
+		TextButton.TextButtonStyle textButtonStyle = skin.get(TextButton.TextButtonStyle.class);
 		textButtonStyle.font = skin.getFont("Xcelsion");
 		textButtonStyle.checked = textButtonStyle.down;
 

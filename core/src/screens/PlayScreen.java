@@ -11,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.ContactListener;
 import com.powerpong.game.PowerPong;
@@ -88,17 +87,21 @@ public class PlayScreen extends InputAdapter implements Screen {
         labelStyle.font = skin.getFont("Arial");
         labelStyle.fontColor = Color.WHITE;
 
+        //create the stage for ui elements
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         stage.setDebugAll(true);
         Table table = new Table();
         table.setFillParent(true);;
         stage.addActor(table);
 
-        VerticalGroup score = new VerticalGroup();
+        //create the table and the labels that will display the score
+        Table score = new Table();
         topScoreText = new Label(Integer.toString(topScore), skin);
         botScoreText = new Label(Integer.toString(botScore), skin);
-        score.addActor(topScoreText);
-        score.addActor(botScoreText);
+        score.add(topScoreText).right();
+        score.row();
+        score.add(botScoreText).right();
+
         table.add(score);
         table.right();
 
