@@ -7,7 +7,7 @@ import screens.PlayScreen;
 
 public class AIPaddle extends Paddle {
     private static float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
-    private static float offset;
+    private float offset;
 
     private Ball ball;
     private PlayScreen.AI difficulty;
@@ -69,7 +69,10 @@ public class AIPaddle extends Paddle {
     }
 
     //TODO: find a good way to make this non-static and call it from within the contactlistener
-    public static void randomizeOffset() {
+    public void randomizeOffset() {
         offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
+    }
+    public float getOffset() {
+        return offset;
     }
 }

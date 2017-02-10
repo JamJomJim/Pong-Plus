@@ -8,9 +8,11 @@ import objects.PlayerPaddle;
 import screens.MenuScreen;
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
-
-    public ContactListener() {
-    }
+	private Paddle paddleOne, paddleTwo;
+    public ContactListener(Paddle paddleOne, Paddle paddleTwo) {
+    this.paddleOne = paddleOne;
+    this.paddleTwo = paddleTwo;
+	}
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -18,28 +20,17 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		Object objectB = contact.getFixtureB().getBody().getUserData();
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
-
 		//if the collision is between a paddle and the ball, rebound the ball appropriately
 		if (objectA instanceof Paddle && objectB instanceof Ball) {
 			((Ball) objectB).paddleRebound(bodyA);
 		} else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound(bodyB);
 		}
-		//kind of a bad way to check this, tbh idk what is going on here kinda or what purpose it serves
-		if (MenuScreen.mode == MenuScreen.Mode.CLASSIC) {
-			if (objectA instanceof PlayerPaddle && objectB instanceof Ball) {
-				AIPaddle.randomizeOffset();
-			} else if (objectB instanceof PlayerPaddle && objectA instanceof Ball) {
-				AIPaddle.randomizeOffset();
-			}
-		}
-		//This is temporary. Need to change once the AI battle is on the menu screen.
-		else {
-			if (objectA instanceof AIPaddle && objectB instanceof Ball) {
-				AIPaddle.randomizeOffset();
-			} else if (objectB instanceof AIPaddle && objectA instanceof Ball) {
-				AIPaddle.randomizeOffset();
-			}
+		//Sets separate offsets for the AI whenever a different paddle is hit.
+		if(objectA instanceof Ball && objectB == paddleOne || objectA == paddleOne && objectB instanceof Ball) {
+			if (paddleTwo instanceof AIPaddle)((AIPaddle) paddleTwo).randomizeOffset();
+		} else if (objectA instanceof Ball && objectB == paddleTwo || objectA == paddleTwo && objectB instanceof Ball) {
+			if (paddleOne instanceof AIPaddle)((AIPaddle) paddleOne).randomizeOffset();
 		}
 	}
 
