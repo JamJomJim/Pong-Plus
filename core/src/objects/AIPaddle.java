@@ -38,7 +38,8 @@ public class AIPaddle extends Paddle {
         }
     }
     public void update(float dt) {
-       if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()))
+       if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()) && //if the ball's velocity has changed
+               Math.abs(body.getPosition().y - ball.getY()) > Math.abs(body.getPosition().y - ball.getY() - ball.getBody().getLinearVelocity().y)) //and it's moving towards the paddle
             destination.set(calcFinalDestination(
                     ball.getX(),
                     ball.getY(),
