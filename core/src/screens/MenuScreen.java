@@ -97,20 +97,23 @@ public class MenuScreen implements Screen {
         //stuff for the left VerticalGroup; gamemodes, options, etc
         left = new Table();
         // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
-        final TextButton classicButton = new TextButton("Classic\nPong", skin);
-        left.add(classicButton);
+        final TextButton buttonClassic = new TextButton("Classic\nPong", skin);
+        left.add(buttonClassic);
         left.row();
-        final TextButton powerButton = new TextButton("Power\nPong", skin);
-        left.add(powerButton).fillX();
+        final TextButton buttonPower = new TextButton("Power\nPong", skin);
+        left.add(buttonPower).fillX();
+        left.row();
+        final TextButton buttonOptions = new TextButton("Options", skin);
+        left.add(buttonOptions).fillX().prefHeight(buttonClassic.getPrefHeight());
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
         // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
         // revert the checked state.
-        classicButton.addListener(new ClickListener() {
+        buttonClassic.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                mid.setVisible(classicButton.isChecked());
-                if (powerButton.isChecked())
-                    powerButton.setChecked(false);
+                mid.setVisible(buttonClassic.isChecked());
+                if (buttonPower.isChecked())
+                    buttonPower.setChecked(false);
                 else if (button1P.isChecked()) {
                     button1P.setChecked(false);
                     right.setVisible(false);
@@ -118,11 +121,11 @@ public class MenuScreen implements Screen {
                 mode = Mode.CLASSIC;
             }
         });
-        powerButton.addListener(new ClickListener() {
+        buttonPower.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                mid.setVisible(powerButton.isChecked());
-                if (classicButton.isChecked())
-                    classicButton.setChecked(false);
+                mid.setVisible(buttonPower.isChecked());
+                if (buttonClassic.isChecked())
+                    buttonClassic.setChecked(false);
                 else if (button1P.isChecked()) {
                     button1P.setChecked(false);
                     right.setVisible(false);
