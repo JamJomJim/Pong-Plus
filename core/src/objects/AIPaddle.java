@@ -38,7 +38,9 @@ public class AIPaddle extends Paddle {
         }
     }
     public void update(float dt) {
-       if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()))
+       if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()) &&
+               ((this.getY() < 0 && ball.getBody().getLinearVelocity().y < 0) ||
+                       (this.getY() > 0 && ball.getBody().getLinearVelocity().y > 0)))
            destination.set(calcFinalDestination(
                     ball.getX(),
                     ball.getY(),
