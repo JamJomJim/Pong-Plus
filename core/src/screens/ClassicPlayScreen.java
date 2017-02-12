@@ -14,11 +14,11 @@ public class ClassicPlayScreen extends PlayScreen {
 		super(game, ai);
 
 		ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
-		p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
+		p1 = new objects.paddles.PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
 		if (ai == AI.NONE)
-			p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
+			p2 = new objects.paddles.PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
 		else
-			p2 = new AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, ai);
+			p2 = new objects.paddles.AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, ai);
 
 		contactListener = new ContactListener(p1, p2);
 		world.setContactListener(contactListener);

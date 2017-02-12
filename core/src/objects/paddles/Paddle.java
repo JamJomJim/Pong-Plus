@@ -1,4 +1,4 @@
-package objects;
+package objects.paddles;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;

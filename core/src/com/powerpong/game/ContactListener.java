@@ -1,9 +1,9 @@
 package com.powerpong.game;
 
 import com.badlogic.gdx.physics.box2d.*;
-import objects.AIPaddle;
+import objects.paddles.AIPaddle;
 import objects.Ball;
-import objects.Paddle;
+import objects.paddles.Paddle;
 
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {

@@ -2,7 +2,7 @@ package screens;
 
 import com.powerpong.game.ContactListener;
 import com.powerpong.game.PowerPong;
-import objects.AIPaddle;
+import objects.paddles.AIPaddle;
 import objects.Ball;
 
 public class AIBattle extends PlayScreen {

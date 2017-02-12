@@ -1,8 +1,9 @@
-package objects;
+package objects.paddles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.powerpong.game.PowerPong;
+import objects.Ball;
 import screens.PlayScreen;
 
 public class AIPaddle extends Paddle {
@@ -37,6 +38,7 @@ public class AIPaddle extends Paddle {
                 break;
         }
     }
+
     public void update(float dt) {
        if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()) &&
                ((this.getY() < 0 && ball.getBody().getLinearVelocity().y < 0) ||
@@ -77,6 +79,7 @@ public class AIPaddle extends Paddle {
     public void randomizeOffset() {
         offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
     }
+
     public float getOffset() {
         return offset;
     }

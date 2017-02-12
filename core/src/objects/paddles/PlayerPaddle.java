@@ -1,4 +1,4 @@
-package objects;
+package objects.paddles;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;

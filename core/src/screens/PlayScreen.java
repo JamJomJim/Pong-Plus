@@ -25,7 +25,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         NONE, EASY, MEDIUM, HARD, SKYNET
     }
 
-    protected Paddle p1, p2;
+    protected objects.paddles.Paddle p1, p2;
     protected Ball ball;
 
     private int topScore = 0;

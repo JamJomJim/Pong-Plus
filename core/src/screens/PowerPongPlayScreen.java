@@ -4,9 +4,9 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.powerpong.game.ContactListener;
 import com.powerpong.game.PowerPong;
-import objects.AIPaddle;
+import objects.paddles.AIPaddle;
 import objects.Ball;
-import objects.PlayerPaddle;
+import objects.paddles.PlayerPaddle;
 
 public class PowerPongPlayScreen extends PlayScreen {
 
