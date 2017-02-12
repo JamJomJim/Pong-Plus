@@ -14,6 +14,12 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.PowerPong;
 import objects.*;
+import objects.powerups.Powerup;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.List;
 
 public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
@@ -27,13 +33,18 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     protected objects.paddles.Paddle p1, p2;
     protected Ball ball;
+    protected ArrayList<Powerup> powerups;
 
     private int topScore = 0;
     private int botScore = 0;
+    private int powerupX, powerupY;
+    private List<Powerup.Type> typeValues = Arrays.asList(Powerup.Type.values()); //Need to do this otherwise each call for the values of typeValues will create a new list.
 
     private Box2DDebugRenderer debugRenderer;
     private BitmapFont font;
     private PowerPong game;
+    private Random random = new Random();
+    private Powerup.Type powerupType;
 
     protected InputMultiplexer multiplexer;
     protected Stage stage;
@@ -66,7 +77,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
         //left wall
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
-
+       //Initializes the powerups ArrayList
+        powerups = new ArrayList<Powerup>();
         //stage stuff for the ui
         skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
         // Generate a font and add it to the skin under the name "Xcelsion"
@@ -104,6 +116,16 @@ public class PlayScreen extends InputAdapter implements Screen {
     public void render(float dt) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+       //Random creation of powerups.
+        if (random.nextInt(101) > 99) { // 0 is included, arg is excluded
+            powerupType = typeValues.get(random.nextInt(typeValues.size())); //randomly chooses an enum in Powerup.Type
+            //TODO need to take into account the width and height of the powerup when finding these
+            powerupX = random.nextInt(PowerPong.NATIVE_WIDTH) - PowerPong.NATIVE_WIDTH / 2;
+            powerupY = random.nextInt(PowerPong.NATIVE_HEIGHT) - PowerPong.NATIVE_HEIGHT / 2;
+            Powerup tempPowerup = new Powerup(powerupType, powerupX / PowerPong.PPM, powerupY / PowerPong.PPM, world);
+            powerups.add(tempPowerup);
+        } //TODO need to add some sort of expiration for powerups
+        //powerups.get(powerups.indexOf(tempPowerup)).dispose();
         //step the physics world the amount of time since the last frame, up to 0.25s
         world.step((float)Math.min(dt, 0.25), 6 ,2);
         p1.update(dt);
@@ -118,6 +140,9 @@ public class PlayScreen extends InputAdapter implements Screen {
         //current coordinate system is 0,0 is the center of the screen, positive y is up
         game.batch.setProjectionMatrix(worldCam.combined);
         game.batch.begin();
+        for (Powerup powerup : powerups) {
+            powerup.draw(game.batch);
+        }
         p1.draw(game.batch);
         p2.draw(game.batch);
         ball.draw(game.batch);
@@ -170,6 +195,9 @@ public class PlayScreen extends InputAdapter implements Screen {
         ball.dispose();
         stage.dispose();
         p2.dispose();
+        for(Powerup powerup : powerups) {
+            powerup.dispose();
+        }
     }
 
     @Override

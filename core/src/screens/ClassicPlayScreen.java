@@ -5,6 +5,7 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.powerpong.game.ContactListener;
 import com.powerpong.game.PowerPong;
 import objects.*;
+import objects.powerups.Powerup;
 
 public class ClassicPlayScreen extends PlayScreen {
 
@@ -19,7 +20,6 @@ public class ClassicPlayScreen extends PlayScreen {
 			p2 = new objects.paddles.PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
 		else
 			p2 = new objects.paddles.AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, ai);
-
 		contactListener = new ContactListener(p1, p2);
 		world.setContactListener(contactListener);
         //create InputMultiplexer, to handle input on multiple paddles and the ui
