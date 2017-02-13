@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.*;
 import objects.paddles.AIPaddle;
 import objects.Ball;
 import objects.paddles.Paddle;
+import objects.powerups.Powerup;
 
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
@@ -31,6 +32,13 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		} else if (objectA instanceof Ball && objectB == paddleTwo || objectA == paddleTwo && objectB instanceof Ball) {
 			if (paddleOne instanceof AIPaddle)((AIPaddle) paddleOne).randomizeOffset();
 		}
+		//Removes powerups when they're hit.
+        if (objectA instanceof Ball && objectB instanceof Powerup) {
+            ((Powerup )objectB).setIsDead(true);
+        }
+        else if (objectB instanceof Ball & objectA instanceof  Powerup) {
+            ((Powerup )objectA).setIsDead(true);
+        }
 	}
 
 	@Override

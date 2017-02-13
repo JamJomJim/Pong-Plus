@@ -5,14 +5,13 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
 
-import java.util.Random;
-
 public class Powerup {
     protected Texture texture;
     protected Body body;
 
     private String textureName;
     private Type type;
+    private boolean isDead;
     public enum Type {
         TEMP
     }
@@ -47,6 +46,12 @@ public class Powerup {
         body.createFixture(fixtureDef);
         shape.dispose();
     }
+
+    public boolean getIsDead() { return isDead; }
+
+    public void setIsDead(boolean bool) { isDead = bool; }
+
+    public Body getBody() { return body; }
 
     public void draw(SpriteBatch sb) {
         sb.draw(texture,

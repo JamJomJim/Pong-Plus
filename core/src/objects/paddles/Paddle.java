@@ -86,7 +86,6 @@ public class Paddle extends InputAdapter {
 
     public Texture getTexture() {
         return texture;
-
     }
     public void dispose() {
         texture.dispose();
