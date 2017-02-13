@@ -133,7 +133,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         //powerups.get(powerups.indexOf(tempPowerup)).dispose();
         //step the physics world the amount of time since the last frame, up to 0.25s
         world.step((float)Math.min(dt, 0.25), 6 ,2);
-        //
+        //Cant delete an object in a list while iterating through it.
         for (Powerup powerup : powerups) {
             if (powerup.getIsDead()) {
                toBeDeleted.add(powerup);
@@ -142,6 +142,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         for (Powerup dead : toBeDeleted) {
             world.destroyBody(dead.getBody());
             powerups.remove(dead);
+            numPowerups--;
         }
         toBeDeleted.clear();
 
