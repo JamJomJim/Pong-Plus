@@ -115,7 +115,8 @@ project(":html") {
     apply plugin: "gwt"
     apply plugin: "war"
 
-    dependencies {
+    //comment out this entire block when building the APK
+    /*dependencies {
         compile project(":core")
         compile "com.badlogicgames.gdx:gdx-backend-gwt:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion:sources"
@@ -127,9 +128,14 @@ project(":html") {
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers-gwt:$gdxVersion:sources"
         compile "com.badlogicgames.gdx:gdx-ai:$aiVersion:sources"
-    }
+    }*/
 }
 
 tasks.eclipse.doLast {
     delete ".project"
 }
+
+//In order to build an APK without getting an error: Comment out the dependencies block from project(:html).
+//Click Sync Now in the gradle notification that appears at the top. After syncing finishes,
+//right click the html project and click Remove Module.  Build > Build APK. After the APK has been built,
+//uncomment the dependencies block and run build.gradle and html will be re-added to the project as a module.
