@@ -27,6 +27,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
     protected float BALL_SPEED = 3;
     protected float MAX_POWERUPS = 5;
+    protected float POWERUP_SPAWN_RATE = 997; //chance out of 1000 to spawn each time render is called. Approx 60 per second
 
     public enum AI {
         NONE, EASY, MEDIUM, HARD, SKYNET
@@ -41,6 +42,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     private int botScore = 0;
     private int powerupX, powerupY;
     private int numPowerups;
+    private boolean overlap;
     private List<Powerup.Type> typeValues = Arrays.asList(Powerup.Type.values()); //Need to do this otherwise each call for the values of typeValues will create a new list.
 
     private Box2DDebugRenderer debugRenderer;
@@ -59,7 +61,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     protected PlayScreen() {
     }
-
+    //TODO figure out what the AI is supposed to be doing in this constructor
     protected PlayScreen(PowerPong game, AI ai) {
         this.game = game;
         font = new BitmapFont();
@@ -121,16 +123,31 @@ public class PlayScreen extends InputAdapter implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
        //Random creation of powerups.
-        if (random.nextInt(101) > 99 && numPowerups <= MAX_POWERUPS) { // 0 is included, arg is excluded
+        if (random.nextInt(1001) > POWERUP_SPAWN_RATE && numPowerups <= MAX_POWERUPS - 1) { // 0 is included, arg is excluded
             powerupType = typeValues.get(random.nextInt(typeValues.size())); //randomly chooses an enum in Powerup.Type
-            //TODO need to take into account the width and height of the powerup when finding these
-            powerupX = random.nextInt(PowerPong.NATIVE_WIDTH) - PowerPong.NATIVE_WIDTH / 2;
-            powerupY = random.nextInt(PowerPong.NATIVE_HEIGHT) - PowerPong.NATIVE_HEIGHT / 2;
-            Powerup tempPowerup = new Powerup(powerupType, powerupX / PowerPong.PPM, powerupY / PowerPong.PPM, world);
-            powerups.add(tempPowerup);
-            numPowerups++;
-        } //TODO need to add some sort of expiration for powerups
-        //powerups.get(powerups.indexOf(tempPowerup)).dispose();
+            powerupX = random.nextInt(PowerPong.NATIVE_WIDTH - 100) - (PowerPong.NATIVE_WIDTH - 100)/ 2;
+            powerupY = random.nextInt(PowerPong.NATIVE_HEIGHT - 500) - (PowerPong.NATIVE_HEIGHT - 500)/ 2;
+            if (powerups.isEmpty()) {//if there aren't any powerups make a powerup and add it to the powerups arraylist
+                Powerup tempPowerup = new Powerup(powerupType, powerupX / PowerPong.PPM, powerupY / PowerPong.PPM, world);
+                powerups.add(tempPowerup);
+                numPowerups++;
+            }
+            else {
+                for (Powerup powerup : powerups) {
+                    if ((Math.abs(powerup.getX() - powerupX / PowerPong.PPM) < 100 / PowerPong.PPM)
+                            && (Math.abs(powerup.getY() - powerupY / PowerPong.PPM) < 100 / PowerPong.PPM)) {
+                        overlap = true;
+                        break;
+                    }
+                    else overlap = false;
+                }
+                if (!overlap) {
+                    Powerup tempPowerup = new Powerup(powerupType, powerupX / PowerPong.PPM, powerupY / PowerPong.PPM, world);
+                    powerups.add(tempPowerup);
+                    numPowerups++;
+                }
+            }
+        }
         //step the physics world the amount of time since the last frame, up to 0.25s
         world.step((float)Math.min(dt, 0.25), 6 ,2);
         //Cant delete an object in a list while iterating through it.
