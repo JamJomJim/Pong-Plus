@@ -83,7 +83,7 @@ public class Ball {
         curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
         //together, the x and y component have a magnitude equal to that of curSpeed
-        body.setLinearVelocity((float) (curSpeed * Math.sin(Math.toRadians(reboundAngle))), (float) (curSpeed * Math.cos(Math.toRadians(reboundAngle))));
+        body.setLinearVelocity((float) (curSpeed * Math.sin(Math.toRadians(reboundAngle))), (float) (direction * curSpeed * Math.cos(Math.toRadians(reboundAngle))));
         System.out.println(curSpeed);
         //set the paddles
         opponent = mostRecent;
