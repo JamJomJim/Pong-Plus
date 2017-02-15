@@ -26,8 +26,6 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
     protected float BALL_SPEED = 3;
-    protected float MAX_POWERUPS = 5;
-    protected float POWERUP_SPAWN_RATE = 997; //chance out of 1000 to spawn each time render is called. Approx 60 per second
 
     public enum AI {
         NONE, EASY, MEDIUM, HARD, SKYNET
@@ -35,20 +33,12 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     protected Paddle p1, p2;
     protected Ball ball;
-    protected ArrayList<Powerup> powerups;
 
     private int topScore = 0;
     private int botScore = 0;
-    private int powerupX, powerupY;
-    private int numPowerups;
-    private boolean overlap;
-    private List<Powerup.Type> typeValues = Arrays.asList(Powerup.Type.values()); //Need to do this otherwise each call for the values of typeValues will create a new list.
 
-    private Box2DDebugRenderer debugRenderer;
-    private BitmapFont font;
-    private PowerPong game;
-    private Random random = new Random();
-    private Powerup.Type powerupType;
+    protected Box2DDebugRenderer debugRenderer;
+    protected PowerPong game;
 
     protected InputMultiplexer multiplexer;
     protected Stage stage;
@@ -60,7 +50,6 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected PlayScreen() {
     }
 
-    //TODO figure out what the AI is supposed to be doing in this constructor
     protected PlayScreen(PowerPong game) {
         this.game = game;
 
@@ -79,8 +68,6 @@ public class PlayScreen extends InputAdapter implements Screen {
         new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
         //left wall
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
-       //Initializes the powerups ArrayList
-        powerups = new ArrayList<Powerup>();
 
 
         //stage stuff for the ui
@@ -120,44 +107,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     public void render(float dt) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-       //Random creation of powerups.
-        if (random.nextInt(1001) > POWERUP_SPAWN_RATE && numPowerups <= MAX_POWERUPS - 1) { // 0 is included, arg is excluded
-            powerupType = typeValues.get(random.nextInt(typeValues.size())); //randomly chooses an enum in Powerup.Type
-            powerupX = random.nextInt(PowerPong.NATIVE_WIDTH - 100) - (PowerPong.NATIVE_WIDTH - 100)/ 2;
-            powerupY = random.nextInt(PowerPong.NATIVE_HEIGHT - 500) - (PowerPong.NATIVE_HEIGHT - 500)/ 2;
-            if (powerups.isEmpty()) {//if there aren't any powerups make a powerup and add it to the powerups arraylist
-                Powerup tempPowerup = new Powerup(powerupType, powerupX / PowerPong.PPM, powerupY / PowerPong.PPM, world);
-                powerups.add(tempPowerup);
-                numPowerups++;
-            }
-            else {
-                for (Powerup powerup : powerups) {
-                    if ((Math.abs(powerup.getX() - powerupX / PowerPong.PPM) < 100 / PowerPong.PPM)
-                            && (Math.abs(powerup.getY() - powerupY / PowerPong.PPM) < 100 / PowerPong.PPM)) {
-                        overlap = true;
-                        break;
-                    }
-                    else overlap = false;
-                }
-                if (!overlap) {
-                    Powerup tempPowerup = new Powerup(powerupType, powerupX / PowerPong.PPM, powerupY / PowerPong.PPM, world);
-                    powerups.add(tempPowerup);
-                    numPowerups++;
-                }
-            }
-        }
         //step the physics world the amount of time since the last frame, up to 0.25s
         world.step((float)Math.min(dt, 0.25), 6 ,2);
-
-        //remove powerups that are "dead"
-        for (int i = 0; i < powerups.size(); i++) {
-            if (powerups.get(i).isDead()) {
-                world.destroyBody(powerups.get(i).getBody());
-                powerups.remove(i);
-                i--;
-                numPowerups--;
-            }
-        }
 
         p1.update(dt);
         p2.update(dt);
@@ -170,9 +121,6 @@ public class PlayScreen extends InputAdapter implements Screen {
         //current coordinate system is 0,0 is the center of the screen, positive y is up
         game.batch.setProjectionMatrix(worldCam.combined);
         game.batch.begin();
-        for (Powerup powerup : powerups) {
-            powerup.draw(game.batch);
-        }
         p1.draw(game.batch);
         p2.draw(game.batch);
         ball.draw(game.batch);
@@ -224,9 +172,6 @@ public class PlayScreen extends InputAdapter implements Screen {
         ball.dispose();
         stage.dispose();
         p2.dispose();
-        for(Powerup powerup : powerups) {
-            powerup.dispose();
-        }
     }
 
     @Override
