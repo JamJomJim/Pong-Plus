@@ -55,6 +55,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //create physics world and contactlistener
         world = new World(new Vector2(0, GRAVITY), true);
+        world.setVelocityThreshold(0.01f);
 
         worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
                 PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
