@@ -85,6 +85,8 @@ public class PlayScreen extends InputAdapter implements Screen {
        //Initializes the powerups ArrayList
         powerups = new ArrayList<Powerup>();
         toBeDeleted = new ArrayList<Powerup>();
+
+
         //stage stuff for the ui
         skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
         // Generate a font and add it to the skin under the name "Xcelsion"

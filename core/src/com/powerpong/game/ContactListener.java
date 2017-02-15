@@ -22,9 +22,9 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		Body bodyB = contact.getFixtureB().getBody();
 		//if the collision is between a paddle and the ball, rebound the ball appropriately
 		if (objectA instanceof Paddle && objectB instanceof Ball) {
-			((Ball) objectB).paddleRebound(bodyA);
+			((Ball) objectB).paddleRebound((Paddle )objectA);
 		} else if (objectB instanceof Paddle && objectA instanceof Ball) {
-			((Ball) objectA).paddleRebound(bodyB);
+			((Ball) objectA).paddleRebound((Paddle )objectB);
 		}
 		//Sets separate offsets for the AI whenever a different paddle is hit.
 		if(objectA instanceof Ball && objectB == paddleOne || objectA == paddleOne && objectB instanceof Ball) {

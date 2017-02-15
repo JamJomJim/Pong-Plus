@@ -80,6 +80,10 @@ public class Paddle extends InputAdapter {
         return body.getPosition().y;
     }
 
+    public Body getBody() {
+        return body;
+    }
+
     public Vector2 getDest() {
         return destination;
     }

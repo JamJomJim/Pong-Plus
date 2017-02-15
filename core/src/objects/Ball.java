@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
+import objects.paddles.Paddle;
 import screens.PlayScreen;
 
 public class Ball {
@@ -14,6 +15,8 @@ public class Ball {
     protected Body body;
     protected PlayScreen screen;
     private float initialSpeed;
+
+    protected Paddle mostRecent, opponent;
 
     public Ball(String textureName, float x, float y, float initialDirection, float initialSpeed, World world, PlayScreen screen) {
         this.texture = new Texture(textureName);
@@ -42,6 +45,9 @@ public class Ball {
 
         body.setLinearVelocity((float)Math.cos(initialDirection) * initialSpeed,
                 (float)Math.sin(initialDirection) * initialSpeed);
+
+        mostRecent = null;
+        opponent = null;
     }
 
     public void update() {
@@ -68,7 +74,8 @@ public class Ball {
     }
 
     //Changing PPM will affect this, since a smaller PPM will mean the posDiff will be larger.
-    public void paddleRebound(Body bodyB) {
+    public void paddleRebound(Paddle paddle) {
+        Body bodyB = paddle.getBody();
         float posDiff = body.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
         float reboundAngle = posDiff * ANGLE_MULTIPLIER;
         float curSpeed = (float)Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2)); //calculate the ball's current speed
@@ -76,6 +83,10 @@ public class Ball {
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
         //together, the x and y component have a magnitude equal to that of curSpeed
         body.setLinearVelocity((float) (curSpeed * Math.sin(Math.toRadians(reboundAngle))), (float) (curSpeed * Math.cos(Math.toRadians(reboundAngle))));
+
+        //set the paddles
+        opponent = mostRecent;
+        mostRecent = paddle;
     }
 
     public float getX() {
