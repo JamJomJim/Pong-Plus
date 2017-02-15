@@ -34,10 +34,10 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		}
 		//Removes powerups when they're hit.
         if (objectA instanceof Ball && objectB instanceof Powerup) {
-            ((Powerup )objectB).setIsDead(true);
+            ((Powerup )objectB).setDead(true);
         }
         else if (objectB instanceof Ball & objectA instanceof  Powerup) {
-            ((Powerup )objectA).setIsDead(true);
+            ((Powerup )objectA).setDead(true);
         }
 	}
 

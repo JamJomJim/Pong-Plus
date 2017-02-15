@@ -13,7 +13,7 @@ public class PowerPongPlayScreen extends PlayScreen {
 	private ContactListener contactListener;
 
 	public PowerPongPlayScreen(PowerPong game, AI ai) {
-		super(game, ai);
+		super(game);
 
 		ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
 		p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);

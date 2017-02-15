@@ -47,11 +47,17 @@ public class Powerup {
         shape.dispose();
     }
 
-    public boolean getIsDead() { return isDead; }
+    public boolean isDead() {
+        return isDead;
+    }
 
-    public void setIsDead(boolean bool) { isDead = bool; }
+    public void setDead(boolean bool) {
+        isDead = bool;
+    }
 
-    public Body getBody() { return body; }
+    public Body getBody() {
+        return body;
+    }
 
     public void draw(SpriteBatch sb) {
         sb.draw(texture,
@@ -65,8 +71,12 @@ public class Powerup {
         texture.dispose();
     }
 
-    public float getX(){ return body.getPosition().x; }
+    public float getX(){
+        return body.getPosition().x;
+    }
 
-    public float getY(){ return body.getPosition().y; }
+    public float getY(){
+        return body.getPosition().y;
+    }
 
 }

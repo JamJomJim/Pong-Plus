@@ -14,8 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.PowerPong;
 import objects.*;
+import objects.paddles.Paddle;
 import objects.powerups.Powerup;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
@@ -33,10 +33,9 @@ public class PlayScreen extends InputAdapter implements Screen {
         NONE, EASY, MEDIUM, HARD, SKYNET
     }
 
-    protected objects.paddles.Paddle p1, p2;
+    protected Paddle p1, p2;
     protected Ball ball;
     protected ArrayList<Powerup> powerups;
-    protected ArrayList<Powerup> toBeDeleted;
 
     private int topScore = 0;
     private int botScore = 0;
@@ -54,18 +53,16 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected InputMultiplexer multiplexer;
     protected Stage stage;
     protected Skin skin;
-    protected Label topScoreText;
-    protected Label botScoreText;
+    protected Label topScoreText, botScoreText;
     protected World world;
     protected OrthographicCamera worldCam;
 
     protected PlayScreen() {
     }
+
     //TODO figure out what the AI is supposed to be doing in this constructor
-    protected PlayScreen(PowerPong game, AI ai) {
+    protected PlayScreen(PowerPong game) {
         this.game = game;
-        font = new BitmapFont();
-        font.getData().setScale(8);
 
         //create physics world and contactlistener
         world = new World(new Vector2(0, GRAVITY), true);
@@ -84,7 +81,6 @@ public class PlayScreen extends InputAdapter implements Screen {
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
        //Initializes the powerups ArrayList
         powerups = new ArrayList<Powerup>();
-        toBeDeleted = new ArrayList<Powerup>();
 
 
         //stage stuff for the ui
@@ -152,18 +148,16 @@ public class PlayScreen extends InputAdapter implements Screen {
         }
         //step the physics world the amount of time since the last frame, up to 0.25s
         world.step((float)Math.min(dt, 0.25), 6 ,2);
-        //Cant delete an object in a list while iterating through it.
-        for (Powerup powerup : powerups) {
-            if (powerup.getIsDead()) {
-               toBeDeleted.add(powerup);
+
+        //remove powerups that are "dead"
+        for (int i = 0; i < powerups.size(); i++) {
+            if (powerups.get(i).isDead()) {
+                world.destroyBody(powerups.get(i).getBody());
+                powerups.remove(i);
+                i--;
+                numPowerups--;
             }
         }
-        for (Powerup dead : toBeDeleted) {
-            world.destroyBody(dead.getBody());
-            powerups.remove(dead);
-            numPowerups--;
-        }
-        toBeDeleted.clear();
 
         p1.update(dt);
         p2.update(dt);
@@ -226,7 +220,6 @@ public class PlayScreen extends InputAdapter implements Screen {
     public void dispose() {
         world.dispose();
         p1.dispose();
-        font.dispose();
         debugRenderer.dispose();
         ball.dispose();
         stage.dispose();
