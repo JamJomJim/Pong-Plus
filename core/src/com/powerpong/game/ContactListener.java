@@ -28,11 +28,9 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		if (objectA instanceof Paddle && objectB instanceof Ball) {
 			((Ball) objectB).paddleRebound((Paddle )objectA);
 			ballVel = bodyB.getLinearVelocity();
-			System.out.println(ballVel);
 		} else if (objectB instanceof Paddle && objectA instanceof Ball) {
 			((Ball) objectA).paddleRebound((Paddle )objectB);
             ballVel = bodyA.getLinearVelocity();
-            System.out.println(ballVel);
 		}
 
 		//Sets separate offsets for the AI whenever a different paddle is hit.
