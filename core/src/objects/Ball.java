@@ -77,13 +77,14 @@ public class Ball {
     public void paddleRebound(Paddle paddle) {
         Body bodyB = paddle.getBody();
         float posDiff = body.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
+        //int direction = Math.abs(body.getPosition().y) < bodyB.getPosition().y ? -1 : 1; //which direction the ball should travel after rebounding, based on if it's current yvel is + or -
         float reboundAngle = posDiff * ANGLE_MULTIPLIER;
         float curSpeed = (float)Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2)); //calculate the ball's current speed
         curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
         //together, the x and y component have a magnitude equal to that of curSpeed
         body.setLinearVelocity((float) (curSpeed * Math.sin(Math.toRadians(reboundAngle))), (float) (curSpeed * Math.cos(Math.toRadians(reboundAngle))));
-
+        System.out.println(curSpeed);
         //set the paddles
         opponent = mostRecent;
         mostRecent = paddle;
