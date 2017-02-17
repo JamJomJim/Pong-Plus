@@ -54,7 +54,7 @@ public class PowerPongPlayScreen extends PlayScreen {
 	public void render(float dt) {
 	    super.render(dt);
         //Random creation of powerups.
-        if (random.nextInt(1001) > POWERUP_SPAWN_RATE && numPowerups <= MAX_POWERUPS - 1) { // 0 is included, arg is excluded
+        if (random.nextInt(1001) > POWERUP_SPAWN_RATE && numPowerups < MAX_POWERUPS) { // 0 is included, arg is excluded
             powerupType = typeValues.get(random.nextInt(typeValues.size())); //randomly chooses an enum in Powerup.Type
             powerupX = random.nextInt(PowerPong.NATIVE_WIDTH - 100) - (PowerPong.NATIVE_WIDTH - 100)/ 2;
             powerupY = random.nextInt(PowerPong.NATIVE_HEIGHT - 500) - (PowerPong.NATIVE_HEIGHT - 500)/ 2;
@@ -65,8 +65,8 @@ public class PowerPongPlayScreen extends PlayScreen {
             }
             else {
                 for (Powerup powerup : powerups) {
-                    if ((Math.abs(powerup.getX() - powerupX / PowerPong.PPM) < 100 / PowerPong.PPM)
-                            && (Math.abs(powerup.getY() - powerupY / PowerPong.PPM) < 100 / PowerPong.PPM)) {
+                    if ((Math.abs(powerup.getBody().getPosition().x - powerupX / PowerPong.PPM) < 100 / PowerPong.PPM)
+                            && (Math.abs(powerup.getBody().getPosition().y - powerupY / PowerPong.PPM) < 100 / PowerPong.PPM)) {
                         overlap = true;
                         break;
                     }

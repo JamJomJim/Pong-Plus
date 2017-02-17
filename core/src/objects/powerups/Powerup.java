@@ -71,12 +71,4 @@ public class Powerup {
         texture.dispose();
     }
 
-    public float getX(){
-        return body.getPosition().x;
-    }
-
-    public float getY(){
-        return body.getPosition().y;
-    }
-
 }

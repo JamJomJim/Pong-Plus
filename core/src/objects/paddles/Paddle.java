@@ -43,9 +43,7 @@ public class Paddle extends InputAdapter {
         destination = new Vector2(x, y);
     }
 
-    /*
-    Apply the necessary physics stuff to the paddle to get it to move towards it's destination.
-     */
+    //Apply the necessary physics stuff to the paddle to get it to move towards it's destination.
     public void update(float dt) {
         //if the distance between the paddle and it's destination is less than or equal to the distance it can travel in a single world.step(),
         //then just move the paddle to the destination. This prevents jitter caused by overshooting the destination repeatedly.
@@ -60,9 +58,7 @@ public class Paddle extends InputAdapter {
             body.setLinearVelocity(0, 0);
     }
 
-    /*
-    Draw the paddle, centered at body.x and body.y
-     */
+    //Draw the paddle, centered at body.x and body.y
     public void draw(SpriteBatch sb) {
         sb.draw(texture,
                 body.getPosition().x - texture.getWidth() / 2 / PowerPong.PPM,
