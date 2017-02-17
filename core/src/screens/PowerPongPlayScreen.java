@@ -8,7 +8,6 @@ import objects.paddles.AIPaddle;
 import objects.Ball;
 import objects.paddles.PlayerPaddle;
 import objects.powerups.Powerup;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -25,7 +24,7 @@ public class PowerPongPlayScreen extends PlayScreen {
     private List<Powerup.Type> typeValues = Arrays.asList(Powerup.Type.values()); //Need to do this otherwise each call for the values of typeValues will create a new list.
     private Random random = new Random();
     private Powerup.Type powerupType;
-    protected ArrayList<Powerup> powerups;
+    private ArrayList<Powerup> powerups;
 
 	public PowerPongPlayScreen(PowerPong game, AI ai) {
 		super(game);

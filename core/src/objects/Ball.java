@@ -9,7 +9,7 @@ import screens.PlayScreen;
 
 public class Ball {
     private float ANGLE_MULTIPLIER = 60; //Increase the angle of the balls bounce
-    private float SPEED_ADDED = 1; //Increases speed of the ball every bounce in order to make the gameplay speed up
+    private float SPEED_ADDED = 0.5f; //Increases speed of the ball every bounce in order to make the gameplay speed up
 
     protected Texture texture;
     protected Body body;

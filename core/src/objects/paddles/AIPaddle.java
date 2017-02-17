@@ -8,17 +8,15 @@ import screens.PlayScreen;
 
 public class AIPaddle extends Paddle {
     private static float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
-    private float offset;
+    private float offset; //current offset for this specific paddle.
 
     private Ball ball;
-    private PlayScreen.AI difficulty;
     private Vector2 prevVel;
 
     public AIPaddle(String textureName, float x, float y, World world, Ball ball, PlayScreen.AI difficulty) {
         super(textureName, x, y, world);
         this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
         this.ball = ball;
-        this.difficulty = difficulty;
         switch (difficulty) {
             case EASY:
                 maxOffset = 0;

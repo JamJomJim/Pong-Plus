@@ -4,7 +4,6 @@ import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -15,11 +14,6 @@ import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.PowerPong;
 import objects.*;
 import objects.paddles.Paddle;
-import objects.powerups.Powerup;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
-import java.util.List;
 
 public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
@@ -65,11 +59,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         topScore = 0;
         botScore = 0;
 
-        //right wall
-        new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
-        //left wall
-        new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world);
-
+        new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //right wall
+        new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //left wall
 
         //stage stuff for the ui
         skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
@@ -102,7 +93,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         table.add(score);
         table.right();
 
-        debugRenderer = new Box2DDebugRenderer();
+        debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
     }
 
     public void render(float dt) {
