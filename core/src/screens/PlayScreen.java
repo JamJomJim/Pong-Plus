@@ -158,11 +158,13 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     }
 
+    //pause() is called when the application loses focus/is no longer active
     @Override
     public void pause() {
 
     }
 
+    //resume() is called when the app regains focus/is active again
     @Override
     public void resume() {
 

@@ -87,8 +87,8 @@ public class MenuScreen implements Screen {
         });
         button2P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(PlayScreen.AI.NONE);
                 mode = Mode.CLASSIC;
+                startPlay(PlayScreen.AI.NONE);
             }
         });
         buttonAIBattle.addListener(new ClickListener() {
