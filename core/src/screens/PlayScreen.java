@@ -147,14 +147,16 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
-        ballVel.set(ball.getBody().getLinearVelocity());
+        //if statement is so that if the game is already paused and loses focus, that ballVel won't be set to 0
+        if (ball.getBody().getLinearVelocity().y != 0)
+            ballVel.set(ball.getBody().getLinearVelocity());
         ball.getBody().setLinearVelocity(0, 0);
         paused = true;
     }
 
     @Override
     public void resume() {
-        ball.getBody().setLinearVelocity(ballVel);
+
     }
 
     @Override
@@ -183,7 +185,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     public boolean touchDown(int x, int y, int pointer, int button) {
         if (paused) {
-            resume();
+            ball.getBody().setLinearVelocity(ballVel);
             paused = false;
             return true;
         }

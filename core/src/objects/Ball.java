@@ -51,18 +51,18 @@ public class Ball {
     }
 
     public void update() {
-        float angle;
+        float direction;
         if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
             screen.score("top");
-            angle = -1;
+            direction = -1;
         }
         else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
             screen.score("bot");
-            angle = 1;
+            direction = 1;
         }
         else return;
         body.setTransform(0, 0, 0);
-        body.setLinearVelocity(0, initialSpeed * angle);
+        body.setLinearVelocity(0, initialSpeed * direction);
         screen.pause();
     }
 
