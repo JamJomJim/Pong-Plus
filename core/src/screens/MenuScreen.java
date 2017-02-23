@@ -17,12 +17,12 @@ import com.powerpong.game.PowerPong;
 
 public class MenuScreen implements Screen {
     public enum Mode {
-        CLASSIC, POWER
+        CLASSIC, AIBATTLE
     }
     public static Mode mode;
 	private Stage stage;
 	private Table table;
-	private Table left, mid, right;
+	private Table left, right;
 	private Skin skin;
 	private PowerPong game;
 	private AIBattle ai;
@@ -53,75 +53,50 @@ public class MenuScreen implements Screen {
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
 		table.setSkin(skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
-		//table.setBackground("background");
+		table.setBackground("background");
 		table.setFillParent(true);
 		table.align(Align.left);
 		stage.addActor(table);
 
-		//mid stuff; one or two player options, or online
-        mid = new Table();
-        mid.setVisible(false);
+
+        //stuff for the left VerticalGroup; gamemodes, options, etc
+        left = new Table();
+        // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
         final TextButton button1P = new TextButton("One\nPlayer", skin);
-        mid.add(button1P);
-        mid.row();
+        left.add(button1P).fillX();
+        left.row();
         final TextButton button2P = new TextButton("Two\nPlayer", skin);
-        mid.add(button2P);
-        mid.row();
-        final TextButton buttonOnline = new TextButton("Online", skin);
-        mid.add(buttonOnline).fillX().prefHeight(button2P.getPrefHeight());
-        button1P.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                right.setVisible(!right.isVisible());
+        left.add(button2P).fillX();
+        left.row();
+        final TextButton buttonAIBattle = new TextButton("AI\nBattle", skin);
+        left.add(buttonAIBattle).fillX();
+        left.row();
+        final TextButton buttonOptions = new TextButton("Options", skin);
+        left.add(buttonOptions).fillX().prefHeight(button1P.getPrefHeight());
+        // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
+        // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
+        // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
+        // revert the checked state.
+        button1P.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                right.setVisible(button1P.isChecked());
+                if (buttonAIBattle.isChecked())
+                    buttonAIBattle.setChecked(false);
+                mode = Mode.CLASSIC;
             }
         });
         button2P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 startPlay(PlayScreen.AI.NONE);
-            }
-        });
-        buttonOnline.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                //TODO later when we implement online stuff
-            }
-        });
-
-        //stuff for the left VerticalGroup; gamemodes, options, etc
-        left = new Table();
-        // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
-        final TextButton buttonClassic = new TextButton("Classic\nPong", skin);
-        left.add(buttonClassic);
-        left.row();
-        final TextButton buttonPower = new TextButton("Power\nPong", skin);
-        left.add(buttonPower).fillX();
-        left.row();
-        final TextButton buttonOptions = new TextButton("Options", skin);
-        left.add(buttonOptions).fillX().prefHeight(buttonClassic.getPrefHeight());
-        // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
-        // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
-        // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
-        // revert the checked state.
-        buttonClassic.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                mid.setVisible(buttonClassic.isChecked());
-                if (buttonPower.isChecked())
-                    buttonPower.setChecked(false);
-                else if (button1P.isChecked()) {
-                    button1P.setChecked(false);
-                    right.setVisible(false);
-                }
                 mode = Mode.CLASSIC;
             }
         });
-        buttonPower.addListener(new ClickListener() {
+        buttonAIBattle.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                mid.setVisible(buttonPower.isChecked());
-                if (buttonClassic.isChecked())
-                    buttonClassic.setChecked(false);
-                else if (button1P.isChecked()) {
+                right.setVisible(buttonAIBattle.isChecked());
+                if (button1P.isChecked())
                     button1P.setChecked(false);
-                    right.setVisible(false);
-                }
-                mode = Mode.POWER;
+                mode = Mode.AIBATTLE;
             }
         });
 
@@ -162,7 +137,6 @@ public class MenuScreen implements Screen {
         });
 
         table.add(left).top();
-        table.add(mid).top();
         table.add(right).top();
 
         ai = new AIBattle(game, PlayScreen.AI.SKYNET);
@@ -215,8 +189,8 @@ public class MenuScreen implements Screen {
         dispose();
         if (mode == Mode.CLASSIC)
             game.setScreen(new ClassicPlayScreen(game, ai));
-        else if (mode == Mode.POWER)
-            game.setScreen(new PowerPongPlayScreen(game, ai));
+        else if (mode == Mode.AIBATTLE)
+            game.setScreen(new AIBattle(game, ai));
     }
 
 }

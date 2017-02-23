@@ -1,5 +1,7 @@
 package screens;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.InputMultiplexer;
 import com.powerpong.game.ContactListener;
 import com.powerpong.game.PowerPong;
 import objects.paddles.AIPaddle;
@@ -18,5 +20,9 @@ public class AIBattle extends PlayScreen {
 
         contactListener = new ContactListener(p1, p2);
         world.setContactListener(contactListener);
+
+        multiplexer = new InputMultiplexer();
+        Gdx.input.setInputProcessor(multiplexer);
+        multiplexer.addProcessor(this);
     }
 }
