@@ -25,9 +25,9 @@ public class ClassicPlayScreen extends PlayScreen {
         //create InputMultiplexer, to handle input on multiple paddles and the ui
         multiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(multiplexer);
+		multiplexer.addProcessor(this);
         multiplexer.addProcessor(p1);
         multiplexer.addProcessor(stage);
-        multiplexer.addProcessor(this);
         if (ai == AI.NONE)
             multiplexer.addProcessor(p2);
 	}

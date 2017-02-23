@@ -20,6 +20,8 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
     protected float BALL_SPEED = 3;
+    protected Vector2 ballVel;
+    protected boolean paused;
 
     public enum AI {
         NONE, EASY, MEDIUM, HARD, SKYNET
@@ -50,6 +52,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         //create physics world and contactlistener
         world = new World(new Vector2(0, GRAVITY), true);
         world.setVelocityThreshold(0.01f);
+
+        ballVel = new Vector2();
 
         worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
                 PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
@@ -143,17 +147,19 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
-
+        ballVel.set(ball.getBody().getLinearVelocity());
+        ball.getBody().setLinearVelocity(0, 0);
+        paused = true;
     }
 
     @Override
     public void resume() {
-
+        ball.getBody().setLinearVelocity(ballVel);
     }
 
     @Override
     public void hide() {
-
+        Gdx.input.setCatchBackKey(false);
     }
 
     @Override
@@ -173,5 +179,14 @@ public class PlayScreen extends InputAdapter implements Screen {
             game.setScreen(new MenuScreen(game));
         }
         return super.keyDown(keyCode);
+    }
+
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        if (paused) {
+            resume();
+            paused = false;
+            return true;
+        }
+        return false;
     }
 }
