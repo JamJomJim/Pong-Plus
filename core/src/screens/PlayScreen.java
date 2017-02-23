@@ -126,6 +126,19 @@ public class PlayScreen extends InputAdapter implements Screen {
         debugRenderer.render(world, worldCam.combined);
     }
 
+    public void pauseBall() {
+        //if statement is so that if the ball is already paused, ballVel won't be set to 0, meaning the ball couldn't be "resumed"
+        if (ball.getBody().getLinearVelocity().y != 0)
+            ballVel.set(ball.getBody().getLinearVelocity());
+        ball.getBody().setLinearVelocity(0, 0);
+        paused = true;
+    }
+
+    public void resumeBall() {
+        ball.getBody().setLinearVelocity(ballVel);
+        paused = false;
+    }
+
     public void score(String side) {
         if (side.equals("top"))
             topScore += 1;
@@ -147,11 +160,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
-        //if statement is so that if the game is already paused and loses focus, that ballVel won't be set to 0
-        if (ball.getBody().getLinearVelocity().y != 0)
-            ballVel.set(ball.getBody().getLinearVelocity());
-        ball.getBody().setLinearVelocity(0, 0);
-        paused = true;
+
     }
 
     @Override
@@ -185,8 +194,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     public boolean touchDown(int x, int y, int pointer, int button) {
         if (paused) {
-            ball.getBody().setLinearVelocity(ballVel);
-            paused = false;
+            resumeBall();
             return true;
         }
         return false;

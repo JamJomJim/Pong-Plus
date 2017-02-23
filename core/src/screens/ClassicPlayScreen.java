@@ -5,7 +5,6 @@ import com.badlogic.gdx.InputMultiplexer;
 import com.powerpong.game.ContactListener;
 import com.powerpong.game.PowerPong;
 import objects.*;
-import objects.powerups.Powerup;
 
 public class ClassicPlayScreen extends PlayScreen {
 
@@ -30,5 +29,7 @@ public class ClassicPlayScreen extends PlayScreen {
         multiplexer.addProcessor(stage);
         if (ai == AI.NONE)
             multiplexer.addProcessor(p2);
+
+        pauseBall();
 	}
 }
