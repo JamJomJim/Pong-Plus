@@ -63,7 +63,7 @@ public class Ball {
         else return;
         body.setTransform(0, 0, 0);
         body.setLinearVelocity(0, initialSpeed * direction);
-        screen.pause();
+        screen.pauseBall();
     }
 
     public void draw(SpriteBatch sb) {
