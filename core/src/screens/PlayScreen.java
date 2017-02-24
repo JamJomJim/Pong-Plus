@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -106,9 +107,9 @@ public class PlayScreen extends InputAdapter implements Screen {
         //step the physics world the amount of time since the last frame, up to 0.25s
         world.step((float)Math.min(dt, 0.25), 6 ,2);
 
+        checkBall();
         p1.update(dt);
         p2.update(dt);
-        ball.update();
         stage.act(dt);
         topScoreText.setText(Integer.toString(topScore));
         botScoreText.setText(Integer.toString(botScore));
@@ -124,6 +125,22 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
         debugRenderer.render(world, worldCam.combined);
+    }
+
+    public void checkBall() {
+        Body body = ball.getBody();
+        int direction;
+        if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+            score("top");
+            direction = -1;
+        }
+        else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+            score("bot");
+            direction = 1;
+        }
+        else return;
+        ball.reset(direction);
+        pauseBall();
     }
 
     public void pauseBall() {

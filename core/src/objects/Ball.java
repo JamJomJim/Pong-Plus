@@ -50,22 +50,6 @@ public class Ball {
         opponent = null;
     }
 
-    public void update() {
-        float direction;
-        if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
-            screen.score("top");
-            direction = -1;
-        }
-        else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
-            screen.score("bot");
-            direction = 1;
-        }
-        else return;
-        body.setTransform(0, 0, 0);
-        body.setLinearVelocity(0, initialSpeed * direction);
-        screen.pauseBall();
-    }
-
     public void draw(SpriteBatch sb) {
         sb.draw(texture,
                 body.getPosition().x - texture.getWidth() / 2 / PowerPong.PPM,
@@ -88,6 +72,12 @@ public class Ball {
         //set the paddles
         opponent = mostRecent;
         mostRecent = paddle;
+    }
+
+    //reset the ball to 0,0 and start it in direction; -1 is down, 1 is up
+    public void reset(int direction) {
+        body.setTransform(0, 0, 0);
+        body.setLinearVelocity(0, initialSpeed * direction);
     }
 
     public float getX() {
