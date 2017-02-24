@@ -14,7 +14,7 @@ public class ClassicPlayScreen extends PlayScreen {
 	public ClassicPlayScreen(PowerPong game, AI ai) {
 		super(game);
 
-		ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world, this);
+		ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
 		p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
 		if (ai == AI.NONE)
 			p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);

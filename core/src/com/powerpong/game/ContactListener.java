@@ -5,16 +5,24 @@ import com.badlogic.gdx.physics.box2d.*;
 import objects.paddles.AIPaddle;
 import objects.Ball;
 import objects.paddles.Paddle;
+import screens.PlayScreen;
 
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
 	private Paddle paddleOne, paddleTwo;
 	private Vector2 ballVel;
+	private PlayScreen screen;
 
     public ContactListener(Paddle paddleOne, Paddle paddleTwo) {
     	this.paddleOne = paddleOne;
     	this.paddleTwo = paddleTwo;
 	}
+
+    public ContactListener(Paddle paddleOne, Paddle paddleTwo, PlayScreen screen) {
+        this.paddleOne = paddleOne;
+        this.paddleTwo = paddleTwo;
+        this.screen = screen;
+    }
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -39,6 +47,12 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
         } else if ((objectA instanceof Ball && objectB == paddleTwo || objectA == paddleTwo && objectB instanceof Ball) &&
                 paddleOne instanceof AIPaddle) {
             ((AIPaddle) paddleOne).randomizeOffset();
+        }
+
+        //if collision is between paddle and ball, and paddleTwo is null, meaning it's wall mode, score
+        if ((objectA instanceof Ball && objectB == paddleOne || objectA == paddleOne && objectB instanceof Ball) &&
+                paddleTwo == null) {
+		    screen.score("bot");
         }
 	}
 

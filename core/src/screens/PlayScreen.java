@@ -31,8 +31,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected Paddle p1, p2;
     protected Ball ball;
 
-    private int topScore = 0;
-    private int botScore = 0;
+    protected int topScore = 0;
+    protected int botScore = 0;
 
     protected Box2DDebugRenderer debugRenderer;
     protected PowerPong game;
@@ -127,7 +127,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         debugRenderer.render(world, worldCam.combined);
     }
 
-    public void checkBall() {
+    public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
         Body body = ball.getBody();
         int direction;
         if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {

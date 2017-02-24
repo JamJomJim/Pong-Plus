@@ -17,7 +17,7 @@ import com.powerpong.game.PowerPong;
 
 public class MenuScreen implements Screen {
     public enum Mode {
-        CLASSIC, AIBATTLE
+        CLASSIC, AIBATTLE, WALL
     }
     public static Mode mode;
 	private Stage stage;
@@ -68,6 +68,9 @@ public class MenuScreen implements Screen {
         final TextButton button2P = new TextButton("Two\nPlayer", skin);
         left.add(button2P).fillX();
         left.row();
+        final TextButton buttonWall = new TextButton("Wall\nMode", skin);
+        left.add(buttonWall).fillX();
+        left.row();
         final TextButton buttonAIBattle = new TextButton("AI\nBattle", skin);
         left.add(buttonAIBattle).fillX();
         left.row();
@@ -88,6 +91,12 @@ public class MenuScreen implements Screen {
         button2P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 mode = Mode.CLASSIC;
+                startPlay(PlayScreen.AI.NONE);
+            }
+        });
+        buttonWall.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                mode = Mode.WALL;
                 startPlay(PlayScreen.AI.NONE);
             }
         });
@@ -187,7 +196,9 @@ public class MenuScreen implements Screen {
 
 	public void startPlay(PlayScreen.AI ai) {
         dispose();
-        if (mode == Mode.CLASSIC)
+        if (mode == Mode.WALL)
+            game.setScreen(new WallPlayScreen(game));
+        else if (mode == Mode.CLASSIC)
             game.setScreen(new ClassicPlayScreen(game, ai));
         else if (mode == Mode.AIBATTLE)
             game.setScreen(new AIBattle(game, ai));
