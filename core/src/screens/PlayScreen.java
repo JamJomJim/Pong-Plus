@@ -67,8 +67,6 @@ public class PlayScreen extends InputAdapter implements Screen {
         world = new World(new Vector2(0, GRAVITY), true);
         world.setVelocityThreshold(0.01f);
 
-        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-
         worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
                 PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
 
@@ -100,22 +98,12 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         world.setContactListener(new ContactListener(p1, p2, this));
 
-        //create InputMultiplexer, to handle input on multiple paddles and the ui
-        multiplexer = new InputMultiplexer();
-        Gdx.input.setInputProcessor(multiplexer);
-        Gdx.input.setCatchBackKey(true);
-        multiplexer.addProcessor(this); //playscreen is first in multiplexer, for handling resuming ball
-        multiplexer.addProcessor(stage);
-        if (p1 instanceof PlayerPaddle)
-            multiplexer.addProcessor(p1);
-        if (p2 instanceof PlayerPaddle)
-            multiplexer.addProcessor(p2);
-
         if (p1 instanceof PlayerPaddle)
             ball.pause(); //ball starts paused
         debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
 
         //UI STUFF******************************************************************************************************
+        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         //create and add the table that fills the entire screen
         stage.setDebugAll(true);
         Table table = new Table();
@@ -178,6 +166,16 @@ public class PlayScreen extends InputAdapter implements Screen {
             pausedText.setX(PowerPong.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);
             pausedText.setY(PowerPong.NATIVE_HEIGHT / 2 - pausedText.getPrefHeight() / 2);
         }
+
+        //create InputMultiplexer, to handle input on multiple paddles and the ui
+        multiplexer = new InputMultiplexer();
+        Gdx.input.setInputProcessor(multiplexer);
+        multiplexer.addProcessor(this); //playscreen is first in multiplexer, for handling resuming ball
+        multiplexer.addProcessor(stage);
+        if (p1 instanceof PlayerPaddle)
+            multiplexer.addProcessor(p1);
+        if (p2 instanceof PlayerPaddle)
+            multiplexer.addProcessor(p2);
     }
 
     public void render(float dt) {
@@ -199,7 +197,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         stage.draw();
         //draw the world
         //current coordinate system is 0,0 is the center of the screen, positive y is up
-        game.batch.setProjectionMatrix(worldCam.combined); //idk why this has to be set every time, it doesn't work if it isn't
+        game.batch.setProjectionMatrix(worldCam.combined); //have to set this every time because when the stage is drawn, it sets it to a different one
         game.batch.begin();
         p1.draw(game.batch);
         if (mode != Mode.SURVIVAL)
@@ -208,7 +206,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         game.batch.end();
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
-        debugRenderer.render(world, worldCam.combined);
+        //debugRenderer.render(world, worldCam.combined);
     }
 
     public void checkScore() {
@@ -282,7 +280,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
-        if (menu.isVisible())
+        if (menu != null && menu.isVisible())
             return false; //return so that the ball isn't resumed if the end of game menu is showing
         if (ball.isPaused()) {
             ball.resume();
@@ -294,7 +292,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-
+        Gdx.input.setCatchBackKey(true);
     }
 
     @Override
