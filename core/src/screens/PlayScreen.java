@@ -22,7 +22,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
     protected float BALL_SPEED = 3;
     protected Vector2 ballVel;
-    protected boolean paused;
+    protected boolean ballPaused;
 
     public enum AI {
         NONE, EASY, MEDIUM, HARD, SKYNET
@@ -144,16 +144,16 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public void pauseBall() {
-        //if statement is so that if the ball is already paused, ballVel won't be set to 0, meaning the ball couldn't be "resumed"
+        //if statement is so that if the ball is already ballPaused, ballVel won't be set to 0, meaning the ball couldn't be "resumed"
         if (ball.getBody().getLinearVelocity().y != 0)
             ballVel.set(ball.getBody().getLinearVelocity());
         ball.getBody().setLinearVelocity(0, 0);
-        paused = true;
+        ballPaused = true;
     }
 
     public void resumeBall() {
         ball.getBody().setLinearVelocity(ballVel);
-        paused = false;
+        ballPaused = false;
     }
 
     public void score(String side) {
@@ -205,14 +205,19 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
-            dispose();
-            game.setScreen(new MenuScreen(game));
+            if (!ballPaused)
+                pauseBall();
+            else {
+                dispose();
+                game.setScreen(new MenuScreen(game));
+            }
+            return true;
         }
         return super.keyDown(keyCode);
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
-        if (paused) {
+        if (ballPaused) {
             resumeBall();
             return true;
         }
