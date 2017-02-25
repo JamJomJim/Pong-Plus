@@ -74,6 +74,10 @@ public class AIPaddle extends Paddle {
         return finalDestination;
     }
 
+    public void setDestination(float x) {
+        destination.set(x, destination.y);
+    }
+
     public void randomizeOffset() {
         offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
     }

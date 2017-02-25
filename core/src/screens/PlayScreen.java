@@ -157,7 +157,12 @@ public class PlayScreen extends InputAdapter implements Screen {
                     buttonRestart.setChecked(false);
                 }
             });
-            //menu.setVisible(false);
+            buttonMenu.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    returnToMenu();
+                }
+            });
+            menu.setVisible(false);
             stage.addActor(menu);
             menu.setX(PowerPong.NATIVE_WIDTH / 2);
             menu.setY(PowerPong.NATIVE_HEIGHT / 2);
@@ -229,6 +234,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         }
         else return;
         ball.reset(direction);
+        if (p2 instanceof AIPaddle)
+            p2.update(.016f);
         if (p1 instanceof PlayerPaddle)
             ball.pause();
     }
@@ -240,6 +247,11 @@ public class PlayScreen extends InputAdapter implements Screen {
             botScore += 1;
     }
 
+    public void returnToMenu() {
+        dispose();
+        game.setScreen(new MenuScreen(game));
+    }
+
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
@@ -247,8 +259,7 @@ public class PlayScreen extends InputAdapter implements Screen {
                 ball.pause();
                 pausedText.setVisible(true);
             } else {
-                dispose();
-                game.setScreen(new MenuScreen(game));
+                returnToMenu();
             }
             return true;
         }
