@@ -45,6 +45,7 @@ public class PowerPong extends Game {
         parameter.size = 130;
         skin.add("Arial", generator2.generateFont(parameter));
 
+        //default TextButtonStyle
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.font = skin.getFont("pixely");
 		textButtonStyle.fontColor = Color.WHITE;
@@ -53,10 +54,17 @@ public class PowerPong extends Game {
 		textButtonStyle.checkedFontColor = Color.GRAY;
 		skin.add("default", textButtonStyle);
 
+		//LabelStyle for the score text
         LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = skin.getFont("Arial");
         labelStyle.fontColor = Color.WHITE;
-        skin.add("default", labelStyle);
+        skin.add("score", labelStyle);
+
+        //LabelStyle for the Paused text
+        labelStyle = new LabelStyle();
+        labelStyle.font = skin.getFont("pixely");
+        labelStyle.fontColor = Color.WHITE;
+        skin.add("paused", labelStyle);
 
 
         this.setScreen(new MenuScreen(this));

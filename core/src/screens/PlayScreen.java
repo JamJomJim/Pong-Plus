@@ -126,8 +126,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         //create the table and the labels that will display the score
         score = new Table();
         score.setSkin(game.skin);
-        topScoreText = new Label(Integer.toString(topScore), game.skin);
-        botScoreText = new Label(Integer.toString(botScore), game.skin);
+        topScoreText = new Label(Integer.toString(topScore), game.skin, "score");
+        botScoreText = new Label(Integer.toString(botScore), game.skin, "score");
         score.add(topScoreText).right();
         score.row();
         score.add(botScoreText).right();
@@ -172,7 +172,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         }
         //if it's a mode that includes a player (aka it can be paused), create the label that's displayed during pause
         if (p1 instanceof PlayerPaddle) {
-            pausedText = new Label("Paused", game.skin);
+            pausedText = new Label("Paused", game.skin, "paused");
             pausedText.setVisible(false);
             stage.addActor(pausedText);
             pausedText.setX(PowerPong.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);
@@ -184,13 +184,15 @@ public class PlayScreen extends InputAdapter implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //step the physics world the amount of time since the last frame, up to 0.25s
-        world.step((float)Math.min(dt, 0.25), 6 ,2);
+        if (!ball.isPaused()) { //so that player and ai paddles can't move while the ball is paused
+            world.step((float) Math.min(dt, 0.25), 6, 2);
+            p1.update(dt);
+            if (mode != Mode.SURVIVAL)
+                p2.update(dt);
+        }
 
         checkBall(dt);
         checkScore();
-        p1.update(dt);
-        if (mode != Mode.SURVIVAL)
-            p2.update(dt);
         stage.act(dt);
         topScoreText.setText(Integer.toString(topScore));
         botScoreText.setText(Integer.toString(botScore));
@@ -280,6 +282,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
+        if (menu.isVisible())
+            return false; //return so that the ball isn't resumed if the end of game menu is showing
         if (ball.isPaused()) {
             ball.resume();
             pausedText.setVisible(false);
