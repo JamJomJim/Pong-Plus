@@ -120,6 +120,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         stage.setDebugAll(true);
         Table table = new Table();
         table.setFillParent(true);
+        table.right();
         stage.addActor(table);
 
         //create the table and the labels that will display the score
@@ -131,7 +132,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         score.row();
         score.add(botScoreText).right();
         //add it to the stage and position it
-        stage.addActor(score);
+        table.add(score);
         score.setX(PowerPong.NATIVE_WIDTH - score.getPrefWidth() / 2);
         score.setY(PowerPong.NATIVE_HEIGHT / 2);
         if (mode == Mode.MENUBATTLE)
@@ -249,6 +250,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         }
         if (p1 instanceof PlayerPaddle)
             ball.pause();
+        //set the x position of the score, in case it's width changed when the score changed
     }
 
     public void score(String side) {
