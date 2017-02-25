@@ -21,7 +21,7 @@ import objects.paddles.PlayerPaddle;
 
 public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
-    static final int PADDLE_OFFSET = 1100;
+    static final int PADDLE_OFFSET = 1100; //vertical distance from the center of the screen that the paddles are set at
 
     public enum AI {//different AI difficulties
         NONE, EASY, MEDIUM, HARD, SKYNET
@@ -31,12 +31,12 @@ public class PlayScreen extends InputAdapter implements Screen {
         ONEPLAYER, TWOPLAYER, SURVIVAL, AIBATTLE, MENUBATTLE
     }
 
+    protected Mode mode;
+
     //ball stuff
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
     protected float BALL_SPEED = 3;
     protected Ball ball;
-
-    Mode mode;
 
     protected Paddle p1, p2;
 
@@ -175,21 +175,20 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public void render(float dt) {
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         if (!pausedText.isVisible()) { //so that player and ai paddles can't move while the ball is paused;
             //note that it checks if the pausedText is visible, rather than if the ball is paused. This allows paddles to continue moving after the ball resets
             world.step((float) Math.min(dt, 0.25), 6, 2);//step the physics world the amount of time since the last frame, up to 0.25s
             p1.update(dt);
             if (p2 != null)
                 p2.update(dt);
+            checkBall();
+            stage.act(dt);
+            topScoreText.setText(Integer.toString(topScore));
+            botScoreText.setText(Integer.toString(botScore));
         }
-
-        checkBall(dt);
-        stage.act(dt);
-        topScoreText.setText(Integer.toString(topScore));
-        botScoreText.setText(Integer.toString(botScore));
-        stage.draw();
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        stage.draw(); //draw the stage (ui elements)
         //draw the world
         //current coordinate system is 0,0 is the center of the screen, positive y is up
         game.batch.setProjectionMatrix(worldCam.combined); //have to set this every time because when the stage is drawn, it sets it to a different one
@@ -204,7 +203,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         //debugRenderer.render(world, worldCam.combined);
     }
 
-    public void checkBall(float dt) { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
+    public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
         if (menu != null && menu.isVisible())
             return;
         Body body = ball.getBody();
@@ -228,7 +227,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             direction = 1;
         }
         else return; //return if the ball hasn't passed anywhere that it should be reset
-        //check if the score limit has been reached
+        //check if the score limit has been reached; display the menu and don't reset the ball if it has
         if ((botScore >= 10 || topScore >= 10) && menu != null)
             menu.setVisible(true);
         else
@@ -257,7 +256,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
-            if (!ball.isPaused()) {
+            if (!pausedText.isVisible()) {
                 ball.pause();
                 pausedText.setVisible(true);
             } else {
@@ -313,7 +312,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         debugRenderer.dispose();
         ball.dispose();
         stage.dispose();
-        if (mode != Mode.SURVIVAL)
+        if (p2 != null)
             p2.dispose();
     }
 }
