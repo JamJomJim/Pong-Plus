@@ -256,6 +256,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
+            if (menu.isVisible())
+                returnToMenu();
             if (!pausedText.isVisible()) {
                 ball.pause();
                 pausedText.setVisible(true);
