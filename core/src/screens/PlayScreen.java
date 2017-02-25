@@ -23,6 +23,7 @@ import objects.paddles.PlayerPaddle;
 
 public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
+    static final int PADDLE_OFFSET = 1100;
 
     public enum AI {//different AI difficulties
         NONE, EASY, MEDIUM, HARD, SKYNET
@@ -78,24 +79,24 @@ public class PlayScreen extends InputAdapter implements Screen {
         new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //right wall
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //left wall
         if (mode == Mode.SURVIVAL)
-            new Wall(0, PowerPong.NATIVE_HEIGHT / PowerPong.PPM / 2 + 1, PowerPong.NATIVE_WIDTH, 1, 0, world);
+            new Wall(0, (PowerPong.NATIVE_HEIGHT + 1) / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
 
         //create the ball
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
 
         //create p1 depending on the mode
         if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
-            p1 = new AIPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, ball, ai);
+            p1 = new AIPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
         else
-            p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
+            p1 = new PlayerPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam);
 
         //create p2 depending on the mode
         if (mode == Mode.TWOPLAYER)
-            p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
+            p2 = new PlayerPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, worldCam);
         else if (mode == Mode.SURVIVAL)
             p2 = null;
         else
-            p2 = new AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, ai);
+            p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
 
         world.setContactListener(new ContactListener(p1, p2, this));
 
