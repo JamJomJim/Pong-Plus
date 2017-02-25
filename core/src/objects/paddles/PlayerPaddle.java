@@ -28,7 +28,7 @@ public class PlayerPaddle extends Paddle {
         touchDraggedPos = new Vector3(0, 0, 0);
         this.worldCam = cam;
         movePointer = -1; //otherwise default value is 0, and the first touch on the screen, regardless of coords, will potentially affect this paddle
-        movespeed = 13;
+        movespeed = 100;
     }
 
     /*

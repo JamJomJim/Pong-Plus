@@ -76,11 +76,11 @@ public class MenuScreen implements Screen {
         final TextButton button2P = new TextButton("Two Player", skin);
         modes.add(button2P).fillX().height(button1P.getHeight());
         modes.row();
-        final TextButton buttonWall = new TextButton("Wall Mode", skin);
-        modes.add(buttonWall).fillX().height(button1P.getHeight());
-        modes.row();
         final TextButton buttonAIBattle = new TextButton("AI Battle", skin);
         modes.add(buttonAIBattle).fillX().height(button1P.getHeight());
+        modes.row();
+        final TextButton buttonWall = new TextButton("Survival", skin);
+        modes.add(buttonWall).fillX().height(button1P.getHeight());
         modes.row();
         final TextButton buttonOptions = new TextButton("Options", skin);
         modes.add(buttonOptions).fillX().height(button1P.getHeight());

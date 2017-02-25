@@ -72,7 +72,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         // Generate a font and add it to the skin under the name "Xcelsion"
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 150;
+        parameter.size = 130;
         skin.add("Arial", generator.generateFont(parameter));
 
         //get the TextButtonStyle defined in the JSON under the name "default" and then modify it
