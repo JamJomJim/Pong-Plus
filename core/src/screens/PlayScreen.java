@@ -182,15 +182,15 @@ public class PlayScreen extends InputAdapter implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //step the physics world the amount of time since the last frame, up to 0.25s
-        if (!ball.isPaused()) { //so that player and ai paddles can't move while the ball is paused
+        if (menu == null || (!menu.isVisible() && !pausedText.isVisible())) { //so that player and ai paddles can't move while the ball is paused; note that it checks if the menu is visible,
+            //rather than if the ball is paused. This allows paddles to continue moving after the ball resets
             world.step((float) Math.min(dt, 0.25), 6, 2);
             p1.update(dt);
-            if (mode != Mode.SURVIVAL)
+            if (p2 != null)
                 p2.update(dt);
         }
 
         checkBall(dt);
-        checkScore();
         stage.act(dt);
         topScoreText.setText(Integer.toString(topScore));
         botScoreText.setText(Integer.toString(botScore));
@@ -207,11 +207,6 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
         //debugRenderer.render(world, worldCam.combined);
-    }
-
-    public void checkScore() {
-        if ((botScore >= 10 || topScore >= 10) && menu != null)
-            menu.setVisible(true);
     }
 
     public void checkBall(float dt) { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
@@ -236,6 +231,9 @@ public class PlayScreen extends InputAdapter implements Screen {
             direction = 1;
         }
         else return;
+        //check if the score limit has been reached
+        if ((botScore >= 10 || topScore >= 10) && menu != null)
+            menu.setVisible(true);
         ball.reset(direction);
         //make aipaddles return to center when ball is reset
         if (p1 instanceof AIPaddle) {
