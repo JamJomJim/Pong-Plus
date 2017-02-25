@@ -36,8 +36,6 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
     protected float BALL_SPEED = 3;
     protected Ball ball;
-    protected Vector2 ballVel; //for storing the ball's velocity before pausing it, so it can be resumed
-    protected boolean ballPaused;
 
     Mode mode;
 
@@ -81,11 +79,10 @@ public class PlayScreen extends InputAdapter implements Screen {
         new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //right wall
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //left wall
         if (mode == Mode.SURVIVAL)
-            new Wall(0, PowerPong.NATIVE_HEIGHT / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH / PowerPong.PPM, 1, 0, world);
+            new Wall(0, PowerPong.NATIVE_HEIGHT / PowerPong.PPM / 2 + 1, PowerPong.NATIVE_WIDTH, 1, 0, world);
 
         //create the ball
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
-        ballVel = new Vector2();
 
         //create p1 depending on the mode
         if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
@@ -113,7 +110,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         if (p2 instanceof PlayerPaddle)
             multiplexer.addProcessor(p2);
 
-        pauseBall(); //ball starts paused
+        if (p1 instanceof PlayerPaddle)
+            ball.pause(); //ball starts paused
         debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
 
         //UI STUFF******************************************************************************************************
@@ -185,7 +183,7 @@ public class PlayScreen extends InputAdapter implements Screen {
                     p1.getBody().setTransform(0, p1.getBody().getPosition().y, 0);
                     p2.getBody().setTransform(0, p2.getBody().getPosition().y, 0);
                     ball.reset(-1);
-                    pauseBall();
+                    ball.pause();
                     buttonRestart.setVisible(false);
                     buttonRestart.setChecked(false);
                 }
@@ -252,22 +250,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         }
         else return;
         ball.reset(direction);
-        pauseBall();
-    }
-
-    public void pauseBall() {
-        if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
-            return;
-        //if statement is so that if the ball is already ballPaused, ballVel won't be set to 0, meaning the ball couldn't be "resumed"
-        if (ball.getBody().getLinearVelocity().y != 0)
-            ballVel.set(ball.getBody().getLinearVelocity());
-        ball.getBody().setLinearVelocity(0, 0);
-        ballPaused = true;
-    }
-
-    public void resumeBall() {
-        ball.getBody().setLinearVelocity(ballVel);
-        ballPaused = false;
+        if (p1 instanceof PlayerPaddle)
+            ball.pause();
     }
 
     public void score(String side) {
@@ -280,8 +264,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
-            if (!ballPaused && mode != Mode.AIBATTLE)
-                pauseBall();
+            if (!ball.isPaused() && mode != Mode.AIBATTLE)
+                ball.pause();
             else {
                 dispose();
                 game.setScreen(new MenuScreen(game));
@@ -292,8 +276,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
-        if (ballPaused) {
-            resumeBall();
+        if (ball.isPaused()) {
+            ball.resume();
             return false;
         }
         return false;

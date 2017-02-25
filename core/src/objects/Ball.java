@@ -2,6 +2,7 @@ package objects;
 
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
 import objects.paddles.Paddle;
@@ -14,10 +15,14 @@ public class Ball {
     protected Texture texture;
     protected Body body;
     private float initialSpeed;
+    private boolean paused;
+    private Vector2 pausedVel; //for remembering what the ball's vel was before pausing, so it can resume
 
     public Ball(String textureName, float x, float y, float initialDirection, float initialSpeed, World world) {
         this.texture = new Texture(textureName);
         this.initialSpeed = initialSpeed;
+        pausedVel = new Vector2();
+        paused = false;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -62,6 +67,23 @@ public class Ball {
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
         //together, the x and y component have a magnitude equal to that of curSpeed
         body.setLinearVelocity((float) (curSpeed * Math.sin(Math.toRadians(reboundAngle))), (float) (direction * curSpeed * Math.cos(Math.toRadians(reboundAngle))));
+    }
+
+    public void pause() {
+        //if statement is so that if the ball is already ballPaused, ballVel won't be set to 0, meaning the ball couldn't be "resumed"
+        if (body.getLinearVelocity().y != 0)
+            pausedVel.set(body.getLinearVelocity());
+        body.setLinearVelocity(0, 0);
+        paused = true;
+    }
+
+    public void resume() {
+        body.setLinearVelocity(pausedVel);
+        paused = false;
+    }
+
+    public boolean isPaused() {
+        return paused;
     }
 
     //reset the ball to 0,0 and start it in direction; -1 is down, 1 is up
