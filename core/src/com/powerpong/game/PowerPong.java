@@ -36,18 +36,15 @@ public class PowerPong extends Game {
 		//add the menu background image to the skin, under the name background
 		skin.add("background", new Texture("MenuBackground.png"));
 
-		// Generate a font and add it to the skin under the name "Xcelsion"
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ARCADECLASSIC.TTF"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 175;
 		skin.add("pixely", generator.generateFont(parameter));
 
         FreeTypeFontGenerator generator2 = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
-        FreeTypeFontParameter parameter2 = new FreeTypeFontParameter();
-        parameter2.size = 130;
-        skin.add("Arial", generator2.generateFont(parameter2));
+        parameter.size = 130;
+        skin.add("Arial", generator2.generateFont(parameter));
 
-		//get the TextButtonStyle defined in the JSON under the name "default" and then modify it
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
 		textButtonStyle.font = skin.getFont("pixely");
 		textButtonStyle.fontColor = Color.WHITE;
@@ -56,7 +53,6 @@ public class PowerPong extends Game {
 		textButtonStyle.checkedFontColor = Color.GRAY;
 		skin.add("default", textButtonStyle);
 
-        //get the TextButtonStyle defined in the JSON under the name "default" and then modify it
         LabelStyle labelStyle = new LabelStyle();
         labelStyle.font = skin.getFont("Arial");
         labelStyle.fontColor = Color.WHITE;

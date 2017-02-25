@@ -53,7 +53,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     //ui stuff
     protected InputMultiplexer multiplexer;
     protected Stage stage;
-    protected Label topScoreText, botScoreText;
+    protected Label topScoreText, botScoreText, pausedText;
     protected Table score, menu;
 
 
@@ -114,10 +114,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
 
         //UI STUFF******************************************************************************************************
-        //stage stuff for the ui
-        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-
-        //create the stage for ui elements
+        //create and add the table that fills the entire screen
         stage.setDebugAll(true);
         Table table = new Table();
         table.setFillParent(true);
@@ -156,12 +153,22 @@ public class PlayScreen extends InputAdapter implements Screen {
                     p2.getBody().setTransform(0, p2.getBody().getPosition().y, 0);
                     ball.reset(-1);
                     ball.pause();
-                    buttonRestart.setVisible(false);
+                    menu.setVisible(false);
                     buttonRestart.setChecked(false);
                 }
             });
-            menu.setVisible(false);
-            table.add(menu);
+            //menu.setVisible(false);
+            stage.addActor(menu);
+            menu.setX(PowerPong.NATIVE_WIDTH / 2);
+            menu.setY(PowerPong.NATIVE_HEIGHT / 2);
+        }
+        //if it's a mode that includes a player (aka it can be paused), create the label that's displayed during pause
+        if (p1 instanceof PlayerPaddle) {
+            pausedText = new Label("Paused", game.skin);
+            pausedText.setVisible(false);
+            stage.addActor(pausedText);
+            pausedText.setX(PowerPong.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);
+            pausedText.setY(PowerPong.NATIVE_HEIGHT / 2 - pausedText.getPrefHeight() / 2);
         }
     }
 
@@ -236,9 +243,10 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
-            if (!ball.isPaused() && mode != Mode.AIBATTLE)
+            if (!ball.isPaused() && mode != Mode.AIBATTLE) {
                 ball.pause();
-            else {
+                pausedText.setVisible(true);
+            } else {
                 dispose();
                 game.setScreen(new MenuScreen(game));
             }
@@ -250,6 +258,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     public boolean touchDown(int x, int y, int pointer, int button) {
         if (ball.isPaused()) {
             ball.resume();
+            pausedText.setVisible(false);
             return false;
         }
         return false;
