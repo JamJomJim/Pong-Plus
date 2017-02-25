@@ -24,86 +24,101 @@ import objects.paddles.PlayerPaddle;
 public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
 
-    protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
-    protected float BALL_SPEED = 3;
-    protected Vector2 ballVel;
-    protected boolean ballPaused;
-
-    public enum AI {
+    public enum AI {//different AI difficulties
         NONE, EASY, MEDIUM, HARD, SKYNET
     }
 
-    public enum Type {
+    public enum Mode {//different modes of play
         ONEPLAYER, TWOPLAYER, SURVIVAL, AIBATTLE, MENUBATTLE
     }
 
-    Type type;
+    //ball stuff
+    protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
+    protected float BALL_SPEED = 3;
+    protected Ball ball;
+    protected Vector2 ballVel; //for storing the ball's velocity before pausing it, so it can be resumed
+    protected boolean ballPaused;
+
+    Mode mode;
 
     protected Paddle p1, p2;
-    protected Ball ball;
 
     protected int topScore = 0;
     protected int botScore = 0;
 
-    protected Box2DDebugRenderer debugRenderer;
+    //game world stuff
     protected PowerPong game;
+    protected World world;
+    protected OrthographicCamera worldCam;
+    protected Box2DDebugRenderer debugRenderer;
 
+    //ui stuff
     protected InputMultiplexer multiplexer;
     protected Stage stage;
     protected Skin skin;
     protected Label topScoreText, botScoreText;
-    protected World world;
-    protected OrthographicCamera worldCam;
+    protected Table score, menu;
 
-    protected PlayScreen() {
-    }
 
-    protected PlayScreen(PowerPong game, Type type, AI ai) {
+    protected PlayScreen(PowerPong game, Mode mode, AI ai) {
         this.game = game;
-        this.type = type;
+        this.mode = mode;
 
+        //GAME WORLD STUFF**********************************************************************************************
         //create physics world and contactlistener
         world = new World(new Vector2(0, GRAVITY), true);
         world.setVelocityThreshold(0.01f);
 
-        ballVel = new Vector2();
+        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
 
         worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
                 PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
 
-        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-
         topScore = 0;
         botScore = 0;
 
+        //create the side walls (and top wall if it's survival mode)
         new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //right wall
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //left wall
-        if (type == Type.SURVIVAL)
-            new Wall
+        if (mode == Mode.SURVIVAL)
+            new Wall(0, PowerPong.NATIVE_HEIGHT / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
 
+        //create the ball
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
-        if (type == Type.AIBATTLE)
+        ballVel = new Vector2();
+
+        //create p1 depending on the mode
+        if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
             p1 = new AIPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, ball, ai);
         else
             p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
 
-        if (type == Type.TWOPLAYER)
+        //create p2 depending on the mode
+        if (mode == Mode.TWOPLAYER)
             p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
+        else if (mode == Mode.SURVIVAL)
+            p2 = null;
         else
             p2 = new AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, ai);
-        world.setContactListener(new ContactListener(p1, p2));
+
+        world.setContactListener(new ContactListener(p1, p2, this));
+
         //create InputMultiplexer, to handle input on multiple paddles and the ui
         multiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(multiplexer);
         multiplexer.addProcessor(this); //playscreen is first in multiplexer, for handling resuming ball
-        multiplexer.addProcessor(p1);
         multiplexer.addProcessor(stage);
-        if (ai == AI.NONE)
+        if (p1 instanceof PlayerPaddle)
+            multiplexer.addProcessor(p1);
+        if (p2 instanceof PlayerPaddle)
             multiplexer.addProcessor(p2);
 
-        pauseBall();
+        pauseBall(); //ball starts paused
+        debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
 
+        //UI STUFF******************************************************************************************************
         //stage stuff for the ui
+        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
         // Generate a font and add it to the skin under the name "Xcelsion"
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
@@ -134,14 +149,13 @@ public class PlayScreen extends InputAdapter implements Screen {
         labelStyle.fontColor = Color.WHITE;
 
         //create the stage for ui elements
-        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         stage.setDebugAll(true);
         Table table = new Table();
         table.setFillParent(true);
         stage.addActor(table);
 
         //create the table and the labels that will display the score
-        Table score = new Table();
+        score = new Table();
         topScoreText = new Label(Integer.toString(topScore), skin);
         botScoreText = new Label(Integer.toString(botScore), skin);
         score.add(topScoreText).right();
@@ -151,8 +165,10 @@ public class PlayScreen extends InputAdapter implements Screen {
         stage.addActor(score);
         score.setX(PowerPong.NATIVE_WIDTH - score.getPrefWidth() / 2);
         score.setY(PowerPong.NATIVE_HEIGHT / 2);
+        if (mode == Mode.MENUBATTLE)
+            score.setVisible(false);
 
-        Table menu = new Table();
+        menu = new Table();
         final TextButton buttonRestart = new TextButton("Play Again", skin);
         buttonRestart.setHeight(175);
         buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
@@ -160,17 +176,15 @@ public class PlayScreen extends InputAdapter implements Screen {
         menu.row();
         final TextButton buttonMenu = new TextButton("Menu", skin);
         menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
-
         buttonRestart.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 dispose();
                 //game.setScreen(new );
             }
         });
+        menu.setVisible(false);
 
         table.add(menu);
-
-        debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
     }
 
     public void render(float dt) {
@@ -180,9 +194,10 @@ public class PlayScreen extends InputAdapter implements Screen {
         world.step((float)Math.min(dt, 0.25), 6 ,2);
 
         checkBall();
+        checkScore();
         p1.update(dt);
-        p2.update(dt);
-        if (this instanceof SurvivalPlayScreen)
+        if (mode != Mode.SURVIVAL)
+            p2.update(dt);
         stage.act(dt);
         topScoreText.setText(Integer.toString(topScore));
         botScoreText.setText(Integer.toString(botScore));
@@ -192,7 +207,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         game.batch.setProjectionMatrix(worldCam.combined);
         game.batch.begin();
         p1.draw(game.batch);
-        p2.draw(game.batch);
+        if (mode != Mode.SURVIVAL)
+            p2.draw(game.batch);
         ball.draw(game.batch);
         game.batch.end();
 
@@ -201,13 +217,24 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public void checkScore() {
-
+        if ((botScore >= 10 || topScore >= 10) && p1 instanceof PlayerPaddle)
+            menu.setVisible(true);
     }
 
     public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
         Body body = ball.getBody();
         int direction;
-        if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+        //checking the ball and updating scores is handled differently if it's survival mode
+        if (mode == Mode.SURVIVAL) {
+            if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+                if (botScore > topScore)
+                    topScore = botScore;
+                direction = -1;
+                botScore = 0;
+            }
+            else return;
+        } //this is the stuff that happens if it's not survival mode
+        else if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
             score("top");
             direction = -1;
         }
@@ -221,6 +248,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public void pauseBall() {
+        if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
+            return;
         //if statement is so that if the ball is already ballPaused, ballVel won't be set to 0, meaning the ball couldn't be "resumed"
         if (ball.getBody().getLinearVelocity().y != 0)
             ballVel.set(ball.getBody().getLinearVelocity());
@@ -238,6 +267,28 @@ public class PlayScreen extends InputAdapter implements Screen {
             topScore += 1;
         else if (side.equals("bot"))
             botScore += 1;
+    }
+
+    @Override
+    public boolean keyDown(int keyCode) {
+        if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
+            if (!ballPaused && mode != Mode.AIBATTLE)
+                pauseBall();
+            else {
+                dispose();
+                game.setScreen(new MenuScreen(game));
+            }
+            return true;
+        }
+        return super.keyDown(keyCode);
+    }
+
+    public boolean touchDown(int x, int y, int pointer, int button) {
+        if (ballPaused) {
+            resumeBall();
+            return false;
+        }
+        return false;
     }
 
     @Override
@@ -276,28 +327,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         debugRenderer.dispose();
         ball.dispose();
         stage.dispose();
-        p2.dispose();
-    }
-
-    @Override
-    public boolean keyDown(int keyCode) {
-        if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
-            if (!ballPaused)
-                pauseBall();
-            else {
-                dispose();
-                game.setScreen(new MenuScreen(game));
-            }
-            return true;
-        }
-        return super.keyDown(keyCode);
-    }
-
-    public boolean touchDown(int x, int y, int pointer, int button) {
-        if (ballPaused) {
-            resumeBall();
-            return false;
-        }
-        return false;
+        if (mode != Mode.SURVIVAL)
+            p2.dispose();
     }
 }

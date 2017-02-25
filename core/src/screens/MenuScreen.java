@@ -13,18 +13,17 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.PowerPong;
+import screens.PlayScreen.Mode;
+import screens.PlayScreen.AI;
 
 public class MenuScreen implements Screen {
-    public enum Mode {
-        CLASSIC, AIBATTLE, WALL
-    }
     public static Mode mode;
 	private Stage stage;
 	private Table table;
 	private Table modes, difficulties;
 	private Skin skin;
 	private PowerPong game;
-	private AIBattle ai;
+	private PlayScreen ai;
 
 	public MenuScreen(PowerPong game) {
 		this.game = game;
@@ -93,18 +92,18 @@ public class MenuScreen implements Screen {
                 if (buttonAIBattle.isChecked())
                     buttonAIBattle.setChecked(false);
                 modes.setVisible(false);
-                mode = Mode.CLASSIC;
+                mode = Mode.ONEPLAYER;
             }
         });
         button2P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                mode = Mode.CLASSIC;
+                mode = Mode.TWOPLAYER;
                 startPlay(PlayScreen.AI.NONE);
             }
         });
         buttonWall.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                mode = Mode.WALL;
+                mode = Mode.SURVIVAL;
                 startPlay(PlayScreen.AI.NONE);
             }
         });
@@ -137,22 +136,22 @@ public class MenuScreen implements Screen {
         difficulties.add(buttonBack).fillX().height(button1P.getHeight());
         buttonEasy.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(PlayScreen.AI.EASY);
+                startPlay(AI.EASY);
             }
         });
         buttonMedium.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(PlayScreen.AI.MEDIUM);
+                startPlay(AI.MEDIUM);
             }
         });
         buttonHard.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(PlayScreen.AI.HARD);
+                startPlay(AI.HARD);
             }
         });
         buttonSkynet.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(PlayScreen.AI.SKYNET);
+                startPlay(AI.SKYNET);
             }
         });
         buttonBack.addListener(new ClickListener() {
@@ -173,7 +172,7 @@ public class MenuScreen implements Screen {
         menu.setY(700);
         //table.add(menu);
 
-        ai = new MenuBattle(game, PlayScreen.AI.SKYNET);
+        ai = new PlayScreen(game, Mode.MENUBATTLE, AI.SKYNET);
 	}
 
 	@Override
@@ -221,12 +220,7 @@ public class MenuScreen implements Screen {
 
 	public void startPlay(PlayScreen.AI ai) {
         dispose();
-        if (mode == Mode.WALL)
-            game.setScreen(new SurvivalPlayScreen(game));
-        else if (mode == Mode.CLASSIC)
-            game.setScreen(new ClassicPlayScreen(game, ai));
-        else if (mode == Mode.AIBATTLE)
-            game.setScreen(new AIBattle(game, ai));
+        game.setScreen(new PlayScreen(game, mode, ai));
     }
 
 }
