@@ -182,7 +182,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         //step the physics world the amount of time since the last frame, up to 0.25s
-        if (menu == null || (!menu.isVisible() && !pausedText.isVisible())) { //so that player and ai paddles can't move while the ball is paused; note that it checks if the menu is visible,
+        if (pausedText == null || !pausedText.isVisible()) { //so that player and ai paddles can't move while the ball is paused; note that it checks if the menu is visible,
             //rather than if the ball is paused. This allows paddles to continue moving after the ball resets
             world.step((float) Math.min(dt, 0.25), 6, 2);
             p1.update(dt);
@@ -210,6 +210,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public void checkBall(float dt) { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
+        if (menu != null && menu.isVisible())
+            return;
         Body body = ball.getBody();
         int direction;
         //checking the ball and updating scores is handled differently if it's survival mode
@@ -230,11 +232,12 @@ public class PlayScreen extends InputAdapter implements Screen {
             score("bot");
             direction = 1;
         }
-        else return;
+        else return; //return if the ball hasn't passed anywhere that it should be reset
         //check if the score limit has been reached
         if ((botScore >= 10 || topScore >= 10) && menu != null)
             menu.setVisible(true);
-        ball.reset(direction);
+        else
+            ball.reset(direction);
         //make aipaddles return to center when ball is reset
         if (p1 instanceof AIPaddle) {
             if (direction == 1)
