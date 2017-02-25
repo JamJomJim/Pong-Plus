@@ -16,12 +16,14 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
     public ContactListener(Paddle paddleOne, Paddle paddleTwo) {
     	this.paddleOne = paddleOne;
     	this.paddleTwo = paddleTwo;
+    	ballVel = new Vector2();
 	}
 
     public ContactListener(Paddle paddleOne, Paddle paddleTwo, PlayScreen screen) {
         this.paddleOne = paddleOne;
         this.paddleTwo = paddleTwo;
         this.screen = screen;
+        ballVel = new Vector2();
     }
 
 	@Override
@@ -32,12 +34,14 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		Body bodyB = contact.getFixtureB().getBody();
 
 		//if the collision is between a paddle and the ball, rebound the ball appropriately
-		if (objectA instanceof Paddle && objectB instanceof Ball) {
+		if (objectA instanceof Paddle && objectB instanceof Ball &&
+                Math.abs(bodyB.getPosition().y) < Math.abs(bodyA.getPosition().y)) {
 			((Ball) objectB).paddleRebound((Paddle )objectA);
-			ballVel = bodyB.getLinearVelocity();
-		} else if (objectB instanceof Paddle && objectA instanceof Ball) {
+			ballVel.set(bodyB.getLinearVelocity());
+		} else if (objectB instanceof Paddle && objectA instanceof Ball &&
+                Math.abs(bodyA.getPosition().y) < Math.abs(bodyB.getPosition().y)) {
 			((Ball) objectA).paddleRebound((Paddle )objectB);
-            ballVel = bodyA.getLinearVelocity();
+            ballVel.set(bodyA.getLinearVelocity());
 		}
 
 		//Sets separate offsets for the AI whenever a different paddle is hit.
@@ -70,14 +74,14 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	@Override
 	public void postSolve (Contact contact, ContactImpulse impulse) {
-        Object objectA = contact.getFixtureA().getBody().getUserData(); //These might be redundant
-        Object objectB = contact.getFixtureB().getBody().getUserData();
-        Body bodyA = contact.getFixtureA().getBody();
-        Body bodyB = contact.getFixtureB().getBody();
-        if (objectA instanceof Paddle && objectB instanceof Ball) {
-            bodyB.setLinearVelocity(ballVel);
-        } else if (objectB instanceof Paddle && objectA instanceof Ball) {
-            bodyA.setLinearVelocity(ballVel);
-        }
+//        Object objectA = contact.getFixtureA().getBody().getUserData(); //These might be redundant
+//        Object objectB = contact.getFixtureB().getBody().getUserData();
+//        Body bodyA = contact.getFixtureA().getBody();
+//        Body bodyB = contact.getFixtureB().getBody();
+//        if (objectA instanceof Paddle && objectB instanceof Ball) {
+//            bodyB.setLinearVelocity(ballVel);
+//        } else if (objectB instanceof Paddle && objectA instanceof Ball) {
+//            bodyA.setLinearVelocity(ballVel);
+//        }
 	}
 }
