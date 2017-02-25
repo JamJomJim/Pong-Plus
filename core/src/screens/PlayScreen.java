@@ -53,7 +53,6 @@ public class PlayScreen extends InputAdapter implements Screen {
     //ui stuff
     protected InputMultiplexer multiplexer;
     protected Stage stage;
-    protected Skin skin;
     protected Label topScoreText, botScoreText;
     protected Table score, menu;
 
@@ -117,34 +116,6 @@ public class PlayScreen extends InputAdapter implements Screen {
         //UI STUFF******************************************************************************************************
         //stage stuff for the ui
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-        skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
-
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 130;
-        skin.add("Arial", generator.generateFont(parameter));
-
-        FreeTypeFontGenerator generator2 = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ARCADECLASSIC.TTF"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter2 = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter2.size = 175;
-        skin.add("pixel", generator2.generateFont(parameter2));
-
-        //get the TextButtonStyle defined in the JSON under the name "default" and then modify it
-        TextButton.TextButtonStyle textButtonStyle = skin.get(TextButton.TextButtonStyle.class);
-        textButtonStyle.font = skin.getFont("pixel");
-        textButtonStyle.checked = null;
-        textButtonStyle.up = null;
-        textButtonStyle.down = null;
-        textButtonStyle.over = null;
-        textButtonStyle.fontColor = Color.WHITE;
-        textButtonStyle.overFontColor = Color.GRAY;
-        textButtonStyle.downFontColor = Color.GRAY;
-        textButtonStyle.checkedFontColor = Color.GRAY;
-
-        //get the TextButtonStyle defined in the JSON under the name "default" and then modify it
-        Label.LabelStyle labelStyle = skin.get("default", Label.LabelStyle.class);
-        labelStyle.font = skin.getFont("Arial");
-        labelStyle.fontColor = Color.WHITE;
 
         //create the stage for ui elements
         stage.setDebugAll(true);
@@ -154,8 +125,9 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //create the table and the labels that will display the score
         score = new Table();
-        topScoreText = new Label(Integer.toString(topScore), skin);
-        botScoreText = new Label(Integer.toString(botScore), skin);
+        score.setSkin(game.skin);
+        topScoreText = new Label(Integer.toString(topScore), game.skin);
+        botScoreText = new Label(Integer.toString(botScore), game.skin);
         score.add(topScoreText).right();
         score.row();
         score.add(botScoreText).right();
@@ -169,12 +141,12 @@ public class PlayScreen extends InputAdapter implements Screen {
         //if it's one or two player mode, create the menu that appears when a score reaches 10
         if (mode == Mode.ONEPLAYER || mode == Mode.TWOPLAYER) {
             menu = new Table();
-            final TextButton buttonRestart = new TextButton("Play Again", skin);
+            final TextButton buttonRestart = new TextButton("Play Again", game.skin);
             buttonRestart.setHeight(175);
             buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
             menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
             menu.row();
-            final TextButton buttonMenu = new TextButton("Menu", skin);
+            final TextButton buttonMenu = new TextButton("Menu", game.skin);
             menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
             buttonRestart.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {

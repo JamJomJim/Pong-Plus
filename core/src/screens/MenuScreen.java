@@ -21,7 +21,6 @@ public class MenuScreen implements Screen {
 	private Stage stage;
 	private Table table;
 	private Table modes, difficulties;
-	private Skin skin;
 	private PowerPong game;
 	private PlayScreen ai;
 
@@ -31,33 +30,9 @@ public class MenuScreen implements Screen {
 		stage.setDebugAll(true);
 		Gdx.input.setInputProcessor(stage);
 
-		// Load skin from JSON file
-		skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
-
-		//add the menu background image to the skin, under the name background
-		skin.add("background", new Texture("MenuBackground.png"));
-
-		// Generate a font and add it to the skin under the name "Xcelsion"
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ARCADECLASSIC.TTF"));
-		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.size = 175;
-		skin.add("font", generator.generateFont(parameter));
-
-		//get the TextButtonStyle defined in the JSON under the name "default" and then modify it
-		TextButton.TextButtonStyle textButtonStyle = skin.get(TextButton.TextButtonStyle.class);
-		textButtonStyle.font = skin.getFont("font");
-        textButtonStyle.checked = null;
-		textButtonStyle.up = null;
-		textButtonStyle.down = null;
-		textButtonStyle.over = null;
-		textButtonStyle.fontColor = Color.WHITE;
-		textButtonStyle.overFontColor = Color.GRAY;
-		textButtonStyle.downFontColor = Color.GRAY;
-		textButtonStyle.checkedFontColor = Color.GRAY;
-
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
-		table.setSkin(skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
+		table.setSkin(game.skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
 		table.setBackground("background");
 		table.setFillParent(true);
 		stage.addActor(table);
@@ -66,21 +41,21 @@ public class MenuScreen implements Screen {
         //stuff for the modes VerticalGroup; gamemodes, options, etc
         modes = new Table();
         // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
-        final TextButton button1P = new TextButton("One Player", skin);
+        final TextButton button1P = new TextButton("One Player", game.skin);
         button1P.setHeight(175);
         button1P.setWidth(button1P.getPrefWidth() + 50);
         modes.add(button1P).width(button1P.getWidth()).height(button1P.getHeight());
         modes.row();
-        final TextButton button2P = new TextButton("Two Player", skin);
+        final TextButton button2P = new TextButton("Two Player", game.skin);
         modes.add(button2P).fillX().height(button1P.getHeight());
         modes.row();
-        final TextButton buttonAIBattle = new TextButton("AI Battle", skin);
+        final TextButton buttonAIBattle = new TextButton("AI Battle", game.skin);
         modes.add(buttonAIBattle).fillX().height(button1P.getHeight());
         modes.row();
-        final TextButton buttonWall = new TextButton("Survival", skin);
+        final TextButton buttonWall = new TextButton("Survival", game.skin);
         modes.add(buttonWall).fillX().height(button1P.getHeight());
         modes.row();
-        final TextButton buttonOptions = new TextButton("Options", skin);
+        final TextButton buttonOptions = new TextButton("Options", game.skin);
         modes.add(buttonOptions).fillX().height(button1P.getHeight());
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
@@ -120,19 +95,19 @@ public class MenuScreen implements Screen {
         //difficulties stuff; ai difficulties
         difficulties = new Table();
         difficulties.setVisible(false);
-        final TextButton buttonEasy = new TextButton("Easy", skin);
+        final TextButton buttonEasy = new TextButton("Easy", game.skin);
         difficulties.add(buttonEasy).width(button1P.getWidth()).height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonMedium = new TextButton("Medium", skin);
+        final TextButton buttonMedium = new TextButton("Medium", game.skin);
         difficulties.add(buttonMedium).fillX().height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonHard = new TextButton("Hard", skin);
+        final TextButton buttonHard = new TextButton("Hard", game.skin);
         difficulties.add(buttonHard).fillX().height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonSkynet = new TextButton("Skynet", skin);
+        final TextButton buttonSkynet = new TextButton("Skynet", game.skin);
         difficulties.add(buttonSkynet).fillX().height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonBack = new TextButton("Back", skin);
+        final TextButton buttonBack = new TextButton("Back", game.skin);
         difficulties.add(buttonBack).fillX().height(button1P.getHeight());
         buttonEasy.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
@@ -215,7 +190,6 @@ public class MenuScreen implements Screen {
 	public void dispose() {
 	    ai.dispose();
 		stage.dispose();
-		skin.dispose();
 	}
 
 	public void startPlay(PlayScreen.AI ai) {
