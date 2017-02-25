@@ -27,8 +27,9 @@ public class MenuScreen implements Screen {
 	public MenuScreen(PowerPong game) {
 		this.game = game;
 		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
+        game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
 		stage.setDebugAll(true);
-		Gdx.input.setInputProcessor(stage);
+        Gdx.input.setCatchBackKey(false);
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
@@ -145,16 +146,14 @@ public class MenuScreen implements Screen {
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
         menu.setY(700);
-        //table.add(menu);
 
         ai = new PlayScreen(game, Mode.MENUBATTLE, AI.SKYNET);
+        Gdx.input.setInputProcessor(stage);
 	}
 
 	@Override
 	public void show() {
-		game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
-		Gdx.input.setInputProcessor(stage);
-		Gdx.input.setCatchBackKey(false);
+
 	}
 
 	@Override

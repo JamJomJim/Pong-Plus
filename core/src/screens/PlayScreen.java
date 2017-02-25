@@ -102,6 +102,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         //create InputMultiplexer, to handle input on multiple paddles and the ui
         multiplexer = new InputMultiplexer();
         Gdx.input.setInputProcessor(multiplexer);
+        Gdx.input.setCatchBackKey(true);
         multiplexer.addProcessor(this); //playscreen is first in multiplexer, for handling resuming ball
         multiplexer.addProcessor(stage);
         if (p1 instanceof PlayerPaddle)
@@ -183,7 +184,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         //step the physics world the amount of time since the last frame, up to 0.25s
         world.step((float)Math.min(dt, 0.25), 6 ,2);
 
-        checkBall();
+        checkBall(dt);
         checkScore();
         p1.update(dt);
         if (mode != Mode.SURVIVAL)
@@ -194,7 +195,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         stage.draw();
         //draw the world
         //current coordinate system is 0,0 is the center of the screen, positive y is up
-        game.batch.setProjectionMatrix(worldCam.combined);
+        game.batch.setProjectionMatrix(worldCam.combined); //idk why this has to be set every time, it doesn't work if it isn't
         game.batch.begin();
         p1.draw(game.batch);
         if (mode != Mode.SURVIVAL)
@@ -211,7 +212,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             menu.setVisible(true);
     }
 
-    public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
+    public void checkBall(float dt) { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
         Body body = ball.getBody();
         int direction;
         //checking the ball and updating scores is handled differently if it's survival mode
@@ -234,8 +235,17 @@ public class PlayScreen extends InputAdapter implements Screen {
         }
         else return;
         ball.reset(direction);
-        if (p2 instanceof AIPaddle)
-            p2.update(.016f);
+        //make aipaddles return to center when ball is reset
+        if (p1 instanceof AIPaddle) {
+            if (direction == 1)
+                p1.update(dt);
+            else ((AIPaddle) p1).setDestination(0);
+        }
+        if (p2 instanceof AIPaddle) {
+            if (direction == 1)
+                p2.update(dt);
+            else ((AIPaddle) p2).setDestination(0);
+        }
         if (p1 instanceof PlayerPaddle)
             ball.pause();
     }
@@ -277,9 +287,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-        game.batch.setProjectionMatrix(worldCam.combined);
-        Gdx.input.setInputProcessor(multiplexer);
-        Gdx.input.setCatchBackKey(true);
+
     }
 
     @Override
