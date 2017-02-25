@@ -60,7 +60,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected Table score, menu;
 
 
-    protected PlayScreen(PowerPong game, Mode mode, AI ai) {
+    protected PlayScreen(PowerPong game, Mode mode, final AI ai) {
         this.game = game;
         this.mode = mode;
 
@@ -81,7 +81,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //right wall
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //left wall
         if (mode == Mode.SURVIVAL)
-            new Wall(0, PowerPong.NATIVE_HEIGHT / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
+            new Wall(0, PowerPong.NATIVE_HEIGHT / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH / PowerPong.PPM, 1, 0, world);
 
         //create the ball
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
@@ -120,7 +120,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         //stage stuff for the ui
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
-        // Generate a font and add it to the skin under the name "Xcelsion"
+
         FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 130;
@@ -168,23 +168,31 @@ public class PlayScreen extends InputAdapter implements Screen {
         if (mode == Mode.MENUBATTLE)
             score.setVisible(false);
 
-        menu = new Table();
-        final TextButton buttonRestart = new TextButton("Play Again", skin);
-        buttonRestart.setHeight(175);
-        buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
-        menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
-        menu.row();
-        final TextButton buttonMenu = new TextButton("Menu", skin);
-        menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
-        buttonRestart.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                dispose();
-                //game.setScreen(new );
-            }
-        });
-        menu.setVisible(false);
-
-        table.add(menu);
+        //if it's one or two player mode, create the menu that appears when a score reaches 10
+        if (mode == Mode.ONEPLAYER || mode == Mode.TWOPLAYER) {
+            menu = new Table();
+            final TextButton buttonRestart = new TextButton("Play Again", skin);
+            buttonRestart.setHeight(175);
+            buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
+            menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
+            menu.row();
+            final TextButton buttonMenu = new TextButton("Menu", skin);
+            menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
+            buttonRestart.addListener(new ClickListener() {
+                public void clicked(InputEvent event, float x, float y) {
+                    topScore = 0;
+                    botScore = 0;
+                    p1.getBody().setTransform(0, p1.getBody().getPosition().y, 0);
+                    p2.getBody().setTransform(0, p2.getBody().getPosition().y, 0);
+                    ball.reset(-1);
+                    pauseBall();
+                    buttonRestart.setVisible(false);
+                    buttonRestart.setChecked(false);
+                }
+            });
+            menu.setVisible(false);
+            table.add(menu);
+        }
     }
 
     public void render(float dt) {
@@ -217,7 +225,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public void checkScore() {
-        if ((botScore >= 10 || topScore >= 10) && p1 instanceof PlayerPaddle)
+        if ((botScore >= 10 || topScore >= 10) && menu != null)
             menu.setVisible(true);
     }
 
