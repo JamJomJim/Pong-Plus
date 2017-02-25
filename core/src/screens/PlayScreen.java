@@ -1,10 +1,8 @@
 package screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -158,14 +156,12 @@ public class PlayScreen extends InputAdapter implements Screen {
             menu.setX(PowerPong.NATIVE_WIDTH / 2);
             menu.setY(PowerPong.NATIVE_HEIGHT / 2);
         }
-        //if it's a mode that includes a player (aka it can be paused), create the label that's displayed during pause
-        if (p1 instanceof PlayerPaddle) {
-            pausedText = new Label("Paused", game.skin, "paused");
-            pausedText.setVisible(false);
-            stage.addActor(pausedText);
-            pausedText.setX(PowerPong.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);
-            pausedText.setY(PowerPong.NATIVE_HEIGHT / 2 - pausedText.getPrefHeight() / 2);
-        }
+        //create the label that's displayed during pause
+        pausedText = new Label("Paused", game.skin, "paused");
+        pausedText.setVisible(false);
+        stage.addActor(pausedText);
+        pausedText.setX(PowerPong.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);
+        pausedText.setY(PowerPong.NATIVE_HEIGHT / 2 - pausedText.getPrefHeight() / 2);
 
         //create InputMultiplexer, to handle input on multiple paddles and the ui
         multiplexer = new InputMultiplexer();
@@ -181,10 +177,9 @@ public class PlayScreen extends InputAdapter implements Screen {
     public void render(float dt) {
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        //step the physics world the amount of time since the last frame, up to 0.25s
-        if (pausedText == null || !pausedText.isVisible()) { //so that player and ai paddles can't move while the ball is paused; note that it checks if the menu is visible,
-            //rather than if the ball is paused. This allows paddles to continue moving after the ball resets
-            world.step((float) Math.min(dt, 0.25), 6, 2);
+        if (!pausedText.isVisible()) { //so that player and ai paddles can't move while the ball is paused;
+            //note that it checks if the pausedText is visible, rather than if the ball is paused. This allows paddles to continue moving after the ball resets
+            world.step((float) Math.min(dt, 0.25), 6, 2);//step the physics world the amount of time since the last frame, up to 0.25s
             p1.update(dt);
             if (p2 != null)
                 p2.update(dt);
@@ -238,20 +233,13 @@ public class PlayScreen extends InputAdapter implements Screen {
             menu.setVisible(true);
         else
             ball.reset(direction);
-        //make aipaddles return to center when ball is reset
-        if (p1 instanceof AIPaddle) {
-            if (direction == 1)
-                p1.update(dt);
-            else ((AIPaddle) p1).setDestination(0);
-        }
-        if (p2 instanceof AIPaddle) {
-            if (direction == 1)
-                p2.update(dt);
-            else ((AIPaddle) p2).setDestination(0);
-        }
+        //make aipaddles return to center when ball is reset; they will still offset correctly
+        if (p1 instanceof AIPaddle)
+            ((AIPaddle) p1).setDestination(0);
+        if (p2 instanceof AIPaddle)
+            ((AIPaddle) p2).setDestination(0);
         if (p1 instanceof PlayerPaddle)
             ball.pause();
-        //set the x position of the score, in case it's width changed when the score changed
     }
 
     public void score(String side) {
@@ -269,7 +257,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
-            if (!ball.isPaused() && mode != Mode.AIBATTLE) {
+            if (!ball.isPaused()) {
                 ball.pause();
                 pausedText.setVisible(true);
             } else {
