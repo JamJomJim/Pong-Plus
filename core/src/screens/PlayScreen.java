@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.PowerPong;
 import objects.*;
+import objects.paddles.AIPaddle;
 import objects.paddles.Paddle;
 
 public class PlayScreen extends InputAdapter implements Screen {
@@ -108,10 +109,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         world.step((float)Math.min(dt, 0.25), 6 ,2);
 
         checkBall();
-        if (!ballPaused) {
-            p1.update(dt);
-            p2.update(dt);
-        }
+        p1.update(dt);
+        p2.update(dt);
         stage.act(dt);
         topScoreText.setText(Integer.toString(topScore));
         botScoreText.setText(Integer.toString(botScore));

@@ -29,7 +29,7 @@ public class MenuScreen implements Screen {
 	private PowerPong game;
 	private AIBattle ai;
 
-	public MenuScreen(final PowerPong game) {
+	public MenuScreen(PowerPong game) {
 		this.game = game;
 		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
 		stage.setDebugAll(true);
@@ -42,7 +42,7 @@ public class MenuScreen implements Screen {
 		skin.add("background", new Texture("MenuBackground.png"));
 
 		// Generate a font and add it to the skin under the name "Xcelsion"
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ARCADECLASSIC.ttf"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ARCADECLASSIC.TTF"));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
 		parameter.size = 175;
 		skin.add("font", generator.generateFont(parameter));
@@ -56,6 +56,8 @@ public class MenuScreen implements Screen {
 		textButtonStyle.over = null;
 		textButtonStyle.fontColor = Color.WHITE;
 		textButtonStyle.overFontColor = Color.GRAY;
+		textButtonStyle.downFontColor = Color.GRAY;
+		textButtonStyle.checkedFontColor = Color.GRAY;
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
@@ -156,12 +158,13 @@ public class MenuScreen implements Screen {
                 startPlay(PlayScreen.AI.SKYNET);
             }
         });
-        buttonBack.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        buttonBack.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(false);
                 modes.setVisible(true);
                 button1P.setChecked(false);
                 buttonAIBattle.setChecked(false);
+                buttonBack.setChecked(false);
             }
         });
 
