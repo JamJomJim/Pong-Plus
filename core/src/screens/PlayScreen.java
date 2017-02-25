@@ -108,8 +108,10 @@ public class PlayScreen extends InputAdapter implements Screen {
         world.step((float)Math.min(dt, 0.25), 6 ,2);
 
         checkBall();
-        p1.update(dt);
-        p2.update(dt);
+        if (!ballPaused) {
+            p1.update(dt);
+            p2.update(dt);
+        }
         stage.act(dt);
         topScoreText.setText(Integer.toString(topScore));
         botScoreText.setText(Integer.toString(botScore));
@@ -219,7 +221,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     public boolean touchDown(int x, int y, int pointer, int button) {
         if (ballPaused) {
             resumeBall();
-            return true;
+            return false;
         }
         return false;
     }
