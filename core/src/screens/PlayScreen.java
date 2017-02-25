@@ -9,13 +9,17 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.powerpong.game.ContactListener;
 import com.powerpong.game.PowerPong;
 import objects.*;
 import objects.paddles.AIPaddle;
 import objects.paddles.Paddle;
+import objects.paddles.PlayerPaddle;
 
 public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
@@ -28,6 +32,12 @@ public class PlayScreen extends InputAdapter implements Screen {
     public enum AI {
         NONE, EASY, MEDIUM, HARD, SKYNET
     }
+
+    public enum Type {
+        ONEPLAYER, TWOPLAYER, SURVIVAL, AIBATTLE, MENUBATTLE
+    }
+
+    Type type;
 
     protected Paddle p1, p2;
     protected Ball ball;
@@ -48,8 +58,9 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected PlayScreen() {
     }
 
-    protected PlayScreen(PowerPong game) {
+    protected PlayScreen(PowerPong game, Type type, AI ai) {
         this.game = game;
+        this.type = type;
 
         //create physics world and contactlistener
         world = new World(new Vector2(0, GRAVITY), true);
@@ -67,6 +78,30 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //right wall
         new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //left wall
+        if (type == Type.SURVIVAL)
+            new Wall
+
+        ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
+        if (type == Type.AIBATTLE)
+            p1 = new AIPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, ball, ai);
+        else
+            p1 = new PlayerPaddle("ClassicPaddle.png", 0, -1100 / PowerPong.PPM, world, worldCam);
+
+        if (type == Type.TWOPLAYER)
+            p2 = new PlayerPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, worldCam);
+        else
+            p2 = new AIPaddle("ClassicPaddle.png", 0, 1100 / PowerPong.PPM, world, ball, ai);
+        world.setContactListener(new ContactListener(p1, p2));
+        //create InputMultiplexer, to handle input on multiple paddles and the ui
+        multiplexer = new InputMultiplexer();
+        Gdx.input.setInputProcessor(multiplexer);
+        multiplexer.addProcessor(this); //playscreen is first in multiplexer, for handling resuming ball
+        multiplexer.addProcessor(p1);
+        multiplexer.addProcessor(stage);
+        if (ai == AI.NONE)
+            multiplexer.addProcessor(p2);
+
+        pauseBall();
 
         //stage stuff for the ui
         skin = new Skin(Gdx.files.internal("skins/neon/neon-ui.json"));
@@ -75,6 +110,23 @@ public class PlayScreen extends InputAdapter implements Screen {
         FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
         parameter.size = 130;
         skin.add("Arial", generator.generateFont(parameter));
+
+        FreeTypeFontGenerator generator2 = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ARCADECLASSIC.TTF"));
+        FreeTypeFontGenerator.FreeTypeFontParameter parameter2 = new FreeTypeFontGenerator.FreeTypeFontParameter();
+        parameter2.size = 175;
+        skin.add("pixel", generator2.generateFont(parameter2));
+
+        //get the TextButtonStyle defined in the JSON under the name "default" and then modify it
+        TextButton.TextButtonStyle textButtonStyle = skin.get(TextButton.TextButtonStyle.class);
+        textButtonStyle.font = skin.getFont("pixel");
+        textButtonStyle.checked = null;
+        textButtonStyle.up = null;
+        textButtonStyle.down = null;
+        textButtonStyle.over = null;
+        textButtonStyle.fontColor = Color.WHITE;
+        textButtonStyle.overFontColor = Color.GRAY;
+        textButtonStyle.downFontColor = Color.GRAY;
+        textButtonStyle.checkedFontColor = Color.GRAY;
 
         //get the TextButtonStyle defined in the JSON under the name "default" and then modify it
         Label.LabelStyle labelStyle = skin.get("default", Label.LabelStyle.class);
@@ -95,9 +147,28 @@ public class PlayScreen extends InputAdapter implements Screen {
         score.add(topScoreText).right();
         score.row();
         score.add(botScoreText).right();
+        //add it to the stage and position it
+        stage.addActor(score);
+        score.setX(PowerPong.NATIVE_WIDTH - score.getPrefWidth() / 2);
+        score.setY(PowerPong.NATIVE_HEIGHT / 2);
 
-        table.add(score);
-        table.right();
+        Table menu = new Table();
+        final TextButton buttonRestart = new TextButton("Play Again", skin);
+        buttonRestart.setHeight(175);
+        buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
+        menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
+        menu.row();
+        final TextButton buttonMenu = new TextButton("Menu", skin);
+        menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
+
+        buttonRestart.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                dispose();
+                //game.setScreen(new );
+            }
+        });
+
+        table.add(menu);
 
         debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
     }
@@ -111,6 +182,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         checkBall();
         p1.update(dt);
         p2.update(dt);
+        if (this instanceof SurvivalPlayScreen)
         stage.act(dt);
         topScoreText.setText(Integer.toString(topScore));
         botScoreText.setText(Integer.toString(botScore));
@@ -126,6 +198,10 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
         debugRenderer.render(world, worldCam.combined);
+    }
+
+    public void checkScore() {
+
     }
 
     public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
