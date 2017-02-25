@@ -11,11 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.PowerPong;
-
-import java.awt.*;
 
 public class MenuScreen implements Screen {
     public enum Mode {
@@ -173,10 +170,10 @@ public class MenuScreen implements Screen {
         menu.add(difficulties);
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
-        menu.setY(800);
+        menu.setY(700);
         //table.add(menu);
 
-        ai = new AIBattle(game, PlayScreen.AI.SKYNET);
+        ai = new MenuBattle(game, PlayScreen.AI.SKYNET);
 	}
 
 	@Override
@@ -225,7 +222,7 @@ public class MenuScreen implements Screen {
 	public void startPlay(PlayScreen.AI ai) {
         dispose();
         if (mode == Mode.WALL)
-            game.setScreen(new WallPlayScreen(game));
+            game.setScreen(new SurvivalPlayScreen(game));
         else if (mode == Mode.CLASSIC)
             game.setScreen(new ClassicPlayScreen(game, ai));
         else if (mode == Mode.AIBATTLE)

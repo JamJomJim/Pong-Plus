@@ -26,7 +26,7 @@ public class AIBattle extends PlayScreen {
         multiplexer.addProcessor(this);
     }
 
-    //empty pauseBall() method so that when it's called for AIBattle, the ball isn't actually ballPaused
+    //empty pauseBall() method so that when it's called for AIBattle, the ball isn't actually paused
     public void pauseBall() {
 
     }

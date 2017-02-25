@@ -10,11 +10,11 @@ import objects.Ball;
 import objects.Wall;
 import objects.paddles.PlayerPaddle;
 
-public class WallPlayScreen extends PlayScreen {
+public class SurvivalPlayScreen extends PlayScreen {
 
     private ContactListener contactListener;
 
-    public WallPlayScreen(PowerPong game) {
+    public SurvivalPlayScreen(PowerPong game) {
         super(game);
 
         new Wall(0, PowerPong.NATIVE_HEIGHT / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);

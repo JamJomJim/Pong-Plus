@@ -74,14 +74,14 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	@Override
 	public void postSolve (Contact contact, ContactImpulse impulse) {
-//        Object objectA = contact.getFixtureA().getBody().getUserData(); //These might be redundant
-//        Object objectB = contact.getFixtureB().getBody().getUserData();
-//        Body bodyA = contact.getFixtureA().getBody();
-//        Body bodyB = contact.getFixtureB().getBody();
-//        if (objectA instanceof Paddle && objectB instanceof Ball) {
-//            bodyB.setLinearVelocity(ballVel);
-//        } else if (objectB instanceof Paddle && objectA instanceof Ball) {
-//            bodyA.setLinearVelocity(ballVel);
-//        }
+        Object objectA = contact.getFixtureA().getBody().getUserData(); //These might be redundant
+        Object objectB = contact.getFixtureB().getBody().getUserData();
+        Body bodyA = contact.getFixtureA().getBody();
+        Body bodyB = contact.getFixtureB().getBody();
+        if (objectA instanceof Paddle && objectB instanceof Ball) {
+            bodyB.setLinearVelocity(ballVel);
+        } else if (objectB instanceof Paddle && objectA instanceof Ball) {
+            bodyA.setLinearVelocity(ballVel);
+        }
 	}
 }
