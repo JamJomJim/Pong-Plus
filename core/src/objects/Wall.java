@@ -76,8 +76,11 @@ public class Wall {
 
     public void randomizeLocation(){
         Random rand = new Random();
-        float x = (rand.nextInt((int)(PowerPong.NATIVE_WIDTH / PowerPong.PPM / 2 - -PowerPong.NATIVE_WIDTH / PowerPong.PPM / 2) + 1) + -PowerPong.NATIVE_WIDTH / PowerPong.PPM / 2);
-        body.setTransform(x, 1100 / PowerPong.PPM, 0);
+        float max, min;
+        max = (PowerPong.NATIVE_WIDTH - texture.getWidth() - 20);
+        min = -(PowerPong.NATIVE_WIDTH - texture.getWidth() - 20);
+        float x = rand.nextInt((int)(max - min) + 1) + min;
+        body.setTransform(x / PowerPong.PPM / 2, 1100 / PowerPong.PPM, 0);
         this.needsNewLocation(false);
     }
 
