@@ -41,7 +41,7 @@ public class MenuScreen implements Screen {
         modes = new Table();
         // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
         final TextButton button1P = new TextButton("ONE PLAYER", game.skin);
-        button1P.setHeight(175);
+        button1P.setHeight(160);
         button1P.setWidth(button1P.getPrefWidth() + 50);
         modes.add(button1P).width(button1P.getWidth()).height(button1P.getHeight());
         modes.row();
