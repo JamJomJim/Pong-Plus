@@ -281,7 +281,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     public void returnToMenu() {
         dispose();
-        game.setScreen(new MenuScreen(game));
+        game.setScreen(new MenuScreen(game, options));
     }
 
     @Override

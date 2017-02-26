@@ -28,10 +28,12 @@ public class PowerPong extends Game {
 
 	public SpriteBatch batch;
 	public Skin skin;
+	public Options options;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		options = new Options();
 
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();
@@ -44,9 +46,11 @@ public class PowerPong extends Game {
 		parameter.size = 130;
 		skin.add("main menu", generator.generateFont(parameter));
 		parameter.size = 75;
-        skin.add("options", generator.generateFont(parameter));
-        parameter.size = 100;
+        skin.add("options text", generator.generateFont(parameter));
+        parameter.size = 120;
         skin.add("options header", generator.generateFont(parameter));
+        parameter.size = 80;
+        skin.add("back button", generator.generateFont(parameter));
 
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
@@ -54,19 +58,23 @@ public class PowerPong extends Game {
         skin.add("Arial", generator.generateFont(parameter));
 
         //default TextButtonStyle
-		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.font = skin.getFont("main menu");
-		textButtonStyle.fontColor = Color.WHITE;
-		textButtonStyle.overFontColor = Color.GRAY;
-		textButtonStyle.downFontColor = Color.GRAY;
-		textButtonStyle.checkedFontColor = Color.GRAY;
-		skin.add("default", textButtonStyle);
+        TextButtonStyle textButtonStyle = new TextButtonStyle();
+        textButtonStyle.font = skin.getFont("main menu");
+        textButtonStyle.fontColor = Color.WHITE;
+        textButtonStyle.overFontColor = Color.GRAY;
+        textButtonStyle.downFontColor = Color.GRAY;
+        textButtonStyle.checkedFontColor = Color.GRAY;
+        skin.add("default", textButtonStyle);
+
+        textButtonStyle = new TextButtonStyle(textButtonStyle);
+        textButtonStyle.font = skin.getFont("back button");
+        skin.add("back button", textButtonStyle);
 
 		//LabelStyle for the optionsMenu text
 		LabelStyle labelStyle = new LabelStyle();
-		labelStyle.font = skin.getFont("options");
+		labelStyle.font = skin.getFont("options text");
 		labelStyle.fontColor = Color.WHITE;
-		skin.add("options", labelStyle);
+		skin.add("options text", labelStyle);
 
         //LabelStyle for the optionsMenu headers text
         labelStyle = new LabelStyle();
@@ -93,7 +101,7 @@ public class PowerPong extends Game {
         skin.add("default-horizontal", sliderStyle);
 
 
-        this.setScreen(new MenuScreen(this));
+        this.setScreen(new MenuScreen(this, options));
 	}
 
 	@Override

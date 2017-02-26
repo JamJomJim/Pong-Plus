@@ -23,9 +23,9 @@ public class MenuScreen implements Screen {
 	private PlayScreen ai;
 	private Options options;
 
-	public MenuScreen(PowerPong game) {
+	public MenuScreen(PowerPong game, Options opt) {
 		this.game = game;
-		options = new Options();
+		this.options = opt;
 		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
 		stage.setDebugAll(true);
@@ -123,7 +123,7 @@ public class MenuScreen implements Screen {
         final TextButton buttonCustom = new TextButton("CUSTOM", game.skin);
         difficulties.add(buttonCustom).fillX().height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonBack = new TextButton("BACK", game.skin);
+        final TextButton buttonBack = new TextButton("BACK", game.skin, "back button");
         difficulties.add(buttonBack).fillX().height(button1P.getHeight());
         buttonEasy.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
@@ -169,18 +169,28 @@ public class MenuScreen implements Screen {
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
         final Label ballLabel = new Label("BALL", game.skin, "options header");
-        final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "options");
-        final Slider ballInitialSpeedSlider = new Slider(1, 10, 1, false, game.skin);
-        ballInitialSpeedSlider.setWidth(500);
-        ballInitialSpeedSlider.setHeight(50);
+        final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "options text");
+        final Slider ballInitialSpeedSlider = new Slider(1, 100, 1, false, game.skin);
         ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
-        final Label ballInitialSpeedNumber = new Label(Float.toString(ballInitialSpeedSlider.getValue()), game.skin, "options");
+        final Label ballInitialSpeedNumber = new Label(Integer.toString((int)ballInitialSpeedSlider.getValue()), game.skin, "options text");
 
-        final TextButton buttonBackOptions = new TextButton("BACK", game.skin);
+        final Label ballSpeedIncreaseLabel = new Label("SPEED\nINCREASE", game.skin, "options text");
+        final Slider ballSpeedIncreaseSlider = new Slider(0, 10, 1, false, game.skin);
+        ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
+        final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int)ballInitialSpeedSlider.getValue()), game.skin, "options text");
+
+        final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "back button");
+
         ballInitialSpeedSlider.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 options.ballInitialSpeed = ballInitialSpeedSlider.getValue();
-                ballInitialSpeedNumber.setText(Float.toString(ballInitialSpeedSlider.getValue()));
+                ballInitialSpeedNumber.setText(Integer.toString((int)ballInitialSpeedSlider.getValue()));
+            }
+        });
+        ballSpeedIncreaseSlider.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                options.ballSpeedIncrease = ballSpeedIncreaseSlider.getValue();
+                ballSpeedIncreaseNumber.setText(Integer.toString((int)ballSpeedIncreaseSlider.getValue()));
             }
         });
         buttonBackOptions.addListener(new ClickListener() {
@@ -192,11 +202,16 @@ public class MenuScreen implements Screen {
             }
         });
 
+        int secondColWidth = 500, sliderPadding = 25, thirdColWidth = 50;
         optionsMenu.add(ballLabel).colspan(3);
         optionsMenu.row();
         optionsMenu.add(ballInitialSpeedLabel);
-        optionsMenu.add(ballInitialSpeedSlider).width(500).pad(25).fillX();
-        optionsMenu.add(ballInitialSpeedNumber).width(200);
+        optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).pad(sliderPadding).fillX();
+        optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth);
+        optionsMenu.row();
+        optionsMenu.add(ballSpeedIncreaseLabel);
+        optionsMenu.add(ballSpeedIncreaseSlider).width(secondColWidth).pad(sliderPadding).fillX();
+        optionsMenu.add(ballSpeedIncreaseNumber).width(thirdColWidth);
         optionsMenu.row();
         optionsMenu.add(buttonBackOptions).colspan(3);
 
