@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import objects.Wall;
 import objects.paddles.AIPaddle;
 import objects.Ball;
 import objects.paddles.Paddle;
@@ -69,11 +70,21 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
             ((AIPaddle) paddleOne).randomizeOffset();
         }
 
-        //if collision is between paddle and ball, and paddleTwo is null, meaning it's wall mode, score
-        if ((objectA instanceof Ball && objectB == paddleOne || objectA == paddleOne && objectB instanceof Ball) &&
-                paddleTwo == null) {
+        //if it's survival mode, and collision is between paddle and ball, score.
+        if (screen.getMode() == PlayScreen.Mode.SURVIVAL && (objectA instanceof Ball && objectB == paddleOne || objectA == paddleOne && objectB instanceof Ball)) {
 		    screen.score("bot");
         }
+
+        if(screen.getMode() == PlayScreen.Mode.PRACTICE){
+			if(objectA instanceof Ball && objectB instanceof Wall && ((Wall) objectB).getTexture() != null) {
+				((Wall) objectB).needsNewLocation(true);
+				screen.score("bot");
+			}
+			else if (objectA instanceof Wall && objectB instanceof Ball && ((Wall) objectA).getTexture() != null) {
+				((Wall) objectA).needsNewLocation(true);
+				screen.score("bot");
+			}
+		}
 	}
 
 	@Override

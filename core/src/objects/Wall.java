@@ -1,13 +1,20 @@
 package objects;
 
+import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.PowerPong;
+import screens.PlayScreen;
+
+import java.util.Random;
 
 public class Wall {
     protected Texture texture;
     protected Body body;
+
+    private boolean needsNewLocation =  false;
 
     //constructor for invisible wall of specified size
     //pass angle as degrees
@@ -63,6 +70,17 @@ public class Wall {
         shape.dispose();
     }
 
+    public void resetLocation() {
+        body.setTransform(0, 1100 / PowerPong.PPM, 0);
+    }
+
+    public void randomizeLocation(){
+        Random rand = new Random();
+        float x = (rand.nextInt((int)(PowerPong.NATIVE_WIDTH / PowerPong.PPM / 2 - -PowerPong.NATIVE_WIDTH / PowerPong.PPM / 2) + 1) + -PowerPong.NATIVE_WIDTH / PowerPong.PPM / 2);
+        body.setTransform(x, 1100 / PowerPong.PPM, 0);
+        this.needsNewLocation(false);
+    }
+
     //DO NOT CALL DRAW ON INVISIBLE WALLS, IT WILL THROW NULLPOINTEREXCEPTION
     public void draw(SpriteBatch sb) {
         sb.draw(texture,
@@ -70,6 +88,14 @@ public class Wall {
                 body.getPosition().y - texture.getHeight() / 2 / PowerPong.PPM,
                 texture.getWidth() / PowerPong.PPM,
                 texture.getHeight() / PowerPong.PPM);
+    }
+
+    public boolean needsNewLocation(){ return needsNewLocation; }
+
+    public void needsNewLocation(boolean bool) { needsNewLocation = bool; }
+
+    public Texture getTexture() {
+        return texture;
     }
 
     public void dispose() {

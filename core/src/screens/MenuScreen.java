@@ -51,6 +51,10 @@ public class MenuScreen implements Screen {
         final TextButton buttonAIBattle = new TextButton("AI BATTLE", game.skin);
         modes.add(buttonAIBattle).fillX().height(button1P.getHeight());
         modes.row();
+        //Practice
+        final TextButton buttonPractice = new TextButton("PRACTICE", game.skin);
+        modes.add(buttonPractice).fillX().height(button1P.getHeight());
+        modes.row();
         final TextButton buttonWall = new TextButton("SURVIVAL", game.skin);
         modes.add(buttonWall).fillX().height(button1P.getHeight());
         modes.row();
@@ -72,6 +76,12 @@ public class MenuScreen implements Screen {
         button2P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 mode = Mode.TWOPLAYER;
+                startPlay(PlayScreen.AI.NONE);
+            }
+        });
+        buttonPractice.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                mode = Mode.PRACTICE;
                 startPlay(PlayScreen.AI.NONE);
             }
         });

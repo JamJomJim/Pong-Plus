@@ -28,7 +28,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public enum Mode {//different modes of play
-        ONEPLAYER, TWOPLAYER, SURVIVAL, AIBATTLE, MENUBATTLE
+        ONEPLAYER, TWOPLAYER, SURVIVAL, PRACTICE, AIBATTLE, MENUBATTLE
     }
 
     protected Mode mode;
@@ -39,6 +39,8 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected Ball ball;
 
     protected Paddle p1, p2;
+
+    private Wall practiceWall;
 
     protected int topScore = 0;
     protected int botScore = 0;
@@ -77,6 +79,10 @@ public class PlayScreen extends InputAdapter implements Screen {
         if (mode == Mode.SURVIVAL)
             new Wall(0, (PowerPong.NATIVE_HEIGHT + 1) / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
 
+        //Creates the initial practice wall.
+        if(mode == Mode.PRACTICE)
+            practiceWall = new Wall("ClassicPaddle.png",0, PADDLE_OFFSET / PowerPong.PPM, 0, world);
+
         //create the ball
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
 
@@ -89,7 +95,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         //create p2 depending on the mode
         if (mode == Mode.TWOPLAYER)
             p2 = new PlayerPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, worldCam);
-        else if (mode == Mode.SURVIVAL)
+        else if (mode == Mode.SURVIVAL || mode == Mode.PRACTICE)
             p2 = null;
         else
             p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
@@ -186,6 +192,10 @@ public class PlayScreen extends InputAdapter implements Screen {
             topScoreText.setText(Integer.toString(topScore));
             botScoreText.setText(Integer.toString(botScore));
         }
+        //randomizes the location of the practice wall when needed.
+        if(mode == Mode.PRACTICE && practiceWall.needsNewLocation())
+            practiceWall.randomizeLocation();
+
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw(); //draw the stage (ui elements)
@@ -194,8 +204,12 @@ public class PlayScreen extends InputAdapter implements Screen {
         game.batch.setProjectionMatrix(worldCam.combined); //have to set this every time because when the stage is drawn, it sets it to a different one
         game.batch.begin();
         p1.draw(game.batch);
-        if (mode != Mode.SURVIVAL)
+        if (mode != Mode.SURVIVAL && mode != Mode.PRACTICE)
             p2.draw(game.batch);
+
+        if (mode == Mode.PRACTICE)
+            practiceWall.draw(game.batch);
+
         ball.draw(game.batch);
         game.batch.end();
 
@@ -217,7 +231,18 @@ public class PlayScreen extends InputAdapter implements Screen {
                 botScore = 0;
             }
             else return;
-        } //this is the stuff that happens if it's not survival mode
+        }
+        else if (mode == Mode.PRACTICE) {
+            if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM
+                    || body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+                if (botScore > topScore)
+                    topScore = botScore;
+                direction = -1;
+                botScore = 0;
+                practiceWall.resetLocation();
+            }
+            else return;
+        }//this is the stuff that happens if it's not survival mode
         else if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
             score("top");
             direction = -1;
@@ -318,7 +343,6 @@ public class PlayScreen extends InputAdapter implements Screen {
             p2.dispose();
     }
 
-    public Mode getMode() {
-        return mode;
-    }
+    public Mode getMode() { return mode; }
+
 }
