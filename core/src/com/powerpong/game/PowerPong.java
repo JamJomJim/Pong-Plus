@@ -30,7 +30,7 @@ public class PowerPong extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 
-		//SKIN STUFF****************************************************************************************************
+		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();
 
 		//add the menu background image to the skin, under the name background
