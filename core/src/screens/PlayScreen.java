@@ -14,6 +14,8 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.ContactListener;
 import com.powerpong.game.Options;
+import com.powerpong.game.Options.Mode;
+import com.powerpong.game.Options.AI;
 import com.powerpong.game.PowerPong;
 import objects.*;
 import objects.paddles.AIPaddle;
@@ -24,16 +26,9 @@ public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
     static final int PADDLE_OFFSET = 1100; //vertical distance from the center of the screen that the paddles are set at
 
-    public enum AI {//different AI difficulties
-        NONE, EASY, MEDIUM, HARD, SKYNET, CUSTOM
-    }
-
-    public enum Mode {//different modes of play
-        ONEPLAYER, TWOPLAYER, SURVIVAL, AIBATTLE, MENUBATTLE
-    }
-
-    protected Mode mode;
+    public Mode mode;
     public Options options;
+    public AI ai;
 
     //ball stuff
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
@@ -57,9 +52,10 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected Table score, menu;
 
 
-    protected PlayScreen(PowerPong game, Mode mode, final AI ai, Options options) {
+    protected PlayScreen(PowerPong game, Options options) {
         this.game = game;
-        this.mode = mode;
+        this.mode = options.mode;
+        this.ai = options.ai;
         this.options = options;
 
         //GAME WORLD STUFF**********************************************************************************************
@@ -83,12 +79,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, world, options);
 
         //create p1 depending on the mode
-        if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE) {
-            if (ai == AI.CUSTOM)
-                p1 = new AIPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
-            else
-                p1 = new AIPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
-        }
+        if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
+            p1 = new AIPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
         else
             p1 = new PlayerPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam);
 
@@ -97,10 +89,8 @@ public class PlayScreen extends InputAdapter implements Screen {
             p2 = new PlayerPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, worldCam);
         else if (mode == Mode.SURVIVAL)
             p2 = null;
-        else if (ai == AI.CUSTOM)
-            p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
         else
-            p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
+            p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
 
         world.setContactListener(new ContactListener(p1, p2, this, game));
 

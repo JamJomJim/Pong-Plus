@@ -11,12 +11,11 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.Options;
+import com.powerpong.game.Options.AI;
+import com.powerpong.game.Options.Mode;
 import com.powerpong.game.PowerPong;
-import screens.PlayScreen.Mode;
-import screens.PlayScreen.AI;
 
 public class MenuScreen implements Screen {
-    public static Mode mode;
 	private Stage stage;
 	private Table table;
 	private Table modes, difficulties, optionsMenu;
@@ -67,26 +66,26 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(button1P.isChecked());
                 modes.setVisible(false);
-                mode = Mode.ONEPLAYER;
+                options.mode = Mode.ONEPLAYER;
             }
         });
         button2P.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                mode = Mode.TWOPLAYER;
-                startPlay(PlayScreen.AI.NONE);
+                options.mode = Mode.TWOPLAYER;
+                startPlay();
             }
         });
         buttonWall.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                mode = Mode.SURVIVAL;
-                startPlay(PlayScreen.AI.NONE);
+                options.mode = Mode.SURVIVAL;
+                startPlay();
             }
         });
         buttonAIBattle.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(buttonAIBattle.isChecked());
                 modes.setVisible(false);
-                mode = Mode.AIBATTLE;
+                options.mode = Mode.AIBATTLE;
             }
         });
         buttonOptions.addListener(new ClickListener() {
@@ -118,27 +117,32 @@ public class MenuScreen implements Screen {
         difficulties.add(buttonBack).fillX().height(button1P.getHeight());
         buttonEasy.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(AI.EASY);
+                options.ai = AI.EASY;
+                startPlay();
             }
         });
         buttonMedium.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(AI.MEDIUM);
+                options.ai = AI.MEDIUM;
+                startPlay();
             }
         });
         buttonHard.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(AI.HARD);
+                options.ai = AI.HARD;
+                startPlay();
             }
         });
         buttonSkynet.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(AI.SKYNET);
+                options.ai = AI.SKYNET;
+                startPlay();
             }
         });
         buttonCustom.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                startPlay(AI.CUSTOM);
+                options.ai = AI.CUSTOM;
+                startPlay();
             }
         });
         buttonBack.addListener(new ClickListener() {
@@ -183,7 +187,7 @@ public class MenuScreen implements Screen {
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
         menu.setY(700);
 
-        ai = new PlayScreen(game, Mode.MENUBATTLE, AI.CUSTOM, new Options(5, 0, 60, 5, 3, false));
+        ai = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 5, 0, 60, 5, 3, false));
         Gdx.input.setInputProcessor(stage);
 	}
 
@@ -227,9 +231,9 @@ public class MenuScreen implements Screen {
 		stage.dispose();
 	}
 
-	public void startPlay(PlayScreen.AI ai) {
+	public void startPlay() {
         dispose();
-        game.setScreen(new PlayScreen(game, mode, ai, options));
+        game.setScreen(new PlayScreen(game, options));
     }
 
 }

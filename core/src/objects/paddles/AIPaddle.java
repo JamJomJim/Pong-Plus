@@ -14,11 +14,12 @@ public class AIPaddle extends Paddle {
     private Ball ball;
     private Vector2 prevVel;
 
-    public AIPaddle(String textureName, float x, float y, World world, Ball ball, PlayScreen.AI difficulty) {
+    //constructor for custom offset and movespeed
+    public AIPaddle(String textureName, float x, float y, World world, Ball ball, Options options) {
         super(textureName, x, y, world);
         this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
         this.ball = ball;
-        switch (difficulty) {
+        switch (options.ai) {
             case EASY:
                 maxOffset = 0;
                 movespeed = 2;
@@ -35,16 +36,10 @@ public class AIPaddle extends Paddle {
                 maxOffset = texture.getWidth() / 2;
                 movespeed = 15;
                 break;
+            case CUSTOM:
+                maxOffset = texture.getWidth() / options.aiOffset;
+                movespeed = options.aiMovespeed;
         }
-    }
-
-    //constructor for custom offset and movespeed
-    public AIPaddle(String textureName, float x, float y, World world, Ball ball, Options options) {
-        super(textureName, x, y, world);
-        this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
-        this.ball = ball;
-        this.maxOffset = texture.getWidth() / options.aiOffset;
-        this.movespeed = options.aiMovespeed;
     }
 
     public void update(float dt) {
