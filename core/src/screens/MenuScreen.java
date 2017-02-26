@@ -142,26 +142,34 @@ public class MenuScreen implements Screen {
         buttonBack.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(false);
-                options.setVisible(false);
                 modes.setVisible(true);
                 button1P.setChecked(false);
                 buttonAIBattle.setChecked(false);
                 buttonBack.setChecked(false);
-                buttonOptions.setChecked(false);
             }
         });
 
         options = new Table();
+        options.setVisible(false);
         final Slider ballInitialSpeed = new Slider(1, 10, 1, false, game.skin);
         ballInitialSpeed.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 finalGame.options.ballInitialSpeed = ballInitialSpeed.getValue();
             }
         });
+        final TextButton buttonBackOptions = new TextButton("BACK", game.skin);
+        buttonBackOptions.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                options.setVisible(false);
+                modes.setVisible(true);
+                buttonBackOptions.setChecked(false);
+                buttonOptions.setChecked(false);
+            }
+        });
 
         options.add(ballInitialSpeed);
         options.row();
-        options.add(buttonBack);
+        options.add(buttonBackOptions);
 
 
 
