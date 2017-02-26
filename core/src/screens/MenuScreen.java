@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.powerpong.game.Options;
 import com.powerpong.game.Options.AI;
 import com.powerpong.game.Options.Mode;
@@ -26,7 +27,7 @@ public class MenuScreen implements Screen {
 	public MenuScreen(PowerPong game, Options opt) {
 		this.game = game;
 		this.options = opt;
-		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
+		stage = new Stage(new StretchViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
 		stage.setDebugAll(true);
         Gdx.input.setCatchBackKey(false);
