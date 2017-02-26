@@ -81,8 +81,8 @@ public class MenuScreen implements Screen {
         });
         buttonPractice.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                mode = Mode.PRACTICE;
-                startPlay(PlayScreen.AI.NONE);
+                options.mode = Mode.PRACTICE;
+                startPlay();
             }
         });
         buttonWall.addListener(new ChangeListener() {

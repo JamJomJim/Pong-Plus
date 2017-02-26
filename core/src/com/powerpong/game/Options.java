@@ -6,7 +6,7 @@ public class Options {
     }
 
     public enum Mode {//different modes of play
-        ONEPLAYER, TWOPLAYER, SURVIVAL, AIBATTLE, MENUBATTLE
+        ONEPLAYER, TWOPLAYER, SURVIVAL, PRACTICE, AIBATTLE, MENUBATTLE
     }
 
     public AI ai;
