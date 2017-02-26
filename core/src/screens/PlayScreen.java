@@ -96,7 +96,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         else
             p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
 
-        world.setContactListener(new ContactListener(p1, p2, this));
+        world.setContactListener(new ContactListener(p1, p2, this, game));
 
         if (p1 instanceof PlayerPaddle)
             ball.pause(); //ball starts paused
