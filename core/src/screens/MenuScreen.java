@@ -168,10 +168,11 @@ public class MenuScreen implements Screen {
         //Options menu stuff
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
-        final Label ballLabel = new Label("Ball", game.skin, "options header");
+        final Label ballLabel = new Label("BALL", game.skin, "options header");
         final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "options");
         final Slider ballInitialSpeedSlider = new Slider(1, 10, 1, false, game.skin);
         ballInitialSpeedSlider.setWidth(500);
+        ballInitialSpeedSlider.setHeight(50);
         ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
         final Label ballInitialSpeedNumber = new Label(Float.toString(ballInitialSpeedSlider.getValue()), game.skin, "options");
 

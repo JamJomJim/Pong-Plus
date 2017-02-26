@@ -89,7 +89,7 @@ public class PowerPong extends Game {
         //Slider style
         SliderStyle sliderStyle = new SliderStyle();
         sliderStyle.knob = new NinePatchDrawable(new NinePatch(new Texture("skin stuff/slider-knob-square.png")));
-        sliderStyle.background = new NinePatchDrawable(new NinePatch(new Texture("skin stuff/slider.9.png")));
+        sliderStyle.background = new NinePatchDrawable(new NinePatch(new Texture("skin stuff/slider_horizontal.9.png")));
         skin.add("default-horizontal", sliderStyle);
 
 
