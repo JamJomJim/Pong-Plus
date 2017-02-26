@@ -4,14 +4,17 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Label;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import screens.*;
 
 public class PowerPong extends Game {
@@ -67,6 +70,12 @@ public class PowerPong extends Game {
         labelStyle.font = skin.getFont("pixely");
         labelStyle.fontColor = Color.WHITE;
         skin.add("paused", labelStyle);
+
+        //Slider style
+        SliderStyle sliderStyle = new SliderStyle();
+        sliderStyle.knob = new NinePatchDrawable(new NinePatch(new Texture("skin stuff/slider-knob.png")));
+        sliderStyle.background = new NinePatchDrawable(new NinePatch(new Texture("skin stuff/slider.9.png")));
+        skin.add("default-horizontal", sliderStyle);
 
 
         this.setScreen(new MenuScreen(this));

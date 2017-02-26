@@ -18,18 +18,19 @@ public class MenuScreen implements Screen {
     public static Mode mode;
 	private Stage stage;
 	private Table table;
-	private Table modes, difficulties;
+	private Table modes, difficulties, options;
 	private PowerPong game;
 	private PlayScreen ai;
 
 	public MenuScreen(PowerPong game) {
+		final PowerPong finalGame = game;
 		this.game = game;
 		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
-		//stage.setDebugAll(true);
+		stage.setDebugAll(true);
         Gdx.input.setCatchBackKey(false);
 
-		// Create a table that fills the screen. Everything else will go inside this table.
+		// Create a table that fills the screen
 		table = new Table();
 		table.setSkin(game.skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
 		//table.setBackground("background");
@@ -37,7 +38,7 @@ public class MenuScreen implements Screen {
 		stage.addActor(table);
 
 
-        //stuff for the modes VerticalGroup; gamemodes, options, etc
+        //stuff for the different modes
         modes = new Table();
         // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
         final TextButton button1P = new TextButton("ONE PLAYER", game.skin);
@@ -63,8 +64,6 @@ public class MenuScreen implements Screen {
         button1P.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(button1P.isChecked());
-                if (buttonAIBattle.isChecked())
-                    buttonAIBattle.setChecked(false);
                 modes.setVisible(false);
                 mode = Mode.ONEPLAYER;
             }
@@ -84,10 +83,14 @@ public class MenuScreen implements Screen {
         buttonAIBattle.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(buttonAIBattle.isChecked());
-                if (button1P.isChecked())
-                    button1P.setChecked(false);
                 modes.setVisible(false);
                 mode = Mode.AIBATTLE;
+            }
+        });
+        buttonOptions.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                options.setVisible(buttonOptions.isChecked());
+                modes.setVisible(false);
             }
         });
 
@@ -139,16 +142,33 @@ public class MenuScreen implements Screen {
         buttonBack.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(false);
+                options.setVisible(false);
                 modes.setVisible(true);
                 button1P.setChecked(false);
                 buttonAIBattle.setChecked(false);
                 buttonBack.setChecked(false);
+                buttonOptions.setChecked(false);
             }
         });
+
+        options = new Table();
+        final Slider ballInitialSpeed = new Slider(1, 10, 1, false, game.skin);
+        ballInitialSpeed.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                finalGame.options.ballInitialSpeed = ballInitialSpeed.getValue();
+            }
+        });
+
+        options.add(ballInitialSpeed);
+        options.row();
+        options.add(buttonBack);
+
+
 
         Stack menu = new Stack();
         menu.add(modes);
         menu.add(difficulties);
+        menu.add(options);
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
         menu.setY(700);
