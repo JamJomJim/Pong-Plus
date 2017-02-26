@@ -95,7 +95,6 @@ public class PlayScreen extends InputAdapter implements Screen {
             while(x == 0) {
                 x = (float)(Math.random() * 5 - 2.5) / PowerPong.PPM;
             }
-            System.out.println(x);
             p1 = new PlayerPaddle("ClassicPaddle.png", x, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam);
         }
         else
