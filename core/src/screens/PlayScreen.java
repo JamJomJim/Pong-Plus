@@ -317,4 +317,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         if (p2 != null)
             p2.dispose();
     }
+
+    public Mode getMode() {
+        return mode;
+    }
 }
