@@ -1,5 +1,7 @@
 package com.powerpong.game;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import objects.paddles.AIPaddle;
@@ -13,18 +15,20 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	private Vector2 ballVel;
 	private PlayScreen screen;
 
-    public ContactListener(Paddle paddleOne, Paddle paddleTwo) {
-    	this.paddleOne = paddleOne;
-    	this.paddleTwo = paddleTwo;
-    	ballVel = new Vector2();
-	}
+	private Sound botSound, topSound;
+	private float pitch;
+
 
     public ContactListener(Paddle paddleOne, Paddle paddleTwo, PlayScreen screen) {
         this.paddleOne = paddleOne;
         this.paddleTwo = paddleTwo;
         this.screen = screen;
         ballVel = new Vector2();
-    }
+
+        botSound = Gdx.audio.newSound(Gdx.files.internal("sounds/botboop.wav")); //TODO: dispose this later
+        topSound = Gdx.audio.newSound(Gdx.files.internal("sounds/topboop.wav")); //TODO: dispose this later
+        pitch = 1f;
+	}
 
 	@Override
 	public void beginContact(Contact contact) {
@@ -33,15 +37,23 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
 
-		//if the collision is between a paddle and the ball, rebound the ball appropriately
+		//if the collision is between a paddle and the ball and the ball is on the "inside" of the paddle, rebound the ball appropriately
 		if (objectA instanceof Paddle && objectB instanceof Ball &&
                 Math.abs(bodyB.getPosition().y) < Math.abs(bodyA.getPosition().y)) {
 			((Ball) objectB).paddleRebound((Paddle )objectA);
 			ballVel.set(bodyB.getLinearVelocity());
+			if (objectA == paddleOne)
+			    botSound.play();
+			else
+			    topSound.play();
 		} else if (objectB instanceof Paddle && objectA instanceof Ball &&
                 Math.abs(bodyA.getPosition().y) < Math.abs(bodyB.getPosition().y)) {
 			((Ball) objectA).paddleRebound((Paddle )objectB);
             ballVel.set(bodyA.getLinearVelocity());
+            if (objectB == paddleOne)
+                botSound.play();
+            else
+                topSound.play();
 		}
 
 		//Sets separate offsets for the AI whenever a different paddle is hit.
