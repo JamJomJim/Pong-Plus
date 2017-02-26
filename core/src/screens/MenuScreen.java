@@ -26,13 +26,13 @@ public class MenuScreen implements Screen {
 		this.game = game;
 		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
-		stage.setDebugAll(true);
+		//stage.setDebugAll(true);
         Gdx.input.setCatchBackKey(false);
 
 		// Create a table that fills the screen. Everything else will go inside this table.
 		table = new Table();
 		table.setSkin(game.skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
-		table.setBackground("background");
+		//table.setBackground("background");
 		table.setFillParent(true);
 		stage.addActor(table);
 
@@ -40,21 +40,21 @@ public class MenuScreen implements Screen {
         //stuff for the modes VerticalGroup; gamemodes, options, etc
         modes = new Table();
         // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
-        final TextButton button1P = new TextButton("One Player", game.skin);
+        final TextButton button1P = new TextButton("ONE PLAYER", game.skin);
         button1P.setHeight(175);
         button1P.setWidth(button1P.getPrefWidth() + 50);
         modes.add(button1P).width(button1P.getWidth()).height(button1P.getHeight());
         modes.row();
-        final TextButton button2P = new TextButton("Two Player", game.skin);
+        final TextButton button2P = new TextButton("TWO PLAYER", game.skin);
         modes.add(button2P).fillX().height(button1P.getHeight());
         modes.row();
-        final TextButton buttonAIBattle = new TextButton("AI Battle", game.skin);
+        final TextButton buttonAIBattle = new TextButton("AI BATTLE", game.skin);
         modes.add(buttonAIBattle).fillX().height(button1P.getHeight());
         modes.row();
-        final TextButton buttonWall = new TextButton("Survival", game.skin);
+        final TextButton buttonWall = new TextButton("SURVIVAL", game.skin);
         modes.add(buttonWall).fillX().height(button1P.getHeight());
         modes.row();
-        final TextButton buttonOptions = new TextButton("Options", game.skin);
+        final TextButton buttonOptions = new TextButton("OPTIONS", game.skin);
         modes.add(buttonOptions).fillX().height(button1P.getHeight());
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
@@ -94,19 +94,19 @@ public class MenuScreen implements Screen {
         //difficulties stuff; ai difficulties
         difficulties = new Table();
         difficulties.setVisible(false);
-        final TextButton buttonEasy = new TextButton("Easy", game.skin);
+        final TextButton buttonEasy = new TextButton("EASY", game.skin);
         difficulties.add(buttonEasy).width(button1P.getWidth()).height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonMedium = new TextButton("Medium", game.skin);
+        final TextButton buttonMedium = new TextButton("MEDIUM", game.skin);
         difficulties.add(buttonMedium).fillX().height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonHard = new TextButton("Hard", game.skin);
+        final TextButton buttonHard = new TextButton("HARD", game.skin);
         difficulties.add(buttonHard).fillX().height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonSkynet = new TextButton("Skynet", game.skin);
+        final TextButton buttonSkynet = new TextButton("SKYNET", game.skin);
         difficulties.add(buttonSkynet).fillX().height(button1P.getHeight());
         difficulties.row();
-        final TextButton buttonBack = new TextButton("Back", game.skin);
+        final TextButton buttonBack = new TextButton("BACK", game.skin);
         difficulties.add(buttonBack).fillX().height(button1P.getHeight());
         buttonEasy.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {

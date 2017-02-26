@@ -36,7 +36,7 @@ public class PowerPong extends Game {
 		//add the menu background image to the skin, under the name background
 		skin.add("background", new Texture("MenuBackground.png"));
 
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/ARCADECLASSIC.TTF"));
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/square_pixel-7.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 175;
 		skin.add("pixely", generator.generateFont(parameter));

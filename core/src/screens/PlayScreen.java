@@ -157,7 +157,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             menu.setY(PowerPong.NATIVE_HEIGHT / 2);
         }
         //create the label that's displayed during pause
-        pausedText = new Label("Paused", game.skin, "paused");
+        pausedText = new Label("PAUSED", game.skin, "paused");
         pausedText.setVisible(false);
         stage.addActor(pausedText);
         pausedText.setX(PowerPong.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);
@@ -256,7 +256,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
-            if (menu.isVisible())
+            if (menu != null && menu.isVisible())
                 returnToMenu();
             if (!pausedText.isVisible()) {
                 ball.pause();
