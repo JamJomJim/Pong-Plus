@@ -25,10 +25,12 @@ public class PowerPong extends Game {
 
 	public SpriteBatch batch;
 	public Skin skin;
+	public Options options;
 
 	@Override
 	public void create () {
 		batch = new SpriteBatch();
+		options = new Options();
 
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();

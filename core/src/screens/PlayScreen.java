@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.powerpong.game.ContactListener;
+import com.powerpong.game.Options;
 import com.powerpong.game.PowerPong;
 import objects.*;
 import objects.paddles.AIPaddle;
@@ -24,7 +25,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     static final int PADDLE_OFFSET = 1100; //vertical distance from the center of the screen that the paddles are set at
 
     public enum AI {//different AI difficulties
-        NONE, EASY, MEDIUM, HARD, SKYNET
+        NONE, EASY, MEDIUM, HARD, SKYNET, CUSTOM
     }
 
     public enum Mode {//different modes of play
@@ -35,7 +36,6 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     //ball stuff
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
-    protected float BALL_SPEED = 3;
     protected Ball ball;
 
     protected Paddle p1, p2;
@@ -78,7 +78,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             new Wall(0, (PowerPong.NATIVE_HEIGHT + 1) / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
 
         //create the ball
-        ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
+        ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, world, game.options);
 
         //create p1 depending on the mode
         if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
@@ -91,6 +91,8 @@ public class PlayScreen extends InputAdapter implements Screen {
             p2 = new PlayerPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, worldCam);
         else if (mode == Mode.SURVIVAL)
             p2 = null;
+        else if (ai == AI.CUSTOM)
+            p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, game.options.aiOffset, game.options.aiMovespeed);
         else
             p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
 

@@ -7,7 +7,7 @@ import objects.Ball;
 import screens.PlayScreen;
 
 public class AIPaddle extends Paddle {
-    private static float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
+    private float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
     private float offset; //current offset for this specific paddle.
 
     private Ball ball;
@@ -35,6 +35,15 @@ public class AIPaddle extends Paddle {
                 movespeed = 15;
                 break;
         }
+    }
+
+    //constructor for custom offset and movespeed
+    public AIPaddle(String textureName, float x, float y, World world, Ball ball, float maxOffset, float movespeed) {
+        super(textureName, x, y, world);
+        this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
+        this.ball = ball;
+        this.maxOffset = maxOffset;
+        this.movespeed = movespeed;
     }
 
     public void update(float dt) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.powerpong.game.Options;
 import com.powerpong.game.PowerPong;
 import screens.PlayScreen.Mode;
 import screens.PlayScreen.AI;
@@ -106,6 +107,9 @@ public class MenuScreen implements Screen {
         final TextButton buttonSkynet = new TextButton("SKYNET", game.skin);
         difficulties.add(buttonSkynet).fillX().height(button1P.getHeight());
         difficulties.row();
+        final TextButton buttonCustom = new TextButton("CUSTOM", game.skin);
+        difficulties.add(buttonCustom).fillX().height(button1P.getHeight());
+        difficulties.row();
         final TextButton buttonBack = new TextButton("BACK", game.skin);
         difficulties.add(buttonBack).fillX().height(button1P.getHeight());
         buttonEasy.addListener(new ChangeListener() {
@@ -126,6 +130,11 @@ public class MenuScreen implements Screen {
         buttonSkynet.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 startPlay(AI.SKYNET);
+            }
+        });
+        buttonCustom.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                startPlay(AI.CUSTOM);
             }
         });
         buttonBack.addListener(new ClickListener() {
