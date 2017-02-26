@@ -70,10 +70,6 @@ public class Wall {
         shape.dispose();
     }
 
-    public void resetLocation() {
-        body.setTransform(0, 1100 / PowerPong.PPM, 0);
-    }
-
     public void randomizeLocation(){
         Random rand = new Random();
         float max, min;

@@ -106,7 +106,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         else
             p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
 
-        world.setContactListener(new ContactListener(p1, p2, this, game));
+        world.setContactListener(new ContactListener(p1, p2, this));
 
         if (p1 instanceof PlayerPaddle)
             ball.pause(); //ball starts paused
@@ -245,7 +245,7 @@ public class PlayScreen extends InputAdapter implements Screen {
                     topScore = botScore;
                 direction = -1;
                 botScore = 0;
-                practiceWall.resetLocation();
+                practiceWall.randomizeLocation();
             }
             else return;
         }//this is the stuff that happens if it's not survival mode
