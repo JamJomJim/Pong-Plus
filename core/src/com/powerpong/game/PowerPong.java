@@ -43,10 +43,12 @@ public class PowerPong extends Game {
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 130;
 		skin.add("pixely", generator.generateFont(parameter));
+		parameter.size = 75;
+        skin.add("options", generator.generateFont(parameter));
 
-        FreeTypeFontGenerator generator2 = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
+        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
         parameter.size = 130;
-        skin.add("Arial", generator2.generateFont(parameter));
+        skin.add("Arial", generator.generateFont(parameter));
 
         //default TextButtonStyle
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -57,8 +59,14 @@ public class PowerPong extends Game {
 		textButtonStyle.checkedFontColor = Color.GRAY;
 		skin.add("default", textButtonStyle);
 
+		//LabelStyle for the optionsMenu text
+		LabelStyle labelStyle = new LabelStyle();
+		labelStyle.font = skin.getFont("options");
+		labelStyle.fontColor = Color.WHITE;
+		skin.add("options", labelStyle);
+
 		//LabelStyle for the score text
-        LabelStyle labelStyle = new LabelStyle();
+        labelStyle = new LabelStyle();
         labelStyle.font = skin.getFont("Arial");
         labelStyle.fontColor = Color.WHITE;
         skin.add("score", labelStyle);

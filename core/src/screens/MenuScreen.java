@@ -165,12 +165,15 @@ public class MenuScreen implements Screen {
             }
         });
 
+        //Options menu stuff
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
-        final Slider ballInitialSpeed = new Slider(1, 10, 1, false, game.skin);
-        ballInitialSpeed.addListener(new ChangeListener() {
+        final Label ballInitialSpeedLabel = new Label("Initial\nball speed", game.skin, "options");
+        final Slider ballInitialSpeedSlider = new Slider(1, 10, 1, false, game.skin);
+        ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
+        ballInitialSpeedSlider.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                options.ballInitialSpeed = ballInitialSpeed.getValue();
+                options.ballInitialSpeed = ballInitialSpeedSlider.getValue();
             }
         });
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin);
@@ -183,7 +186,8 @@ public class MenuScreen implements Screen {
             }
         });
 
-        optionsMenu.add(ballInitialSpeed);
+        optionsMenu.add(ballInitialSpeedLabel);
+        optionsMenu.add(ballInitialSpeedSlider);
         optionsMenu.row();
         optionsMenu.add(buttonBackOptions);
 
