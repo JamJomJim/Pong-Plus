@@ -2,22 +2,24 @@ package objects.paddles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.powerpong.game.Options;
 import com.powerpong.game.PowerPong;
 import objects.Ball;
 import screens.PlayScreen;
 
 public class AIPaddle extends Paddle {
-    private static float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
+    private float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
     private float offset; //current offset for this specific paddle.
 
     private Ball ball;
     private Vector2 prevVel;
 
-    public AIPaddle(String textureName, float x, float y, World world, Ball ball, PlayScreen.AI difficulty) {
+    //constructor for custom offset and movespeed
+    public AIPaddle(String textureName, float x, float y, World world, Ball ball, Options options) {
         super(textureName, x, y, world);
         this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
         this.ball = ball;
-        switch (difficulty) {
+        switch (options.ai) {
             case EASY:
                 maxOffset = 0;
                 movespeed = 2;
@@ -34,6 +36,9 @@ public class AIPaddle extends Paddle {
                 maxOffset = texture.getWidth() / 2;
                 movespeed = 15;
                 break;
+            case CUSTOM:
+                maxOffset = texture.getWidth() / options.aiOffset;
+                movespeed = options.aiMovespeed;
         }
     }
 

@@ -4,13 +4,14 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.powerpong.game.Options;
 import com.powerpong.game.PowerPong;
 import objects.paddles.Paddle;
 import screens.PlayScreen;
 
 public class Ball {
-    private float ANGLE_MULTIPLIER = 60; //Increase the angle of the balls bounce
-    private float SPEED_ADDED = 1.5f; //Increases speed of the ball every bounce in order to make the gameplay speed up
+    private float angleMultiplier;
+    private float speedAdded; //Increases speed of the ball every bounce in order to make the gameplay speed up
 
     protected Texture texture;
     protected Body body;
@@ -18,11 +19,14 @@ public class Ball {
     private boolean paused;
     private Vector2 pausedVel; //for remembering what the ball's vel was before pausing, so it can resume
 
-    public Ball(String textureName, float x, float y, float initialDirection, float initialSpeed, World world) {
+    public Ball(String textureName, float x, float y, float initialDirection, World world, Options options) {
         this.texture = new Texture(textureName);
-        this.initialSpeed = initialSpeed;
         pausedVel = new Vector2();
         paused = false;
+        this.initialSpeed = options.ballInitialSpeed;
+        this.speedAdded = options.ballSpeedIncrease;
+        this.angleMultiplier = options.ballAngleMultiplier;
+
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -61,9 +65,9 @@ public class Ball {
         Body bodyB = paddle.getBody();
         float posDiff = body.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
         int direction = Math.abs(body.getPosition().y) < bodyB.getPosition().y ? -1 : 1; //which direction the ball should travel after rebounding, based on it's position relative to the paddle
-        float reboundAngle = posDiff * ANGLE_MULTIPLIER;
+        float reboundAngle = posDiff * angleMultiplier;
         float curSpeed = (float)Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2)); //calculate the ball's current speed
-        curSpeed += SPEED_ADDED; //increase the speed to speed up the game over time
+        curSpeed += speedAdded; //increase the speed to speed up the game over time
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
         //together, the x and y component have a magnitude equal to that of curSpeed
         body.setLinearVelocity((float) (curSpeed * Math.sin(Math.toRadians(reboundAngle))), (float) (direction * curSpeed * Math.cos(Math.toRadians(reboundAngle))));
