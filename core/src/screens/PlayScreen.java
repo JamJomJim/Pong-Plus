@@ -80,9 +80,10 @@ public class PlayScreen extends InputAdapter implements Screen {
             new Wall(0, (PowerPong.NATIVE_HEIGHT + 1) / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
 
         //Creates the initial practice wall.
-        if(mode == Mode.PRACTICE)
-            practiceWall = new Wall("ClassicPaddle.png",0, PADDLE_OFFSET / PowerPong.PPM, 0, world);
-
+        if(mode == Mode.PRACTICE) {
+            practiceWall = new Wall("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, 0, world);
+            practiceWall.randomizeLocation();
+        }
         //create the ball
         ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, BALL_SPEED, world);
 
