@@ -168,15 +168,20 @@ public class MenuScreen implements Screen {
         //Options menu stuff
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
-        final Label ballInitialSpeedLabel = new Label("Initial\nball speed", game.skin, "options");
+        final Label ballLabel = new Label("Ball", game.skin, "options header");
+        final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "options");
         final Slider ballInitialSpeedSlider = new Slider(1, 10, 1, false, game.skin);
+        ballInitialSpeedSlider.setWidth(500);
         ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
+        final Label ballInitialSpeedNumber = new Label(Float.toString(ballInitialSpeedSlider.getValue()), game.skin, "options");
+
+        final TextButton buttonBackOptions = new TextButton("BACK", game.skin);
         ballInitialSpeedSlider.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 options.ballInitialSpeed = ballInitialSpeedSlider.getValue();
+                ballInitialSpeedNumber.setText(Float.toString(ballInitialSpeedSlider.getValue()));
             }
         });
-        final TextButton buttonBackOptions = new TextButton("BACK", game.skin);
         buttonBackOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 optionsMenu.setVisible(false);
@@ -186,10 +191,13 @@ public class MenuScreen implements Screen {
             }
         });
 
-        optionsMenu.add(ballInitialSpeedLabel);
-        optionsMenu.add(ballInitialSpeedSlider);
+        optionsMenu.add(ballLabel).colspan(3);
         optionsMenu.row();
-        optionsMenu.add(buttonBackOptions);
+        optionsMenu.add(ballInitialSpeedLabel);
+        optionsMenu.add(ballInitialSpeedSlider).width(500).pad(25).fillX();
+        optionsMenu.add(ballInitialSpeedNumber).width(200);
+        optionsMenu.row();
+        optionsMenu.add(buttonBackOptions).colspan(3);
 
 
 

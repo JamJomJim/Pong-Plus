@@ -42,9 +42,12 @@ public class PowerPong extends Game {
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/lilliput steps.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.size = 130;
-		skin.add("pixely", generator.generateFont(parameter));
+		skin.add("main menu", generator.generateFont(parameter));
 		parameter.size = 75;
         skin.add("options", generator.generateFont(parameter));
+        parameter.size = 100;
+        skin.add("options header", generator.generateFont(parameter));
+
 
         generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
         parameter.size = 130;
@@ -52,7 +55,7 @@ public class PowerPong extends Game {
 
         //default TextButtonStyle
 		TextButtonStyle textButtonStyle = new TextButtonStyle();
-		textButtonStyle.font = skin.getFont("pixely");
+		textButtonStyle.font = skin.getFont("main menu");
 		textButtonStyle.fontColor = Color.WHITE;
 		textButtonStyle.overFontColor = Color.GRAY;
 		textButtonStyle.downFontColor = Color.GRAY;
@@ -65,6 +68,12 @@ public class PowerPong extends Game {
 		labelStyle.fontColor = Color.WHITE;
 		skin.add("options", labelStyle);
 
+        //LabelStyle for the optionsMenu headers text
+        labelStyle = new LabelStyle();
+        labelStyle.font = skin.getFont("options header");
+        labelStyle.fontColor = Color.WHITE;
+        skin.add("options header", labelStyle);
+
 		//LabelStyle for the score text
         labelStyle = new LabelStyle();
         labelStyle.font = skin.getFont("Arial");
@@ -73,13 +82,13 @@ public class PowerPong extends Game {
 
         //LabelStyle for the Paused text
         labelStyle = new LabelStyle();
-        labelStyle.font = skin.getFont("pixely");
+        labelStyle.font = skin.getFont("main menu");
         labelStyle.fontColor = Color.WHITE;
         skin.add("paused", labelStyle);
 
         //Slider style
         SliderStyle sliderStyle = new SliderStyle();
-        sliderStyle.knob = new NinePatchDrawable(new NinePatch(new Texture("skin stuff/slider-knob.png")));
+        sliderStyle.knob = new NinePatchDrawable(new NinePatch(new Texture("skin stuff/slider-knob-square.png")));
         sliderStyle.background = new NinePatchDrawable(new NinePatch(new Texture("skin stuff/slider.9.png")));
         skin.add("default-horizontal", sliderStyle);
 
