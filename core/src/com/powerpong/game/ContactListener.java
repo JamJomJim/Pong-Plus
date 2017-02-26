@@ -42,7 +42,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
                 Math.abs(bodyB.getPosition().y) < Math.abs(bodyA.getPosition().y)) {
 			((Ball) objectB).paddleRebound((Paddle )objectA);
             //ballVel.set(bodyB.getLinearVelocity());
-            if (screen.getMode() != PlayScreen.Mode.MENUBATTLE && game.options.soundOn == true) {
+            if (screen.options.soundOn) {
                 if (objectA == paddleOne)
                     botSound.play();
                 else
@@ -52,7 +52,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
                 Math.abs(bodyA.getPosition().y) < Math.abs(bodyB.getPosition().y)) {
 			((Ball) objectA).paddleRebound((Paddle )objectB);
             //ballVel.set(bodyA.getLinearVelocity());
-            if (screen.getMode() != PlayScreen.Mode.MENUBATTLE && game.options.soundOn == true) {
+            if (screen.options.soundOn) {
                 if (objectB == paddleOne)
                     botSound.play();
                 else

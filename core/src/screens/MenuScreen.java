@@ -10,6 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.powerpong.game.Options;
 import com.powerpong.game.PowerPong;
 import screens.PlayScreen.Mode;
 import screens.PlayScreen.AI;
@@ -18,13 +19,14 @@ public class MenuScreen implements Screen {
     public static Mode mode;
 	private Stage stage;
 	private Table table;
-	private Table modes, difficulties, options;
+	private Table modes, difficulties, optionsMenu;
 	private PowerPong game;
 	private PlayScreen ai;
+	private Options options;
 
 	public MenuScreen(PowerPong game) {
-		final PowerPong finalGame = game;
 		this.game = game;
+		options = new Options();
 		stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
 		stage.setDebugAll(true);
@@ -89,7 +91,7 @@ public class MenuScreen implements Screen {
         });
         buttonOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                options.setVisible(buttonOptions.isChecked());
+                optionsMenu.setVisible(buttonOptions.isChecked());
                 modes.setVisible(false);
             }
         });
@@ -149,39 +151,39 @@ public class MenuScreen implements Screen {
             }
         });
 
-        options = new Table();
-        options.setVisible(false);
+        optionsMenu = new Table();
+        optionsMenu.setVisible(false);
         final Slider ballInitialSpeed = new Slider(1, 10, 1, false, game.skin);
         ballInitialSpeed.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
-                finalGame.options.ballInitialSpeed = ballInitialSpeed.getValue();
+                options.ballInitialSpeed = ballInitialSpeed.getValue();
             }
         });
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin);
         buttonBackOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                options.setVisible(false);
+                optionsMenu.setVisible(false);
                 modes.setVisible(true);
                 buttonBackOptions.setChecked(false);
                 buttonOptions.setChecked(false);
             }
         });
 
-        options.add(ballInitialSpeed);
-        options.row();
-        options.add(buttonBackOptions);
+        optionsMenu.add(ballInitialSpeed);
+        optionsMenu.row();
+        optionsMenu.add(buttonBackOptions);
 
 
 
         Stack menu = new Stack();
         menu.add(modes);
         menu.add(difficulties);
-        menu.add(options);
+        menu.add(optionsMenu);
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
         menu.setY(700);
 
-        ai = new PlayScreen(game, Mode.MENUBATTLE, AI.SKYNET);
+        ai = new PlayScreen(game, Mode.MENUBATTLE, AI.CUSTOM, new Options(5, 0, 60, 5, 3, false));
         Gdx.input.setInputProcessor(stage);
 	}
 
@@ -227,7 +229,7 @@ public class MenuScreen implements Screen {
 
 	public void startPlay(PlayScreen.AI ai) {
         dispose();
-        game.setScreen(new PlayScreen(game, mode, ai));
+        game.setScreen(new PlayScreen(game, mode, ai, options));
     }
 
 }

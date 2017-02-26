@@ -16,4 +16,13 @@ public class Options {
 
         soundOn = true;
     }
+
+    public Options(float ballInitialSpeed, float ballSpeedIncrease, float ballAngleMultiplier, float aiMovespeed, float aiOffset, boolean soundOn) {
+        this.ballInitialSpeed = ballInitialSpeed;
+        this.ballSpeedIncrease = ballSpeedIncrease;
+        this.ballAngleMultiplier = ballAngleMultiplier;
+        this.aiMovespeed = aiMovespeed;
+        this.aiOffset = aiOffset;
+        this.soundOn = soundOn;
+    }
 }

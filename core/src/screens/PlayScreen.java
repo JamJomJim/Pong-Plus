@@ -33,6 +33,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     protected Mode mode;
+    public Options options;
 
     //ball stuff
     protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
@@ -56,9 +57,10 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected Table score, menu;
 
 
-    protected PlayScreen(PowerPong game, Mode mode, final AI ai) {
+    protected PlayScreen(PowerPong game, Mode mode, final AI ai, Options options) {
         this.game = game;
         this.mode = mode;
+        this.options = options;
 
         //GAME WORLD STUFF**********************************************************************************************
         //create physics world and contactlistener
@@ -78,11 +80,15 @@ public class PlayScreen extends InputAdapter implements Screen {
             new Wall(0, (PowerPong.NATIVE_HEIGHT + 1) / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
 
         //create the ball
-        ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, world, game.options);
+        ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, world, options);
 
         //create p1 depending on the mode
-        if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
-            p1 = new AIPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
+        if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE) {
+            if (ai == AI.CUSTOM)
+                p1 = new AIPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
+            else
+                p1 = new AIPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
+        }
         else
             p1 = new PlayerPaddle("ClassicPaddle.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam);
 
@@ -92,7 +98,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         else if (mode == Mode.SURVIVAL)
             p2 = null;
         else if (ai == AI.CUSTOM)
-            p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, game.options.aiOffset, game.options.aiMovespeed);
+            p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
         else
             p2 = new AIPaddle("ClassicPaddle.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, ai);
 

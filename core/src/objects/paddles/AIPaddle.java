@@ -2,6 +2,7 @@ package objects.paddles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.powerpong.game.Options;
 import com.powerpong.game.PowerPong;
 import objects.Ball;
 import screens.PlayScreen;
@@ -38,12 +39,12 @@ public class AIPaddle extends Paddle {
     }
 
     //constructor for custom offset and movespeed
-    public AIPaddle(String textureName, float x, float y, World world, Ball ball, float maxOffset, float movespeed) {
+    public AIPaddle(String textureName, float x, float y, World world, Ball ball, Options options) {
         super(textureName, x, y, world);
         this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
         this.ball = ball;
-        this.maxOffset = maxOffset;
-        this.movespeed = movespeed;
+        this.maxOffset = texture.getWidth() / options.aiOffset;
+        this.movespeed = options.aiMovespeed;
     }
 
     public void update(float dt) {
