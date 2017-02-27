@@ -10,7 +10,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.powerpong.game.Options;
 import com.powerpong.game.Options.AI;
@@ -172,6 +171,7 @@ public class MenuScreen implements Screen {
         optionsMenu.setVisible(false);
         final Label ballLabel = new Label("BALL", game.skin, "options header");
         final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "options text");
+        ballInitialSpeedLabel.setAlignment(Align.center);
         final Slider ballInitialSpeedSlider = new Slider(1, 100, 1, false, game.skin);
         ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
         final Label ballInitialSpeedNumber = new Label(Integer.toString((int)ballInitialSpeedSlider.getValue()), game.skin, "options text");
@@ -181,6 +181,21 @@ public class MenuScreen implements Screen {
         final Slider ballSpeedIncreaseSlider = new Slider(0, 10, 1, false, game.skin);
         ballSpeedIncreaseSlider.setValue(options.ballSpeedIncrease);
         final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int)ballSpeedIncreaseSlider.getValue()), game.skin, "options text");
+
+        final Label ballAngleLabel = new Label("REBOUND\nANGLE", game.skin, "options text");
+        ballAngleLabel.setAlignment(Align.center);
+        final Slider ballAngleSlider = new Slider(1, 100, 1, false, game.skin);
+        ballAngleSlider.setValue(options.ballAngleMultiplier);
+        final Label ballAngleNumber = new Label(Integer.toString((int)ballAngleSlider.getValue()), game.skin, "options text");
+
+        final Label aiLabel = new Label("CUSTOM AI", game.skin, "options header");
+        final Label aiSpeedLabel = new Label("MOVE\nSPEED", game.skin, "options text");
+        aiSpeedLabel.setAlignment(Align.center);
+        final Slider aiSpeedSlider = new Slider(1, 100, 1, false, game.skin);
+        aiSpeedSlider.setValue(options.aiMovespeed);
+        final Label aiSpeedNumber = new Label(Integer.toString((int)aiSpeedSlider.getValue()), game.skin, "options text");
+
+        final TextButton buttonResetOptions = new TextButton("DEFAULT", game.skin, "back button");
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "back button");
 
@@ -196,6 +211,27 @@ public class MenuScreen implements Screen {
                 ballSpeedIncreaseNumber.setText(Integer.toString((int)ballSpeedIncreaseSlider.getValue()));
             }
         });
+        ballAngleSlider.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                options.ballAngleMultiplier = ballAngleSlider.getValue();
+                ballAngleNumber.setText(Integer.toString((int)ballAngleSlider.getValue()));
+            }
+        });
+        aiSpeedSlider.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                options.aiMovespeed = aiSpeedSlider.getValue();
+                aiSpeedNumber.setText(Integer.toString((int)aiSpeedSlider.getValue()));
+            }
+        });
+        buttonResetOptions.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                ballInitialSpeedSlider.setValue(3);
+                ballSpeedIncreaseSlider.setValue(1);
+                ballAngleSlider.setValue(60);
+                aiSpeedSlider.setValue(7);
+                buttonResetOptions.setChecked(false);
+            }
+        });
         buttonBackOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 optionsMenu.setVisible(false);
@@ -208,15 +244,27 @@ public class MenuScreen implements Screen {
         int secondColWidth = 500, spacing = 25, thirdColWidth = 50;
         optionsMenu.add(ballLabel).colspan(3);
         optionsMenu.row();
-        optionsMenu.add(ballInitialSpeedLabel).space(spacing, 0, spacing, 0);
-        optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).space(spacing).fillX();
-        optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);;
+        optionsMenu.add(ballInitialSpeedLabel).space(0, 0, spacing, 0);
+        optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).space(0, 0, spacing, 0).fillX();
+        optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth).space(0, 0, spacing, 0);
         optionsMenu.row();
         optionsMenu.add(ballSpeedIncreaseLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(ballSpeedIncreaseSlider).width(secondColWidth).space(spacing).fillX();
-        optionsMenu.add(ballSpeedIncreaseNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);;
+        optionsMenu.add(ballSpeedIncreaseNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         optionsMenu.row();
-        optionsMenu.add(buttonBackOptions).colspan(3);
+        optionsMenu.add(ballAngleLabel).space(spacing, 0, spacing, 0);
+        optionsMenu.add(ballAngleSlider).width(secondColWidth).space(spacing).fillX();
+        optionsMenu.add(ballAngleNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
+        optionsMenu.row();
+        optionsMenu.add(aiLabel).spaceTop(50).colspan(3);
+        optionsMenu.row();
+        optionsMenu.add(aiSpeedLabel).space(0, 0, spacing, 0);
+        optionsMenu.add(aiSpeedSlider).width(secondColWidth).space(0, 0, spacing * 2, 0).fillX();
+        optionsMenu.add(aiSpeedNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        optionsMenu.row();
+        optionsMenu.add(buttonResetOptions).colspan(3).fillX().height(110).padBottom(10);
+        optionsMenu.row();
+        optionsMenu.add(buttonBackOptions).colspan(3).fillX().height(110);
 
 
 

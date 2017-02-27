@@ -115,7 +115,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         //UI STUFF******************************************************************************************************
         stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         //create and add the table that fills the entire screen
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
         Table table = new Table();
         table.setFillParent(true);
         table.right();

@@ -5,7 +5,6 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.powerpong.game.Options;
 import com.powerpong.game.PowerPong;
 import objects.Ball;
-import screens.PlayScreen;
 
 public class AIPaddle extends Paddle {
     private float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.

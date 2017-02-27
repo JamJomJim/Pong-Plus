@@ -20,7 +20,7 @@ public class Options {
         ai = AI.EASY;
         mode = Mode.ONEPLAYER;
         ballInitialSpeed = 3;
-        ballSpeedIncrease = 1.5f;
+        ballSpeedIncrease = 1f;
         ballAngleMultiplier = 60;
 
         aiMovespeed = 7;
