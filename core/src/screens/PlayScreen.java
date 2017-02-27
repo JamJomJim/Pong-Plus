@@ -139,12 +139,12 @@ public class PlayScreen extends InputAdapter implements Screen {
         //if it's one or two player mode, create the menu that appears when a score reaches 10
         if (mode == Mode.ONEPLAYER || mode == Mode.TWOPLAYER) {
             menu = new Table();
-            final TextButton buttonRestart = new TextButton("Play Again", game.skin);
+            final TextButton buttonRestart = new TextButton("PLAY AGAIN", game.skin);
             buttonRestart.setHeight(175);
             buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
             menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
             menu.row();
-            final TextButton buttonMenu = new TextButton("Menu", game.skin);
+            final TextButton buttonMenu = new TextButton("MENU", game.skin);
             menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
             buttonRestart.addListener(new ClickListener() {
                 public void clicked(InputEvent event, float x, float y) {

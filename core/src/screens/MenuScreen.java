@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.powerpong.game.Options;
@@ -176,9 +177,10 @@ public class MenuScreen implements Screen {
         final Label ballInitialSpeedNumber = new Label(Integer.toString((int)ballInitialSpeedSlider.getValue()), game.skin, "options text");
 
         final Label ballSpeedIncreaseLabel = new Label("SPEED\nINCREASE", game.skin, "options text");
+        ballSpeedIncreaseLabel.setAlignment(Align.center);
         final Slider ballSpeedIncreaseSlider = new Slider(0, 10, 1, false, game.skin);
-        ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
-        final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int)ballInitialSpeedSlider.getValue()), game.skin, "options text");
+        ballSpeedIncreaseSlider.setValue(options.ballSpeedIncrease);
+        final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int)ballSpeedIncreaseSlider.getValue()), game.skin, "options text");
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "back button");
 
@@ -203,16 +205,16 @@ public class MenuScreen implements Screen {
             }
         });
 
-        int secondColWidth = 500, sliderPadding = 25, thirdColWidth = 50;
+        int secondColWidth = 500, spacing = 25, thirdColWidth = 50;
         optionsMenu.add(ballLabel).colspan(3);
         optionsMenu.row();
-        optionsMenu.add(ballInitialSpeedLabel);
-        optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).pad(sliderPadding).fillX();
-        optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth);
+        optionsMenu.add(ballInitialSpeedLabel).space(spacing, 0, spacing, 0);
+        optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).space(spacing).fillX();
+        optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);;
         optionsMenu.row();
-        optionsMenu.add(ballSpeedIncreaseLabel);
-        optionsMenu.add(ballSpeedIncreaseSlider).width(secondColWidth).pad(sliderPadding).fillX();
-        optionsMenu.add(ballSpeedIncreaseNumber).width(thirdColWidth);
+        optionsMenu.add(ballSpeedIncreaseLabel).space(spacing, 0, spacing, 0);
+        optionsMenu.add(ballSpeedIncreaseSlider).width(secondColWidth).space(spacing).fillX();
+        optionsMenu.add(ballSpeedIncreaseNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);;
         optionsMenu.row();
         optionsMenu.add(buttonBackOptions).colspan(3);
 
