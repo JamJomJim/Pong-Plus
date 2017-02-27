@@ -11,6 +11,7 @@ public class Options {
 
     public AI ai;
     public Mode mode;
+    public float paddleWidth;
     public float ballInitialSpeed, ballSpeedIncrease, ballAngleMultiplier;
     public float aiMovespeed, aiOffset;
     public boolean soundOn;
@@ -19,6 +20,7 @@ public class Options {
     public Options() {
         ai = AI.EASY;
         mode = Mode.ONEPLAYER;
+        paddleWidth = 700;
         ballInitialSpeed = 3;
         ballSpeedIncrease = 1f;
         ballAngleMultiplier = 60;
@@ -29,9 +31,10 @@ public class Options {
         soundOn = false;
     }
 
-    public Options(Mode mode, AI ai, float ballInitialSpeed, float ballSpeedIncrease, float ballAngleMultiplier, float aiMovespeed, float aiOffset, boolean soundOn) {
+    public Options(Mode mode, AI ai, float paddleWidth, float ballInitialSpeed, float ballSpeedIncrease, float ballAngleMultiplier, float aiMovespeed, float aiOffset, boolean soundOn) {
         this.mode = mode;
         this.ai = ai;
+        this.paddleWidth = paddleWidth;
         this.ballInitialSpeed = ballInitialSpeed;
         this.ballSpeedIncrease = ballSpeedIncrease;
         this.ballAngleMultiplier = ballAngleMultiplier;

@@ -2,24 +2,28 @@ package objects.paddles;
 
 import com.badlogic.gdx.InputAdapter;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.powerpong.game.PowerPong;
 
 public class Paddle extends InputAdapter {
 
-    protected Texture texture;
+    protected NinePatchDrawable ninePatch;
+    protected float width;
     protected Body body;
 
-    protected float movespeed; //movespeed is a separate variable from NORM_MS so that paddle speed can be changed by powerups etc.
+    protected float movespeed;
     protected Vector2 destination;
 
     public Paddle() {
     }
 
-    public Paddle(String textureName, float x, float y, World world) {
-        this.texture = new Texture(textureName);
+    public Paddle(String textureName, float x, float y, float width, World world) {
+        ninePatch = new NinePatchDrawable(new NinePatch(new Texture(textureName)));
+        this.width = width;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -30,7 +34,7 @@ public class Paddle extends InputAdapter {
         body.setUserData(this);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(texture.getWidth() / 2 / PowerPong.PPM, texture.getHeight() / 2 / PowerPong.PPM);
+        shape.setAsBox(width / 2 / PowerPong.PPM, ninePatch.getMinHeight() / 2 / PowerPong.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -48,7 +52,7 @@ public class Paddle extends InputAdapter {
         //if the distance between the paddle and it's destination is less than or equal to the distance it can travel in a single world.step(),
         //then just move the paddle to the destination. This prevents jitter caused by overshooting the destination repeatedly.
         float distance = Math.abs(destination.x - body.getPosition().x);
-        if (distance <= movespeed * dt && distance > 0)
+        if (distance > 0 && distance <= movespeed * dt)
             body.setTransform(destination.x, body.getPosition().y, 0);
         if (destination.x < body.getPosition().x)
             body.setLinearVelocity(-movespeed, 0);
@@ -60,11 +64,11 @@ public class Paddle extends InputAdapter {
 
     //Draw the paddle, centered at body.x and body.y
     public void draw(SpriteBatch sb) {
-        sb.draw(texture,
-                body.getPosition().x - texture.getWidth() / 2 / PowerPong.PPM,
-                body.getPosition().y - texture.getHeight() / 2 / PowerPong.PPM,
-                texture.getWidth() / PowerPong.PPM,
-                texture.getHeight() / PowerPong.PPM);
+        ninePatch.draw(sb,
+                body.getPosition().x - width / 2 / PowerPong.PPM,
+                body.getPosition().y - ninePatch.getMinHeight() / 2 / PowerPong.PPM,
+                width / PowerPong.PPM,
+                ninePatch.getMinHeight() / PowerPong.PPM);
     }
 
     //note that these methods return the x and y coords of the center of the body, in box2d coords/measurements
@@ -84,10 +88,11 @@ public class Paddle extends InputAdapter {
         return destination;
     }
 
-    public Texture getTexture() {
-        return texture;
+    public NinePatchDrawable getNinePatch() {
+        return ninePatch;
     }
+
     public void dispose() {
-        texture.dispose();
+
     }
 }

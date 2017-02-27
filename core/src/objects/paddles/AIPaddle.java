@@ -15,7 +15,7 @@ public class AIPaddle extends Paddle {
 
     //constructor for custom offset and movespeed
     public AIPaddle(String textureName, float x, float y, World world, Ball ball, Options options) {
-        super(textureName, x, y, world);
+        super(textureName, x, y, options.paddleWidth, world);
         this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
         this.ball = ball;
         switch (options.ai) {
@@ -24,19 +24,19 @@ public class AIPaddle extends Paddle {
                 movespeed = 2;
                 break;
             case MEDIUM:
-                maxOffset = texture.getWidth() / 4;
+                maxOffset = width / 4;
                 movespeed = 3;
                 break;
             case HARD:
-                maxOffset = texture.getWidth() / 2;
+                maxOffset = width / 2;
                 movespeed = 5;
                 break;
             case SKYNET:
-                maxOffset = texture.getWidth() / 2;
+                maxOffset = width / 2;
                 movespeed = 15;
                 break;
             case CUSTOM:
-                maxOffset = texture.getWidth() / options.aiOffset;
+                maxOffset = width / options.aiOffset;
                 movespeed = options.aiMovespeed;
         }
     }
@@ -58,9 +58,9 @@ public class AIPaddle extends Paddle {
     public float calcFinalDestination(float xPos, float yPos, float xVel, float yVel) {
         float timeToPaddle;
         if (this.getY() > yPos)
-            timeToPaddle = (this.getY() - this.getTexture().getHeight() / PowerPong.PPM - yPos) / yVel;
+            timeToPaddle = (this.getY() - this.ninePatch.getMinHeight() / PowerPong.PPM - yPos) / yVel;
         else
-            timeToPaddle = (this.getY() + this.getTexture().getHeight() / PowerPong.PPM - yPos) / yVel;
+            timeToPaddle = (this.getY() + this.ninePatch.getMinHeight() / PowerPong.PPM - yPos) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
         if (finalDestination < -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
             yPos = yPos + ((-PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos + ball.getTexture().getWidth() / PowerPong.PPM) / xVel) * yVel;

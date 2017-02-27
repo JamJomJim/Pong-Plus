@@ -276,7 +276,8 @@ public class MenuScreen implements Screen {
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
         menu.setY(PowerPong.NATIVE_HEIGHT / 2 - menu.getHeight() / 2);
 
-        ai = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 5, 0, 60, 5, 3, false));
+        ai = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
+                5, 3, false));
         Gdx.input.setInputProcessor(stage);
 	}
 

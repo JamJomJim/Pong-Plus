@@ -3,6 +3,7 @@ package objects.paddles;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
+import com.powerpong.game.Options;
 
 public class PlayerPaddle extends Paddle {
 
@@ -22,8 +23,8 @@ public class PlayerPaddle extends Paddle {
     private int movePointer; //represents the pointer for the finger that most recently touched within the input capture height,
     //and therefore the one that is controlling the paddle
 
-    public PlayerPaddle(String textureName, float x, float y, World world, OrthographicCamera cam) {
-        super(textureName, x, y, world);
+    public PlayerPaddle(String textureName, float x, float y, World world, OrthographicCamera cam, Options options) {
+        super(textureName, x, y, options.paddleWidth, world);
         touchPos = new Vector3(0, 0, 0);
         touchDraggedPos = new Vector3(0, 0, 0);
         this.worldCam = cam;
