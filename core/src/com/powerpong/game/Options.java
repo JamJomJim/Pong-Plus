@@ -20,7 +20,7 @@ public class Options {
     public Options() {
         ai = AI.EASY;
         mode = Mode.ONEPLAYER;
-        paddleWidth = 300;
+        paddleWidth = 600;
         ballInitialSpeed = 3;
         ballSpeedIncrease = 1f;
         ballAngleMultiplier = 60;

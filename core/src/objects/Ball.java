@@ -19,6 +19,8 @@ public class Ball {
     private boolean paused;
     private Vector2 pausedVel; //for remembering what the ball's vel was before pausing, so it can resume
 
+    private float paddleWidth;
+
     public Ball(String textureName, float x, float y, float initialDirection, World world, Options options) {
         this.texture = new Texture(textureName);
         pausedVel = new Vector2();
@@ -26,6 +28,7 @@ public class Ball {
         this.initialSpeed = options.ballInitialSpeed;
         this.speedAdded = options.ballSpeedIncrease;
         this.angleMultiplier = options.ballAngleMultiplier;
+        paddleWidth = options.paddleWidth;
 
 
         BodyDef bodyDef = new BodyDef();
@@ -65,7 +68,7 @@ public class Ball {
         Body bodyB = paddle.getBody();
         float posDiff = body.getPosition().x - bodyB.getPosition().x; //Checks the relative positions of the ball to the paddle
         int direction = Math.abs(body.getPosition().y) < bodyB.getPosition().y ? -1 : 1; //which direction the ball should travel after rebounding, based on it's position relative to the paddle
-        float reboundAngle = posDiff * angleMultiplier;
+        float reboundAngle = posDiff * 300 / paddleWidth * angleMultiplier; //* 300 / paddleWidth normalizes it for larger paddles
         float curSpeed = (float)Math.sqrt(Math.pow(body.getLinearVelocity().x, 2) + Math.pow(body.getLinearVelocity().y, 2)); //calculate the ball's current speed
         curSpeed += speedAdded; //increase the speed to speed up the game over time
         //sets the ball's linear velocity; the x component depends on the position difference, and the y component is the overall speed minus the new x component
