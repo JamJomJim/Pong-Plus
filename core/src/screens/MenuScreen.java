@@ -42,27 +42,14 @@ public class MenuScreen implements Screen {
 
         //stuff for the different modes
         modes = new Table();
-        // Create a button with the "default" TextButtonStyle of skin. A 3rd parameter can be used to specify a name other than "default".
         final TextButton button1P = new TextButton("ONE PLAYER", game.skin);
         button1P.setHeight(160);
         button1P.setWidth(button1P.getPrefWidth() + 50);
-        modes.add(button1P).width(button1P.getWidth()).height(button1P.getHeight());
-        modes.row();
         final TextButton button2P = new TextButton("TWO PLAYER", game.skin);
-        modes.add(button2P).fillX().height(button1P.getHeight());
-        modes.row();
         final TextButton buttonAIBattle = new TextButton("AI BATTLE", game.skin);
-        modes.add(buttonAIBattle).fillX().height(button1P.getHeight());
-        modes.row();
-        //Practice
         final TextButton buttonPractice = new TextButton("PRACTICE", game.skin);
-        modes.add(buttonPractice).fillX().height(button1P.getHeight());
-        modes.row();
         final TextButton buttonWall = new TextButton("SURVIVAL", game.skin);
-        modes.add(buttonWall).fillX().height(button1P.getHeight());
-        modes.row();
         final TextButton buttonOptions = new TextButton("OPTIONS", game.skin);
-        modes.add(buttonOptions).fillX().height(button1P.getHeight());
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
         // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
@@ -106,26 +93,28 @@ public class MenuScreen implements Screen {
             }
         });
 
+        modes.add(button1P).width(button1P.getWidth()).height(button1P.getHeight());
+        modes.row();
+        modes.add(button2P).fillX().height(button1P.getHeight());
+        modes.row();
+        modes.add(buttonAIBattle).fillX().height(button1P.getHeight());
+        modes.row();
+        modes.add(buttonPractice).fillX().height(button1P.getHeight());
+        modes.row();
+        modes.add(buttonWall).fillX().height(button1P.getHeight());
+        modes.row();
+        modes.add(buttonOptions).fillX().height(button1P.getHeight());
+
+
         //difficulties stuff; menuBattle difficulties
         difficulties = new Table();
         difficulties.setVisible(false);
         final TextButton buttonEasy = new TextButton("EASY", game.skin);
-        difficulties.add(buttonEasy).width(button1P.getWidth()).height(button1P.getHeight());
-        difficulties.row();
         final TextButton buttonMedium = new TextButton("MEDIUM", game.skin);
-        difficulties.add(buttonMedium).fillX().height(button1P.getHeight());
-        difficulties.row();
         final TextButton buttonHard = new TextButton("HARD", game.skin);
-        difficulties.add(buttonHard).fillX().height(button1P.getHeight());
-        difficulties.row();
         final TextButton buttonSkynet = new TextButton("SKYNET", game.skin);
-        difficulties.add(buttonSkynet).fillX().height(button1P.getHeight());
-        difficulties.row();
         final TextButton buttonCustom = new TextButton("CUSTOM", game.skin);
-        difficulties.add(buttonCustom).fillX().height(button1P.getHeight());
-        difficulties.row();
         final TextButton buttonBack = new TextButton("BACK", game.skin, "back button");
-        difficulties.add(buttonBack).fillX().height(button1P.getHeight());
         buttonEasy.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 options.ai = AI.EASY;
@@ -166,9 +155,23 @@ public class MenuScreen implements Screen {
             }
         });
 
+        difficulties.add(buttonEasy).width(button1P.getWidth()).height(button1P.getHeight());
+        difficulties.row();
+        difficulties.add(buttonMedium).fillX().height(button1P.getHeight());
+        difficulties.row();
+        difficulties.add(buttonHard).fillX().height(button1P.getHeight());
+        difficulties.row();
+        difficulties.add(buttonSkynet).fillX().height(button1P.getHeight());
+        difficulties.row();
+        difficulties.add(buttonCustom).fillX().height(button1P.getHeight());
+        difficulties.row();
+        difficulties.add(buttonBack).fillX().height(button1P.getHeight());
+
+
         //Options menu stuff
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
+        
         final Label ballLabel = new Label("BALL", game.skin, "options header");
         final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "options text");
         ballInitialSpeedLabel.setAlignment(Align.center);
