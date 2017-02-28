@@ -7,7 +7,7 @@ import com.powerpong.game.PowerPong;
 import objects.Ball;
 
 public class AIPaddle extends Paddle {
-    private float maxOffset; //Width of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
+    private float maxOffset; //options.paddleWidth of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
     private float offset; //current offset for this specific paddle.
 
     private Ball ball;
@@ -15,7 +15,7 @@ public class AIPaddle extends Paddle {
 
     //constructor for custom offset and movespeed
     public AIPaddle(String textureName, float x, float y, World world, Ball ball, Options options) {
-        super(textureName, x, y, options.paddleWidth, world);
+        super(textureName, x, y, world, options);
         this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
         this.ball = ball;
         switch (options.ai) {
@@ -24,19 +24,19 @@ public class AIPaddle extends Paddle {
                 movespeed = 2;
                 break;
             case MEDIUM:
-                maxOffset = width / 4;
+                maxOffset = options.paddleWidth / 4;
                 movespeed = 3;
                 break;
             case HARD:
-                maxOffset = width / 2;
+                maxOffset = options.paddleWidth / 2;
                 movespeed = 5;
                 break;
             case SKYNET:
-                maxOffset = width / 2;
+                maxOffset = options.paddleWidth / 2;
                 movespeed = 15;
                 break;
             case CUSTOM:
-                maxOffset = width / options.aiOffset;
+                maxOffset = options.paddleWidth / options.aiOffset;
                 movespeed = options.aiMovespeed;
         }
     }

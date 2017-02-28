@@ -7,23 +7,25 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
+import com.powerpong.game.Options;
 import com.powerpong.game.PowerPong;
 
 public class Paddle extends InputAdapter {
 
     protected NinePatchDrawable ninePatch;
-    protected float width;
     protected Body body;
 
     protected float movespeed;
     protected Vector2 destination;
+    
+    protected Options options;
 
     public Paddle() {
     }
 
-    public Paddle(String textureName, float x, float y, float width, World world) {
+    public Paddle(String textureName, float x, float y, World world, Options options) {
         ninePatch = new NinePatchDrawable(new NinePatch(new Texture(textureName)));
-        this.width = width;
+        this.options = options;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
@@ -34,7 +36,7 @@ public class Paddle extends InputAdapter {
         body.setUserData(this);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2 / PowerPong.PPM, ninePatch.getMinHeight() / 2 / PowerPong.PPM);
+        shape.setAsBox(options.paddleWidth / 2 / PowerPong.PPM, ninePatch.getMinHeight() / 2 / PowerPong.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -65,9 +67,9 @@ public class Paddle extends InputAdapter {
     //Draw the paddle, centered at body.x and body.y
     public void draw(SpriteBatch sb) {
         ninePatch.draw(sb,
-                body.getPosition().x - width / 2 / PowerPong.PPM,
+                body.getPosition().x - options.paddleWidth / 2 / PowerPong.PPM,
                 body.getPosition().y - ninePatch.getMinHeight() / 2 / PowerPong.PPM,
-                width / PowerPong.PPM,
+                options.paddleWidth / PowerPong.PPM,
                 ninePatch.getMinHeight() / PowerPong.PPM);
     }
 

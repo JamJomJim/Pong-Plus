@@ -18,9 +18,9 @@ public class Options {
 
     //no args constructor sets stuff to default values
     public Options() {
-        ai = AI.EASY;
-        mode = Mode.ONEPLAYER;
-        paddleWidth = 600;
+        ai = AI.CUSTOM;
+        mode = Mode.MENUBATTLE;
+        paddleWidth = 300;
         ballInitialSpeed = 3;
         ballSpeedIncrease = 1f;
         ballAngleMultiplier = 60;
