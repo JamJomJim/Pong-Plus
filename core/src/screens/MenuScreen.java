@@ -172,6 +172,18 @@ public class MenuScreen implements Screen {
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
         
+        final Label scoreLimitLabel = new Label("SCORE\nLIMIT", game.skin, "options text");
+        scoreLimitLabel.setAlignment(Align.center);
+        final Slider scoreLimitSlider = new Slider(1, 10, 1, false, game.skin);
+        scoreLimitSlider.setValue(options.scoreLimit);
+        final Label scoreLimitNumber = new Label(Integer.toString((int)scoreLimitSlider.getValue()), game.skin, "options text");
+
+        final Label paddleWidthLabel = new Label("PADDLE\nWIDTH", game.skin, "options text");
+        paddleWidthLabel.setAlignment(Align.center);
+        final Slider paddleWidthSlider = new Slider(100, 1000, 10, false, game.skin);
+        paddleWidthSlider.setValue(options.paddleWidth);
+        final Label paddleWidthNumber = new Label(Integer.toString((int)paddleWidthSlider.getValue()), game.skin, "options text");
+
         final Label ballLabel = new Label("BALL", game.skin, "options header");
         final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "options text");
         ballInitialSpeedLabel.setAlignment(Align.center);
@@ -202,6 +214,18 @@ public class MenuScreen implements Screen {
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "back button");
 
+        scoreLimitSlider.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                options.scoreLimit = scoreLimitSlider.getValue();
+                scoreLimitNumber.setText(Integer.toString((int)scoreLimitSlider.getValue()));
+            }
+        });
+        paddleWidthSlider.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                options.paddleWidth = paddleWidthSlider.getValue();
+                paddleWidthNumber.setText(Integer.toString((int)paddleWidthSlider.getValue()));
+            }
+        });
         ballInitialSpeedSlider.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 options.ballInitialSpeed = ballInitialSpeedSlider.getValue();
@@ -246,7 +270,15 @@ public class MenuScreen implements Screen {
         });
 
         int secondColWidth = 500, spacing = 25, thirdColWidth = 50;
-        optionsMenu.add(ballLabel).colspan(3);
+        optionsMenu.add(scoreLimitLabel).space(0, 0, spacing, 0);
+        optionsMenu.add(scoreLimitSlider).width(secondColWidth).space(spacing).fillX();
+        optionsMenu.add(scoreLimitNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
+        optionsMenu.row();
+        optionsMenu.add(paddleWidthLabel).space(spacing, 0, spacing, 0);
+        optionsMenu.add(paddleWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
+        optionsMenu.add(paddleWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        optionsMenu.row();
+        optionsMenu.add(ballLabel).spaceTop(spacing * 2).colspan(3);
         optionsMenu.row();
         optionsMenu.add(ballInitialSpeedLabel).space(0, 0, spacing, 0);
         optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
@@ -260,7 +292,7 @@ public class MenuScreen implements Screen {
         optionsMenu.add(ballAngleSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
         optionsMenu.add(ballAngleNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         optionsMenu.row();
-        optionsMenu.add(aiLabel).spaceTop(50).colspan(3);
+        optionsMenu.add(aiLabel).spaceTop(spacing * 2).colspan(3);
         optionsMenu.row();
         optionsMenu.add(aiSpeedLabel).space(0, 0, spacing * 2, 0);
         optionsMenu.add(aiSpeedSlider).width(secondColWidth).space(0, spacing, spacing * 2, spacing).fillX();
@@ -282,7 +314,7 @@ public class MenuScreen implements Screen {
 
         //to have changes to the otions affect the menubattle, pass options to this, rather than a new Options
         menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
-                5, 3, false));
+                5, 2, false));
         Gdx.input.setInputProcessor(stage);
 	}
 

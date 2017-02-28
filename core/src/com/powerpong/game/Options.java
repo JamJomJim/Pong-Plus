@@ -12,6 +12,7 @@ public class Options {
     public AI ai;
     public Mode mode;
     public float paddleWidth;
+    public float scoreLimit;
     public float ballInitialSpeed, ballSpeedIncrease, ballAngleMultiplier;
     public float aiMovespeed, aiOffset;
     public float targetWidth;
@@ -22,6 +23,7 @@ public class Options {
         ai = AI.CUSTOM;
         mode = Mode.MENUBATTLE;
         paddleWidth = 300;
+        scoreLimit = 10;
         ballInitialSpeed = 3;
         ballSpeedIncrease = 1f;
         ballAngleMultiplier = 60;
@@ -38,6 +40,7 @@ public class Options {
         this.mode = mode;
         this.ai = ai;
         this.paddleWidth = paddleWidth;
+        scoreLimit = 10;
         this.ballInitialSpeed = ballInitialSpeed;
         this.ballSpeedIncrease = ballSpeedIncrease;
         this.ballAngleMultiplier = ballAngleMultiplier;

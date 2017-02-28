@@ -16,7 +16,7 @@ public class AIPaddle extends Paddle {
     //constructor for custom offset and movespeed
     public AIPaddle(String textureName, float x, float y, World world, Ball ball, Options options) {
         super(textureName, x, y, world, options);
-        this.prevVel = new Vector2(ball.getBody().getLinearVelocity());
+        this.prevVel = new Vector2(0, 0);
         this.ball = ball;
         switch (options.ai) {
             case EASY:
@@ -39,6 +39,7 @@ public class AIPaddle extends Paddle {
                 maxOffset = options.paddleWidth / options.aiOffset;
                 movespeed = options.aiMovespeed;
         }
+        randomizeOffset();
     }
 
     public void update(float dt) {

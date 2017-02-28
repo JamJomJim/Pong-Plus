@@ -137,37 +137,29 @@ public class PlayScreen extends InputAdapter implements Screen {
             score.setVisible(false);
 
         //if it's one or two player mode, create the menu that appears when a score reaches 10
-        if (mode == Mode.ONEPLAYER || mode == Mode.TWOPLAYER) {
-            menu = new Table();
-            final TextButton buttonRestart = new TextButton("PLAY AGAIN", game.skin);
-            buttonRestart.setHeight(175);
-            buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
-            menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
-            menu.row();
-            final TextButton buttonMenu = new TextButton("MENU", game.skin);
-            menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
-            buttonRestart.addListener(new ClickListener() {
-                public void clicked(InputEvent event, float x, float y) {
-                    topScore = 0;
-                    botScore = 0;
-                    p1.getBody().setTransform(0, p1.getBody().getPosition().y, 0);
-                    p2.getBody().setTransform(0, p2.getBody().getPosition().y, 0);
-                    ball.reset(-1);
-                    ball.pause();
-                    menu.setVisible(false);
-                    buttonRestart.setChecked(false);
-                }
-            });
-            buttonMenu.addListener(new ClickListener() {
-                public void clicked(InputEvent event, float x, float y) {
-                    returnToMenu();
-                }
-            });
-            menu.setVisible(false);
-            stage.addActor(menu);
-            menu.setX(PowerPong.NATIVE_WIDTH / 2);
-            menu.setY(PowerPong.NATIVE_HEIGHT / 2);
-        }
+        menu = new Table();
+        menu.setVisible(false);
+        final TextButton buttonRestart = new TextButton("PLAY AGAIN", game.skin);
+        buttonRestart.setHeight(175);
+        buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
+        menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
+        menu.row();
+        final TextButton buttonMenu = new TextButton("MENU", game.skin);
+        menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
+        buttonRestart.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                restart();
+            }
+        });
+        buttonMenu.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                returnToMenu();
+            }
+        });
+        stage.addActor(menu);
+        menu.setX(PowerPong.NATIVE_WIDTH / 2);
+        menu.setY(PowerPong.NATIVE_HEIGHT / 2);
+
         //create the label that's displayed during pause
         pausedText = new Label("PAUSED", game.skin, "paused");
         pausedText.setVisible(false);
@@ -187,21 +179,20 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public void render(float dt) {
-        if (!pausedText.isVisible()) { //so that player and ai paddles can't move while the ball is paused;
+        if (!pausedText.isVisible() && !menu.isVisible()) { //so that player and ai paddles can't move while the ball is paused;
             //note that it checks if the pausedText is visible, rather than if the ball is paused. This allows paddles to continue moving after the ball resets
             world.step((float) Math.min(dt, 0.25), 6, 2);//step the physics world the amount of time since the last frame, up to 0.25s
             p1.update(dt);
             if (p2 != null)
                 p2.update(dt);
             checkBall();
-            stage.act(dt);
             topScoreText.setText(Integer.toString(topScore));
             botScoreText.setText(Integer.toString(botScore));
         }
         //randomizes the location of the practice wall when needed.
-        if(mode == Mode.PRACTICE && practiceWall.needsNewLocation())
+        if (mode == Mode.PRACTICE && practiceWall.needsNewLocation())
             practiceWall.randomizeLocation();
-
+        stage.act(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         stage.draw(); //draw the stage (ui elements)
@@ -224,7 +215,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
-        if (menu != null && menu.isVisible())
+        if (menu.isVisible())
             return;
         Body body = ball.getBody();
         int direction;
@@ -259,7 +250,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         }
         else return; //return if the ball hasn't passed anywhere that it should be reset
         //check if the score limit has been reached; display the menu and don't reset the ball if it has
-        if ((botScore >= 10 || topScore >= 10) && menu != null)
+        if ((botScore >= options.scoreLimit || topScore >= options.scoreLimit) && (mode != Mode.MENUBATTLE))
             menu.setVisible(true);
         else
             ball.reset(direction);
@@ -279,6 +270,11 @@ public class PlayScreen extends InputAdapter implements Screen {
             botScore += 1;
     }
 
+    public void restart() {
+        dispose();
+        game.setScreen(new PlayScreen(game, options));
+    }
+
     public void returnToMenu() {
         dispose();
         game.setScreen(new MenuScreen(game, options));
@@ -287,7 +283,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
-            if (menu != null && menu.isVisible())
+            if (menu.isVisible())
                 returnToMenu();
             if (!pausedText.isVisible()) {
                 ball.pause();
@@ -301,7 +297,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     }
 
     public boolean touchDown(int x, int y, int pointer, int button) {
-        if (menu != null && menu.isVisible())
+        if (menu.isVisible())
             return false; //return so that the ball isn't resumed if the end of game menu is showing
         if (ball.isPaused()) {
             ball.resume();
