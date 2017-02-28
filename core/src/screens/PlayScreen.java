@@ -78,8 +78,8 @@ public class PlayScreen extends InputAdapter implements Screen {
             new Wall(0, (PowerPong.NATIVE_HEIGHT + 1) / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
 
         //Creates the initial practice wall.
-        if(mode == Mode.PRACTICE) {
-            practiceWall = new Wall("ClassicPaddle9.png", 0, PADDLE_OFFSET / PowerPong.PPM, 0, world);
+        if (mode == Mode.PRACTICE) {
+            practiceWall = new Wall("ClassicPaddle9.png", 0, PADDLE_OFFSET / PowerPong.PPM, 0, world, options);
             practiceWall.randomizeLocation();
         }
         //create the ball
@@ -220,7 +220,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         game.batch.end();
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
-        //debugRenderer.render(world, worldCam.combined);
+        debugRenderer.render(world, worldCam.combined);
     }
 
     public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is

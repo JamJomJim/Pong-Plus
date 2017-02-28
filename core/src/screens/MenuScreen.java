@@ -21,7 +21,7 @@ public class MenuScreen implements Screen {
 	private Table table;
 	private Table modes, difficulties, optionsMenu;
 	private PowerPong game;
-	private PlayScreen ai;
+	private PlayScreen menuBattle;
 	private Options options;
 
 	public MenuScreen(PowerPong game, Options opt) {
@@ -106,7 +106,7 @@ public class MenuScreen implements Screen {
             }
         });
 
-        //difficulties stuff; ai difficulties
+        //difficulties stuff; menuBattle difficulties
         difficulties = new Table();
         difficulties.setVisible(false);
         final TextButton buttonEasy = new TextButton("EASY", game.skin);
@@ -225,6 +225,7 @@ public class MenuScreen implements Screen {
         });
         buttonResetOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
+                //note that these are hardcoded
                 ballInitialSpeedSlider.setValue(3);
                 ballSpeedIncreaseSlider.setValue(1);
                 ballAngleSlider.setValue(60);
@@ -276,7 +277,8 @@ public class MenuScreen implements Screen {
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
         menu.setY(PowerPong.NATIVE_HEIGHT / 2 - menu.getHeight() / 2);
 
-        ai = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
+        //to have changes to the otions affect the menubattle, pass options to this, rather than a new Options
+        menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
                 5, 3, false));
         Gdx.input.setInputProcessor(stage);
 	}
@@ -290,7 +292,7 @@ public class MenuScreen implements Screen {
 	public void render(float dt) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		ai.render(dt);
+		menuBattle.render(dt);
 		stage.act(dt);
 		stage.draw();
 	}
@@ -317,7 +319,7 @@ public class MenuScreen implements Screen {
 
 	@Override
 	public void dispose() {
-	    ai.dispose();
+	    menuBattle.dispose();
 		stage.dispose();
 	}
 
