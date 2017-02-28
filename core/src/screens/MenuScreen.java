@@ -28,8 +28,7 @@ public class MenuScreen implements Screen {
 		this.game = game;
 		this.options = opt;
 		stage = new Stage(new StretchViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-        game.batch.setProjectionMatrix(stage.getViewport().getCamera().combined);
-		stage.setDebugAll(true);
+        stage.setDebugAll(true);
         Gdx.input.setCatchBackKey(false);
 
 		// Create a table that fills the screen
@@ -253,6 +252,8 @@ public class MenuScreen implements Screen {
         buttonResetOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 //note that these are hardcoded
+                scoreLimitSlider.setValue(5);
+                paddleWidthSlider.setValue(300);
                 ballInitialSpeedSlider.setValue(3);
                 ballSpeedIncreaseSlider.setValue(1);
                 ballAngleSlider.setValue(60);

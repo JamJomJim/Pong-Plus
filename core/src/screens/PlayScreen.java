@@ -250,7 +250,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         }
         else return; //return if the ball hasn't passed anywhere that it should be reset
         //check if the score limit has been reached; display the menu and don't reset the ball if it has
-        if ((botScore >= options.scoreLimit || topScore >= options.scoreLimit) && (mode != Mode.MENUBATTLE))
+        if ((botScore >= options.scoreLimit || topScore >= options.scoreLimit) && (mode == Mode.ONEPLAYER || mode == Mode.TWOPLAYER))
             menu.setVisible(true);
         else
             ball.reset(direction);
