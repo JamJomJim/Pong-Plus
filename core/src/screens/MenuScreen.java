@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -32,7 +33,6 @@ public class MenuScreen extends InputAdapter implements Screen {
 		// Create a table that fills the screen
 		table = new Table();
 		table.setSkin(game.skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
-		//table.setBackground("background");
 		table.setFillParent(true);
 		stage.addActor(table);
 
@@ -104,7 +104,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         modes.add(buttonOptions).fillX().height(button1P.getHeight());
 
 
-        //difficulties stuff; menuBattle difficulties
+        //difficulties stuff
         difficulties = new Table();
         difficulties.setVisible(false);
         final TextButton buttonEasy = new TextButton("EASY", game.skin);
@@ -162,7 +162,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         difficulties.add(buttonCustom).fillX().height(button1P.getHeight());
         difficulties.row();
         difficulties.add(buttonBack).fillX().height(button1P.getHeight());
-        
+
+
         customAI = new Table();
         customAI.setVisible(false);
         final Label aiLabel = new Label("CUSTOM AI", game.skin, "options header");
@@ -176,8 +177,8 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final TextButton buttonBackAI = new TextButton("BACK", game.skin, "back button");
 
-        aiSpeedSlider.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+        aiSpeedSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
                 options.aiMovespeed = aiSpeedSlider.getValue();
                 aiSpeedNumber.setText(Integer.toString((int)aiSpeedSlider.getValue()));
             }
@@ -219,8 +220,8 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final TextButton buttonBackPractice = new TextButton("BACK", game.skin, "back button");
 
-        targetWidthSlider.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+        targetWidthSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
                 options.targetWidth = targetWidthSlider.getValue();
                 targetWidthNumber.setText(Integer.toString((int)targetWidthSlider.getValue()));
             }
@@ -246,7 +247,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         practiceSettings.add(buttonPlayPractice).colspan(3).fillX();
         practiceSettings.row();
         practiceSettings.add(buttonBackPractice).colspan(3).fillX().height(160);
-        
 
 
         //Options menu stuff
@@ -288,32 +288,32 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "back button");
 
-        scoreLimitSlider.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+        scoreLimitSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
                 options.scoreLimit = scoreLimitSlider.getValue();
                 scoreLimitNumber.setText(Integer.toString((int)scoreLimitSlider.getValue()));
             }
         });
-        paddleWidthSlider.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+        paddleWidthSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
                 options.paddleWidth = paddleWidthSlider.getValue();
                 paddleWidthNumber.setText(Integer.toString((int)paddleWidthSlider.getValue()));
             }
         });
-        ballInitialSpeedSlider.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+        ballInitialSpeedSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
                 options.ballInitialSpeed = ballInitialSpeedSlider.getValue();
                 ballInitialSpeedNumber.setText(Integer.toString((int)ballInitialSpeedSlider.getValue()));
             }
         });
-        ballSpeedIncreaseSlider.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+        ballSpeedIncreaseSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
                 options.ballSpeedIncrease = ballSpeedIncreaseSlider.getValue();
                 ballSpeedIncreaseNumber.setText(Integer.toString((int)ballSpeedIncreaseSlider.getValue()));
             }
         });
-        ballAngleSlider.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+        ballAngleSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
                 options.ballAngleMultiplier = ballAngleSlider.getValue();
                 ballAngleNumber.setText(Integer.toString((int)ballAngleSlider.getValue()));
             }
@@ -373,7 +373,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
         menu.setY(PowerPong.NATIVE_HEIGHT / 2 - menu.getHeight() / 2);
 
-        //to have changes to the otions affect the menubattle, pass options to this, rather than a new Options
+        //to have changes to the options affect the menubattle, pass options to this, rather than a new Options
         menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
                 5, 2, false));
 
@@ -383,11 +383,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         Gdx.input.setInputProcessor(multiplexer);
 	}
 
-    public void startPlay() {
-        dispose();
-        game.setScreen(new PlayScreen(game, options));
-    }
-
 	@Override
 	public void render(float dt) {
 		Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -396,6 +391,11 @@ public class MenuScreen extends InputAdapter implements Screen {
 		stage.act(dt);
 		stage.draw();
 	}
+
+    public void startPlay() {
+        dispose();
+        game.setScreen(new PlayScreen(game, options));
+    }
 
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {

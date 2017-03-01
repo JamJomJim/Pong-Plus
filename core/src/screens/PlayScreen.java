@@ -31,7 +31,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     public AI ai;
 
     //ball stuff
-    protected float BALL_DIRECTION = (float)Math.PI * 3 / 2;
+    protected float BALL_DIRECTION = (float) Math.PI * 3 / 2;
     protected Ball ball;
 
     protected Paddle p1, p2;
@@ -92,10 +92,9 @@ public class PlayScreen extends InputAdapter implements Screen {
         else if (mode == Mode.SURVIVAL) {
             float x = 0;
             while (x == 0)
-                x = (float)(Math.random() * 5 - 2.5) / PowerPong.PPM;
+                x = (float) (Math.random() * 5 - 2.5) / PowerPong.PPM;
             p1 = new PlayerPaddle("ClassicPaddle9.png", x, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
-        }
-        else
+        } else
             p1 = new PlayerPaddle("ClassicPaddle9.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
 
         //create p2 depending on the mode
@@ -136,16 +135,13 @@ public class PlayScreen extends InputAdapter implements Screen {
         if (mode == Mode.MENUBATTLE)
             score.setVisible(false);
 
-        //if it's one or two player mode, create the menu that appears when a score reaches 10
+        //create the menu that's displayed when score limit is reached (in one and two player modes)
         menu = new Table();
         menu.setVisible(false);
         final TextButton buttonRestart = new TextButton("PLAY AGAIN", game.skin);
-        buttonRestart.setHeight(175);
+        buttonRestart.setHeight(160);
         buttonRestart.setWidth(buttonRestart.getPrefWidth() + 50);
-        menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
-        menu.row();
         final TextButton buttonMenu = new TextButton("MENU", game.skin);
-        menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
         buttonRestart.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 restart();
@@ -156,6 +152,11 @@ public class PlayScreen extends InputAdapter implements Screen {
                 returnToMenu();
             }
         });
+
+        menu.add(buttonRestart).width(buttonRestart.getWidth()).height(buttonRestart.getHeight());
+        menu.row();
+        menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
+
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2);
         menu.setY(PowerPong.NATIVE_HEIGHT / 2);
@@ -203,7 +204,6 @@ public class PlayScreen extends InputAdapter implements Screen {
         p1.draw(game.batch);
         if (mode != Mode.SURVIVAL && mode != Mode.PRACTICE)
             p2.draw(game.batch);
-
         if (mode == Mode.PRACTICE)
             practiceWall.draw(game.batch);
 
@@ -226,10 +226,8 @@ public class PlayScreen extends InputAdapter implements Screen {
                     topScore = botScore;
                 direction = -1;
                 botScore = 0;
-            }
-            else return;
-        }
-        else if (mode == Mode.PRACTICE) {
+            } else return;
+        } else if (mode == Mode.PRACTICE) {
             if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM
                     || body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
                 if (botScore > topScore)
@@ -237,18 +235,14 @@ public class PlayScreen extends InputAdapter implements Screen {
                 direction = -1;
                 botScore = 0;
                 practiceWall.randomizeLocation();
-            }
-            else return;
-        }//this is the stuff that happens if it's not survival mode
-        else if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+            } else return;
+        } else if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) { //this is the stuff that happens if it's not survival mode
             score("top");
             direction = -1;
-        }
-        else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+        } else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
             score("bot");
             direction = 1;
-        }
-        else return; //return if the ball hasn't passed anywhere that it should be reset
+        } else return; //return if the ball hasn't passed anywhere that it should be reset
         //check if the score limit has been reached; display the menu and don't reset the ball if it has
         if ((botScore >= options.scoreLimit || topScore >= options.scoreLimit) && (mode == Mode.ONEPLAYER || mode == Mode.TWOPLAYER))
             menu.setVisible(true);
