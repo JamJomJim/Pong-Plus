@@ -15,6 +15,8 @@ import com.powerpong.game.Options.AI;
 import com.powerpong.game.Options.Mode;
 import com.powerpong.game.PowerPong;
 
+import java.util.Random;
+
 public class MenuScreen extends InputAdapter implements Screen {
 	private Stage stage;
 	private Table table;
@@ -23,11 +25,14 @@ public class MenuScreen extends InputAdapter implements Screen {
 	private PlayScreen menuBattle;
 	private Options options;
 
+	private Random random;
+
 	public MenuScreen(PowerPong game, Options opt) {
 		this.game = game;
 		this.options = opt;
 		stage = new Stage(new StretchViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
         stage.setDebugAll(true);
+        random = new Random();
 
 		// Create a table that fills the screen
 		table = new Table();
@@ -289,6 +294,10 @@ public class MenuScreen extends InputAdapter implements Screen {
         ballAngleSlider.setValue(options.ballAngleMultiplier);
         final Label ballAngleNumber = new Label(Integer.toString((int)ballAngleSlider.getValue()), game.skin, "options text");
 
+        final TextButton buttonSmallRandomizeOptions = new TextButton("REASONABLY RANDOMIZE", game.skin, "back button");
+
+        final TextButton buttonRandomizeOptions = new TextButton("TOTALLY RANDOMIZE", game.skin, "back button");
+
         final TextButton buttonResetOptions = new TextButton("DEFAULT", game.skin, "back button");
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "back button");
@@ -327,6 +336,26 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 options.ballAngleMultiplier = ballAngleSlider.getValue();
                 ballAngleNumber.setText(Integer.toString((int)ballAngleSlider.getValue()));
+            }
+        });
+        buttonSmallRandomizeOptions.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                scoreLimitSlider.setValue(3 + random.nextInt(8)); //bound in non-inclusive
+                paddleWidthSlider.setValue(100 + random.nextInt(401));
+                ballSizeSlider.setValue(50 + random.nextInt(101));
+                ballInitialSpeedSlider.setValue(1 + random.nextInt(10));
+                ballSpeedIncreaseSlider.setValue(1 + random.nextInt(10));
+                ballAngleSlider.setValue(30 + random.nextInt(51));
+            }
+        });
+        buttonRandomizeOptions.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                scoreLimitSlider.setValue(scoreLimitSlider.getMinValue() + random.nextInt((int)(scoreLimitSlider.getMaxValue() + 1 - scoreLimitSlider.getMinValue())));
+                paddleWidthSlider.setValue(paddleWidthSlider.getMinValue() + random.nextInt((int)(paddleWidthSlider.getMaxValue() + 1 - paddleWidthSlider.getMinValue())));
+                ballSizeSlider.setValue(ballSizeSlider.getMinValue() + random.nextInt((int)(ballSizeSlider.getMaxValue() + 1 - ballSizeSlider.getMinValue())));
+                ballInitialSpeedSlider.setValue(ballInitialSpeedSlider.getMinValue() + random.nextInt((int)(ballInitialSpeedSlider.getMaxValue() + 1 - ballInitialSpeedSlider.getMinValue())));
+                ballSpeedIncreaseSlider.setValue(ballSpeedIncreaseSlider.getMinValue() + random.nextInt((int)(ballSpeedIncreaseSlider.getMaxValue() + 1 - ballSpeedIncreaseSlider.getMinValue())));
+                ballAngleSlider.setValue(ballAngleSlider.getMinValue() + random.nextInt((int)(ballAngleSlider.getMaxValue() + 1 - ballAngleSlider.getMinValue())));
             }
         });
         buttonResetOptions.addListener(new ClickListener() {
@@ -372,6 +401,10 @@ public class MenuScreen extends InputAdapter implements Screen {
         optionsMenu.add(ballAngleLabel).space(spacing, 0, spacing * 2, 0);
         optionsMenu.add(ballAngleSlider).width(secondColWidth).space(0, spacing, spacing * 2, spacing).fillX();
         optionsMenu.add(ballAngleNumber).width(thirdColWidth).space(spacing, 0, spacing * 2, 0);
+        optionsMenu.row();
+        optionsMenu.add(buttonSmallRandomizeOptions).colspan(3).fillX().height(110);
+        optionsMenu.row();
+        optionsMenu.add(buttonRandomizeOptions).colspan(3).fillX().height(110);
         optionsMenu.row();
         optionsMenu.add(buttonResetOptions).colspan(3).fillX().height(110);
         optionsMenu.row();
