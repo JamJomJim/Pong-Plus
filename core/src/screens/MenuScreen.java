@@ -19,7 +19,7 @@ import com.powerpong.game.PowerPong;
 public class MenuScreen implements Screen {
 	private Stage stage;
 	private Table table;
-	private Table modes, difficulties, optionsMenu, customAI;
+	private Table modes, difficulties, optionsMenu, customAI, practiceSettings;
 	private PowerPong game;
 	private PlayScreen menuBattle;
 	private Options options;
@@ -69,7 +69,9 @@ public class MenuScreen implements Screen {
         buttonPractice.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 options.mode = Mode.PRACTICE;
-                startPlay();
+                modes.setVisible(false);
+                practiceSettings.setVisible(true);
+                buttonPractice.setChecked(false);
             }
         });
         buttonWall.addListener(new ChangeListener() {
@@ -201,6 +203,8 @@ public class MenuScreen implements Screen {
         });
 
         int secondColWidth = 500, spacing = 25, thirdColWidth = 160;
+        customAI.add(aiLabel).colspan(3);
+        customAI.row();
         customAI.add(aiSpeedLabel).space(0, 0, spacing, 0);
         customAI.add(aiSpeedSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
         customAI.add(aiSpeedNumber).width(thirdColWidth).space(0, 0, spacing, 0);
@@ -208,6 +212,49 @@ public class MenuScreen implements Screen {
         customAI.add(buttonPlayAI).spaceBottom(spacing).colspan(3).fillX();
         customAI.row();
         customAI.add(buttonBackAI).colspan(3).fillX();
+
+
+        practiceSettings = new Table();
+        practiceSettings.setVisible(false);
+        final Label practiceLabel = new Label("PRACTICE", game.skin, "options header");
+        final Label targetWidthLabel = new Label("TARGET\nWIDTH", game.skin, "options text");
+        targetWidthLabel.setAlignment(Align.center);
+        final Slider targetWidthSlider = new Slider(10, 1000, 10, false, game.skin);
+        targetWidthSlider.setValue(options.targetWidth);
+        final Label targetWidthNumber = new Label(Integer.toString((int)targetWidthSlider.getValue()), game.skin, "options text");
+
+        final TextButton buttonPlayPractice = new TextButton("PLAY", game.skin);
+
+        final TextButton buttonBackPractice = new TextButton("BACK", game.skin, "back button");
+
+        targetWidthSlider.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                options.targetWidth = targetWidthSlider.getValue();
+                targetWidthNumber.setText(Integer.toString((int)targetWidthSlider.getValue()));
+            }
+        });
+        buttonPlayPractice.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                startPlay();
+            }
+        });
+        buttonBackPractice.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                practiceSettings.setVisible(false);
+                modes.setVisible(true);
+                buttonBackPractice.setChecked(false);
+            }
+        });
+
+        practiceSettings.add(practiceLabel).colspan(3);
+        practiceSettings.row();
+        practiceSettings.add(targetWidthLabel).space(0, 0, spacing, 0);
+        practiceSettings.add(targetWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
+        practiceSettings.add(targetWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        practiceSettings.row();
+        practiceSettings.add(buttonPlayPractice).spaceBottom(spacing).colspan(3).fillX();
+        practiceSettings.row();
+        practiceSettings.add(buttonBackPractice).colspan(3).fillX();
         
 
 
@@ -332,6 +379,7 @@ public class MenuScreen implements Screen {
         menu.add(modes);
         menu.add(difficulties);
         menu.add(customAI);
+        menu.add(practiceSettings);
         menu.add(optionsMenu);
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
@@ -343,10 +391,10 @@ public class MenuScreen implements Screen {
         Gdx.input.setInputProcessor(stage);
 	}
 
-	@Override
-	public void show() {
-
-	}
+    public void startPlay() {
+        dispose();
+        game.setScreen(new PlayScreen(game, options));
+    }
 
 	@Override
 	public void render(float dt) {
@@ -372,6 +420,11 @@ public class MenuScreen implements Screen {
 
 	}
 
+    @Override
+    public void show() {
+
+    }
+
 	@Override
 	public void hide() {
 
@@ -382,10 +435,5 @@ public class MenuScreen implements Screen {
 	    menuBattle.dispose();
 		stage.dispose();
 	}
-
-	public void startPlay() {
-        dispose();
-        game.setScreen(new PlayScreen(game, options));
-    }
 
 }
