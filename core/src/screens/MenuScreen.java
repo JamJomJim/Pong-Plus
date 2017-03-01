@@ -27,8 +27,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 		this.game = game;
 		this.options = opt;
 		stage = new Stage(new StretchViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-        stage.setDebugAll(true);
-        Gdx.input.setCatchBackKey(false);
+        //stage.setDebugAll(true);
 
 		// Create a table that fills the screen
 		table = new Table();
@@ -377,6 +376,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
                 5, 2, false));
 
+        Gdx.input.setCatchBackKey(true);
         InputMultiplexer multiplexer = new InputMultiplexer();
         multiplexer.addProcessor(this);
         multiplexer.addProcessor(stage);
