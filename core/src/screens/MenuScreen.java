@@ -27,7 +27,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 		this.game = game;
 		this.options = opt;
 		stage = new Stage(new StretchViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-        //stage.setDebugAll(true);
+        stage.setDebugAll(true);
 
 		// Create a table that fills the screen
 		table = new Table();
@@ -265,6 +265,12 @@ public class MenuScreen extends InputAdapter implements Screen {
         final Label paddleWidthNumber = new Label(Integer.toString((int)paddleWidthSlider.getValue()), game.skin, "options text");
 
         final Label ballLabel = new Label("BALL", game.skin, "options header");
+        final Label ballSizeLabel = new Label("SIZE", game.skin, "options text");
+        ballSizeLabel.setAlignment(Align.center);
+        final Slider ballSizeSlider = new Slider(10, 1000, 10, false, game.skin);
+        ballSizeSlider.setValue(options.ballSize);
+        final Label ballSizeNumber = new Label(Integer.toString((int)ballSizeSlider.getValue()), game.skin, "options text");
+        
         final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "options text");
         ballInitialSpeedLabel.setAlignment(Align.center);
         final Slider ballInitialSpeedSlider = new Slider(1, 100, 1, false, game.skin);
@@ -279,7 +285,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final Label ballAngleLabel = new Label("REBOUND\nANGLE", game.skin, "options text");
         ballAngleLabel.setAlignment(Align.center);
-        final Slider ballAngleSlider = new Slider(1, 100, 1, false, game.skin);
+        final Slider ballAngleSlider = new Slider(0, 100, 1, false, game.skin);
         ballAngleSlider.setValue(options.ballAngleMultiplier);
         final Label ballAngleNumber = new Label(Integer.toString((int)ballAngleSlider.getValue()), game.skin, "options text");
 
@@ -297,6 +303,12 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 options.paddleWidth = paddleWidthSlider.getValue();
                 paddleWidthNumber.setText(Integer.toString((int)paddleWidthSlider.getValue()));
+            }
+        });
+        ballSizeSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                options.ballSize = ballSizeSlider.getValue();
+                ballSizeNumber.setText(Integer.toString((int)ballSizeSlider.getValue()));
             }
         });
         ballInitialSpeedSlider.addListener(new ChangeListener() {
@@ -322,6 +334,7 @@ public class MenuScreen extends InputAdapter implements Screen {
                 //note that these are hardcoded
                 scoreLimitSlider.setValue(5);
                 paddleWidthSlider.setValue(300);
+                ballSizeSlider.setValue(75);
                 ballInitialSpeedSlider.setValue(3);
                 ballSpeedIncreaseSlider.setValue(1);
                 ballAngleSlider.setValue(60);
@@ -344,9 +357,13 @@ public class MenuScreen extends InputAdapter implements Screen {
         optionsMenu.row();
         optionsMenu.add(ballLabel).spaceTop(spacing * 2).colspan(3);
         optionsMenu.row();
-        optionsMenu.add(ballInitialSpeedLabel).space(0, 0, spacing, 0);
-        optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
-        optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        optionsMenu.add(ballSizeLabel).space(0, 0, spacing, 0).height(scoreLimitLabel.getPrefHeight());
+        optionsMenu.add(ballSizeSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
+        optionsMenu.add(ballSizeNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        optionsMenu.row();
+        optionsMenu.add(ballInitialSpeedLabel).space(spacing, 0, spacing, 0);
+        optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).space(spacing).fillX();
+        optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         optionsMenu.row();
         optionsMenu.add(ballSpeedIncreaseLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(ballSpeedIncreaseSlider).width(secondColWidth).space(spacing).fillX();

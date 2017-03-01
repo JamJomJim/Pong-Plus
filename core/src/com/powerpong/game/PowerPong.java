@@ -43,6 +43,9 @@ public class PowerPong extends Game {
 
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/lilliput steps.ttf"));
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
+		parameter.borderColor = Color.BLACK;
+		parameter.borderWidth = 2; //on desktop this causes weird letters sometimes, but on android it seems to not? idk why
+		parameter.borderStraight = true;
 		parameter.size = 130;
 		skin.add("main menu", generator.generateFont(parameter));
 		parameter.size = 75;

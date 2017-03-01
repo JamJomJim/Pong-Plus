@@ -1,7 +1,10 @@
 package objects;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.powerpong.game.Options;
@@ -16,6 +19,8 @@ public class Ball {
     private boolean paused;
     private Vector2 pausedVel; //for remembering what the ball's vel was before pausing, so it can resume
 
+    private ShapeRenderer sr;
+
     private Options options;
 
     public Ball(String textureName, float x, float y, float initialDirection, World world, Options options) {
@@ -23,6 +28,9 @@ public class Ball {
         pausedVel = new Vector2();
         paused = false;
         this.options = options;
+
+        sr = new ShapeRenderer();
+        sr.setColor(Color.WHITE);
 
 
         BodyDef bodyDef = new BodyDef();
@@ -34,7 +42,7 @@ public class Ball {
         body.setUserData(this);
 
         CircleShape shape = new CircleShape();
-        shape.setRadius(texture.getWidth() / 2 / PowerPong.PPM);
+        shape.setRadius(options.ballSize / 2 / PowerPong.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -49,12 +57,11 @@ public class Ball {
                 (float)Math.sin(initialDirection) * options.ballInitialSpeed);
     }
 
-    public void draw(SpriteBatch sb) {
-        sb.draw(texture,
-                body.getPosition().x - texture.getWidth() / 2 / PowerPong.PPM,
-                body.getPosition().y - texture.getHeight() / 2 / PowerPong.PPM,
-                texture.getWidth() / PowerPong.PPM,
-                texture.getHeight() / PowerPong.PPM);
+    public void draw(Camera cam) {
+        sr.setProjectionMatrix(cam.combined);
+        sr.begin(ShapeRenderer.ShapeType.Filled);
+        sr.circle(body.getPosition().x, body.getPosition().y, options.ballSize / 2 / PowerPong.PPM, (int)options.ballSize);
+        sr.end();
     }
 
     //Changing PPM will affect this, since a smaller PPM will mean the posDiff will be larger.

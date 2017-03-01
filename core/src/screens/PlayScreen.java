@@ -196,9 +196,9 @@ public class PlayScreen extends InputAdapter implements Screen {
         stage.act(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        stage.draw(); //draw the stage (ui elements)
         //draw the world
         //current coordinate system is 0,0 is the center of the screen, positive y is up
+        ball.draw(worldCam);
         game.batch.setProjectionMatrix(worldCam.combined); //have to set this every time because when the stage is drawn, it sets it to a different one
         game.batch.begin();
         p1.draw(game.batch);
@@ -206,9 +206,8 @@ public class PlayScreen extends InputAdapter implements Screen {
             p2.draw(game.batch);
         if (mode == Mode.PRACTICE)
             practiceWall.draw(game.batch);
-
-        ball.draw(game.batch);
         game.batch.end();
+        stage.draw(); //draw the stage (ui elements)
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
         debugRenderer.render(world, worldCam.combined);
