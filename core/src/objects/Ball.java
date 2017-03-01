@@ -14,7 +14,6 @@ import screens.PlayScreen;
 
 public class Ball {
 
-    protected Texture texture;
     protected Body body;
     private boolean paused;
     private Vector2 pausedVel; //for remembering what the ball's vel was before pausing, so it can resume
@@ -23,8 +22,7 @@ public class Ball {
 
     private Options options;
 
-    public Ball(String textureName, float x, float y, float initialDirection, World world, Options options) {
-        this.texture = new Texture(textureName);
+    public Ball(float x, float y, float initialDirection, World world, Options options) {
         pausedVel = new Vector2();
         paused = false;
         this.options = options;
@@ -112,12 +110,8 @@ public class Ball {
         return body;
     }
 
-    public Texture getTexture() {
-        return texture;
-    }
-
     public void dispose() {
-        texture.dispose();
+
     }
 }
 

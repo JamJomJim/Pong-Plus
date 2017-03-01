@@ -64,13 +64,13 @@ public class AIPaddle extends Paddle {
             timeToPaddle = (this.getY() + this.ninePatch.getMinHeight() / PowerPong.PPM - yPos) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
         if (finalDestination < -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
-            yPos = yPos + ((-PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos + ball.getTexture().getWidth() / PowerPong.PPM) / xVel) * yVel;
+            yPos = yPos + ((-PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos + options.ballSize / PowerPong.PPM) / xVel) * yVel;
             xPos = -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
         }
         else if (finalDestination > PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
-            yPos = yPos + ((PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos - ball.getTexture().getWidth() / PowerPong.PPM) / xVel) * yVel;
+            yPos = yPos + ((PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos - options.ballSize / PowerPong.PPM) / xVel) * yVel;
             xPos = PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
@@ -85,9 +85,5 @@ public class AIPaddle extends Paddle {
 
     public void randomizeOffset() {
         offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
-    }
-
-    public float getOffset() {
-        return offset;
     }
 }

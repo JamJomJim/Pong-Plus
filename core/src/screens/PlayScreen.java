@@ -83,7 +83,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             practiceWall.randomizeLocation();
         }
         //create the ball
-        ball = new Ball("ClassicBall.png", 0, 0, BALL_DIRECTION, world, options);
+        ball = new Ball(0, 0, BALL_DIRECTION, world, options);
 
         //create p1 depending on the mode
         if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
