@@ -209,9 +209,9 @@ public class MenuScreen implements Screen {
         customAI.add(aiSpeedSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
         customAI.add(aiSpeedNumber).width(thirdColWidth).space(0, 0, spacing, 0);
         customAI.row();
-        customAI.add(buttonPlayAI).spaceBottom(spacing).colspan(3).fillX();
+        customAI.add(buttonPlayAI).colspan(3).fillX();
         customAI.row();
-        customAI.add(buttonBackAI).colspan(3).fillX();
+        customAI.add(buttonBackAI).colspan(3).fillX().height(160);
 
 
         practiceSettings = new Table();
@@ -252,9 +252,9 @@ public class MenuScreen implements Screen {
         practiceSettings.add(targetWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
         practiceSettings.add(targetWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
         practiceSettings.row();
-        practiceSettings.add(buttonPlayPractice).spaceBottom(spacing).colspan(3).fillX();
+        practiceSettings.add(buttonPlayPractice).colspan(3).fillX();
         practiceSettings.row();
-        practiceSettings.add(buttonBackPractice).colspan(3).fillX();
+        practiceSettings.add(buttonBackPractice).colspan(3).fillX().height(160);
         
 
 
@@ -369,9 +369,9 @@ public class MenuScreen implements Screen {
         optionsMenu.add(ballAngleSlider).width(secondColWidth).space(0, spacing, spacing * 2, spacing).fillX();
         optionsMenu.add(ballAngleNumber).width(thirdColWidth).space(spacing, 0, spacing * 2, 0);
         optionsMenu.row();
-        optionsMenu.add(buttonResetOptions).colspan(3).fillX().height(110).padBottom(10);
+        optionsMenu.add(buttonResetOptions).colspan(3).fillX().height(110);
         optionsMenu.row();
-        optionsMenu.add(buttonBackOptions).colspan(3).fillX().height(110);
+        optionsMenu.add(buttonBackOptions).colspan(3).fillX().height(140);
 
 
 
