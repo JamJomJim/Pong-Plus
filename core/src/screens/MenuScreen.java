@@ -20,7 +20,7 @@ import java.util.Random;
 public class MenuScreen extends InputAdapter implements Screen {
 	private Stage stage;
 	private Table table;
-	private Table modes, difficulties, optionsMenu, customAI, practiceSettings;
+	private Table modes, difficulties, optionsMenu, customAI, practiceMenu;
 	private PowerPong game;
 	private PlayScreen menuBattle;
 	private Options options;
@@ -49,7 +49,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         final TextButton button2P = new TextButton("TWO PLAYER", game.skin);
         final TextButton buttonAIBattle = new TextButton("AI BATTLE", game.skin);
         final TextButton buttonPractice = new TextButton("PRACTICE", game.skin);
-        final TextButton buttonWall = new TextButton("SURVIVAL", game.skin);
         final TextButton buttonOptions = new TextButton("OPTIONS", game.skin);
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
@@ -72,13 +71,7 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 options.mode = Mode.PRACTICE;
                 modes.setVisible(false);
-                practiceSettings.setVisible(true);
-            }
-        });
-        buttonWall.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
-                options.mode = Mode.SURVIVAL;
-                startPlay();
+                practiceMenu.setVisible(true);
             }
         });
         buttonAIBattle.addListener(new ClickListener() {
@@ -102,8 +95,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         modes.add(buttonAIBattle).fillX().height(button1P.getHeight());
         modes.row();
         modes.add(buttonPractice).fillX().height(button1P.getHeight());
-        modes.row();
-        modes.add(buttonWall).fillX().height(button1P.getHeight());
         modes.row();
         modes.add(buttonOptions).fillX().height(button1P.getHeight());
 
@@ -199,8 +190,8 @@ public class MenuScreen extends InputAdapter implements Screen {
             }
         });
 
-        int secondColWidth = 500, spacing = 25, thirdColWidth = 160;
-        customAI.add(aiLabel).colspan(3);
+        int secondColWidth = 500, thirdColWidth = 160, spacing = 25;
+        customAI.add(aiLabel).colspan(3).spaceBottom(spacing);
         customAI.row();
         customAI.add(aiSpeedLabel).space(0, 0, spacing, 0);
         customAI.add(aiSpeedSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
@@ -211,8 +202,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         customAI.add(buttonBackAI).colspan(3).fillX().height(160);
 
 
-        practiceSettings = new Table();
-        practiceSettings.setVisible(false);
+        practiceMenu = new Table();
+        practiceMenu.setVisible(false);
         final Label practiceLabel = new Label("PRACTICE", game.skin, "options header");
         final Label targetWidthLabel = new Label("TARGET\nWIDTH", game.skin, "options text");
         targetWidthLabel.setAlignment(Align.center);
@@ -220,7 +211,9 @@ public class MenuScreen extends InputAdapter implements Screen {
         targetWidthSlider.setValue(options.targetWidth);
         final Label targetWidthNumber = new Label(Integer.toString((int)targetWidthSlider.getValue()), game.skin, "options text");
 
-        final TextButton buttonPlayPractice = new TextButton("PLAY", game.skin);
+        final TextButton buttonPlayPractice = new TextButton("TARGETs", game.skin);
+
+        final TextButton buttonWall = new TextButton("SURVIVAL", game.skin);
 
         final TextButton buttonBackPractice = new TextButton("BACK", game.skin, "back button");
 
@@ -235,22 +228,30 @@ public class MenuScreen extends InputAdapter implements Screen {
                 startPlay();
             }
         });
+        buttonWall.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                options.mode = Mode.SURVIVAL;
+                startPlay();
+            }
+        });
         buttonBackPractice.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                practiceSettings.setVisible(false);
+                practiceMenu.setVisible(false);
                 modes.setVisible(true);
             }
         });
 
-        practiceSettings.add(practiceLabel).colspan(3);
-        practiceSettings.row();
-        practiceSettings.add(targetWidthLabel).space(0, 0, spacing, 0);
-        practiceSettings.add(targetWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
-        practiceSettings.add(targetWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
-        practiceSettings.row();
-        practiceSettings.add(buttonPlayPractice).colspan(3).fillX();
-        practiceSettings.row();
-        practiceSettings.add(buttonBackPractice).colspan(3).fillX().height(160);
+        practiceMenu.add(practiceLabel).colspan(3).spaceBottom(spacing);
+        practiceMenu.row();
+        practiceMenu.add(targetWidthLabel).space(0, 0, spacing, 0);
+        practiceMenu.add(targetWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
+        practiceMenu.add(targetWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        practiceMenu.row();
+        practiceMenu.add(buttonPlayPractice).colspan(3).fillX().height(button1P.getPrefHeight());
+        practiceMenu.row();
+        practiceMenu.add(buttonWall).colspan(3).fillX().height(button1P.getPrefHeight());
+        practiceMenu.row();
+        practiceMenu.add(buttonBackPractice).colspan(3).fillX().height(button1P.getPrefHeight());
 
 
         //Options menu stuff
@@ -340,16 +341,16 @@ public class MenuScreen extends InputAdapter implements Screen {
         });
         buttonSmallRandomizeOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                scoreLimitSlider.setValue(3 + random.nextInt(8)); //bound in non-inclusive
+                scoreLimitSlider.setValue(3 + random.nextInt(8)); //bound is non-inclusive
                 paddleWidthSlider.setValue(100 + random.nextInt(401));
                 ballSizeSlider.setValue(50 + random.nextInt(101));
                 ballInitialSpeedSlider.setValue(1 + random.nextInt(10));
-                ballSpeedIncreaseSlider.setValue(1 + random.nextInt(10));
+                ballSpeedIncreaseSlider.setValue(1 + random.nextInt(3));
                 ballAngleSlider.setValue(30 + random.nextInt(51));
             }
         });
         buttonRandomizeOptions.addListener(new ClickListener() {
-            public void clicked(InputEvent event, float x, float y) {
+            public void clicked(InputEvent event, float x, float y) { //gives random value to each slider, between its min and max values
                 scoreLimitSlider.setValue(scoreLimitSlider.getMinValue() + random.nextInt((int)(scoreLimitSlider.getMaxValue() + 1 - scoreLimitSlider.getMinValue())));
                 paddleWidthSlider.setValue(paddleWidthSlider.getMinValue() + random.nextInt((int)(paddleWidthSlider.getMaxValue() + 1 - paddleWidthSlider.getMinValue())));
                 ballSizeSlider.setValue(ballSizeSlider.getMinValue() + random.nextInt((int)(ballSizeSlider.getMaxValue() + 1 - ballSizeSlider.getMinValue())));
@@ -416,7 +417,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         menu.add(modes);
         menu.add(difficulties);
         menu.add(customAI);
-        menu.add(practiceSettings);
+        menu.add(practiceMenu);
         menu.add(optionsMenu);
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
@@ -454,7 +455,7 @@ public class MenuScreen extends InputAdapter implements Screen {
                 difficulties.setVisible(true);
             } else if (!modes.isVisible()) {
                 difficulties.setVisible(false);
-                practiceSettings.setVisible(false);
+                practiceMenu.setVisible(false);
                 optionsMenu.setVisible(false);
                 modes.setVisible(true);
             } else

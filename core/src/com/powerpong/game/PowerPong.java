@@ -45,7 +45,7 @@ public class PowerPong extends Game {
 		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
 		parameter.borderColor = Color.BLACK;
 		parameter.borderWidth = 2; //on desktop this causes weird letters sometimes, but on android it seems to not? idk why
-		parameter.borderStraight = true;
+		//parameter.borderStraight = true;
 		parameter.size = 130;
 		skin.add("main menu", generator.generateFont(parameter));
 		parameter.size = 75;
