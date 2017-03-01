@@ -1,13 +1,11 @@
 package screens;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.*;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
-import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -16,7 +14,7 @@ import com.powerpong.game.Options.AI;
 import com.powerpong.game.Options.Mode;
 import com.powerpong.game.PowerPong;
 
-public class MenuScreen implements Screen {
+public class MenuScreen extends InputAdapter implements Screen {
 	private Stage stage;
 	private Table table;
 	private Table modes, difficulties, optionsMenu, customAI, practiceSettings;
@@ -378,7 +376,11 @@ public class MenuScreen implements Screen {
         //to have changes to the otions affect the menubattle, pass options to this, rather than a new Options
         menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
                 5, 2, false));
-        Gdx.input.setInputProcessor(stage);
+
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(this);
+        multiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(multiplexer);
 	}
 
     public void startPlay() {
@@ -394,6 +396,23 @@ public class MenuScreen implements Screen {
 		stage.act(dt);
 		stage.draw();
 	}
+
+    public boolean keyDown(int keyCode) {
+        if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
+            if (customAI.isVisible()) {
+                customAI.setVisible(false);
+                difficulties.setVisible(true);
+            } else if (!modes.isVisible()) {
+                difficulties.setVisible(false);
+                practiceSettings.setVisible(false);
+                optionsMenu.setVisible(false);
+                modes.setVisible(true);
+            } else
+                Gdx.app.exit();
+            return true;
+        }
+        return super.keyDown(keyCode);
+    }
 
 	@Override
 	public void resize(int width, int height) {
