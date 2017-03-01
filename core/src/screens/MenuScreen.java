@@ -55,41 +55,40 @@ public class MenuScreen implements Screen {
         // revert the checked state.
         button1P.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                difficulties.setVisible(button1P.isChecked());
+                difficulties.setVisible(true);
                 modes.setVisible(false);
                 options.mode = Mode.ONEPLAYER;
             }
         });
-        button2P.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        button2P.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.mode = Mode.TWOPLAYER;
                 startPlay();
             }
         });
-        buttonPractice.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        buttonPractice.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.mode = Mode.PRACTICE;
                 modes.setVisible(false);
                 practiceSettings.setVisible(true);
-                buttonPractice.setChecked(false);
             }
         });
-        buttonWall.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        buttonWall.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.mode = Mode.SURVIVAL;
                 startPlay();
             }
         });
         buttonAIBattle.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                difficulties.setVisible(buttonAIBattle.isChecked());
+                difficulties.setVisible(true);
                 modes.setVisible(false);
                 options.mode = Mode.AIBATTLE;
             }
         });
         buttonOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                optionsMenu.setVisible(buttonOptions.isChecked());
+                optionsMenu.setVisible(true);
                 modes.setVisible(false);
             }
         });
@@ -116,45 +115,41 @@ public class MenuScreen implements Screen {
         final TextButton buttonSkynet = new TextButton("SKYNET", game.skin);
         final TextButton buttonCustom = new TextButton("CUSTOM", game.skin);
         final TextButton buttonBack = new TextButton("BACK", game.skin, "back button");
-        buttonEasy.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        buttonEasy.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.ai = AI.EASY;
                 startPlay();
             }
         });
-        buttonMedium.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        buttonMedium.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.ai = AI.MEDIUM;
                 startPlay();
             }
         });
-        buttonHard.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        buttonHard.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.ai = AI.HARD;
                 startPlay();
             }
         });
-        buttonSkynet.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        buttonSkynet.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.ai = AI.SKYNET;
                 startPlay();
             }
         });
-        buttonCustom.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        buttonCustom.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.ai = AI.CUSTOM;
                 difficulties.setVisible(false);
                 customAI.setVisible(true);
-                buttonCustom.setChecked(false);
             }
         });
         buttonBack.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(false);
                 modes.setVisible(true);
-                button1P.setChecked(false);
-                buttonAIBattle.setChecked(false);
-                buttonBack.setChecked(false);
             }
         });
 
@@ -183,8 +178,8 @@ public class MenuScreen implements Screen {
 
         final TextButton buttonBackAI = new TextButton("BACK", game.skin, "back button");
 
-        aiSpeedSlider.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        aiSpeedSlider.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.aiMovespeed = aiSpeedSlider.getValue();
                 aiSpeedNumber.setText(Integer.toString((int)aiSpeedSlider.getValue()));
             }
@@ -198,7 +193,6 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 customAI.setVisible(false);
                 difficulties.setVisible(true);
-                buttonBackAI.setChecked(false);
             }
         });
 
@@ -227,8 +221,8 @@ public class MenuScreen implements Screen {
 
         final TextButton buttonBackPractice = new TextButton("BACK", game.skin, "back button");
 
-        targetWidthSlider.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        targetWidthSlider.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.targetWidth = targetWidthSlider.getValue();
                 targetWidthNumber.setText(Integer.toString((int)targetWidthSlider.getValue()));
             }
@@ -242,7 +236,6 @@ public class MenuScreen implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 practiceSettings.setVisible(false);
                 modes.setVisible(true);
-                buttonBackPractice.setChecked(false);
             }
         });
 
@@ -297,32 +290,32 @@ public class MenuScreen implements Screen {
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "back button");
 
-        scoreLimitSlider.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        scoreLimitSlider.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.scoreLimit = scoreLimitSlider.getValue();
                 scoreLimitNumber.setText(Integer.toString((int)scoreLimitSlider.getValue()));
             }
         });
-        paddleWidthSlider.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        paddleWidthSlider.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.paddleWidth = paddleWidthSlider.getValue();
                 paddleWidthNumber.setText(Integer.toString((int)paddleWidthSlider.getValue()));
             }
         });
-        ballInitialSpeedSlider.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        ballInitialSpeedSlider.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.ballInitialSpeed = ballInitialSpeedSlider.getValue();
                 ballInitialSpeedNumber.setText(Integer.toString((int)ballInitialSpeedSlider.getValue()));
             }
         });
-        ballSpeedIncreaseSlider.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        ballSpeedIncreaseSlider.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.ballSpeedIncrease = ballSpeedIncreaseSlider.getValue();
                 ballSpeedIncreaseNumber.setText(Integer.toString((int)ballSpeedIncreaseSlider.getValue()));
             }
         });
-        ballAngleSlider.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
+        ballAngleSlider.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
                 options.ballAngleMultiplier = ballAngleSlider.getValue();
                 ballAngleNumber.setText(Integer.toString((int)ballAngleSlider.getValue()));
             }
@@ -335,15 +328,12 @@ public class MenuScreen implements Screen {
                 ballInitialSpeedSlider.setValue(3);
                 ballSpeedIncreaseSlider.setValue(1);
                 ballAngleSlider.setValue(60);
-                buttonResetOptions.setChecked(false);
             }
         });
         buttonBackOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 optionsMenu.setVisible(false);
                 modes.setVisible(true);
-                buttonBackOptions.setChecked(false);
-                buttonOptions.setChecked(false);
             }
         });
 

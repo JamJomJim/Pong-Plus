@@ -63,7 +63,6 @@ public class PowerPong extends Game {
         textButtonStyle.fontColor = Color.WHITE;
         textButtonStyle.overFontColor = Color.GRAY;
         textButtonStyle.downFontColor = Color.GRAY;
-        textButtonStyle.checkedFontColor = Color.GRAY;
         skin.add("default", textButtonStyle);
 
         textButtonStyle = new TextButtonStyle(textButtonStyle);
