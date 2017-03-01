@@ -19,7 +19,7 @@ import com.powerpong.game.PowerPong;
 public class MenuScreen implements Screen {
 	private Stage stage;
 	private Table table;
-	private Table modes, difficulties, optionsMenu;
+	private Table modes, difficulties, optionsMenu, customAI;
 	private PowerPong game;
 	private PlayScreen menuBattle;
 	private Options options;
@@ -141,7 +141,9 @@ public class MenuScreen implements Screen {
         buttonCustom.addListener(new ChangeListener() {
             public void changed (ChangeEvent event, Actor actor) {
                 options.ai = AI.CUSTOM;
-                startPlay();
+                difficulties.setVisible(false);
+                customAI.setVisible(true);
+                buttonCustom.setChecked(false);
             }
         });
         buttonBack.addListener(new ClickListener() {
@@ -165,6 +167,48 @@ public class MenuScreen implements Screen {
         difficulties.add(buttonCustom).fillX().height(button1P.getHeight());
         difficulties.row();
         difficulties.add(buttonBack).fillX().height(button1P.getHeight());
+        
+        customAI = new Table();
+        customAI.setVisible(false);
+        final Label aiLabel = new Label("CUSTOM AI", game.skin, "options header");
+        final Label aiSpeedLabel = new Label("MOVE\nSPEED", game.skin, "options text");
+        aiSpeedLabel.setAlignment(Align.center);
+        final Slider aiSpeedSlider = new Slider(1, 100, 1, false, game.skin);
+        aiSpeedSlider.setValue(options.aiMovespeed);
+        final Label aiSpeedNumber = new Label(Integer.toString((int)aiSpeedSlider.getValue()), game.skin, "options text");
+
+        final TextButton buttonPlayAI = new TextButton("PLAY", game.skin);
+
+        final TextButton buttonBackAI = new TextButton("BACK", game.skin, "back button");
+
+        aiSpeedSlider.addListener(new ChangeListener() {
+            public void changed (ChangeEvent event, Actor actor) {
+                options.aiMovespeed = aiSpeedSlider.getValue();
+                aiSpeedNumber.setText(Integer.toString((int)aiSpeedSlider.getValue()));
+            }
+        });
+        buttonPlayAI.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                startPlay();
+            }
+        });
+        buttonBackAI.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                customAI.setVisible(false);
+                difficulties.setVisible(true);
+                buttonBackAI.setChecked(false);
+            }
+        });
+
+        int secondColWidth = 500, spacing = 25, thirdColWidth = 160;
+        customAI.add(aiSpeedLabel).space(0, 0, spacing, 0);
+        customAI.add(aiSpeedSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
+        customAI.add(aiSpeedNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        customAI.row();
+        customAI.add(buttonPlayAI).spaceBottom(spacing).colspan(3).fillX();
+        customAI.row();
+        customAI.add(buttonBackAI).colspan(3).fillX();
+        
 
 
         //Options menu stuff
@@ -202,13 +246,6 @@ public class MenuScreen implements Screen {
         ballAngleSlider.setValue(options.ballAngleMultiplier);
         final Label ballAngleNumber = new Label(Integer.toString((int)ballAngleSlider.getValue()), game.skin, "options text");
 
-        final Label aiLabel = new Label("CUSTOM AI", game.skin, "options header");
-        final Label aiSpeedLabel = new Label("MOVE\nSPEED", game.skin, "options text");
-        aiSpeedLabel.setAlignment(Align.center);
-        final Slider aiSpeedSlider = new Slider(1, 100, 1, false, game.skin);
-        aiSpeedSlider.setValue(options.aiMovespeed);
-        final Label aiSpeedNumber = new Label(Integer.toString((int)aiSpeedSlider.getValue()), game.skin, "options text");
-
         final TextButton buttonResetOptions = new TextButton("DEFAULT", game.skin, "back button");
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "back button");
@@ -243,12 +280,6 @@ public class MenuScreen implements Screen {
                 ballAngleNumber.setText(Integer.toString((int)ballAngleSlider.getValue()));
             }
         });
-        aiSpeedSlider.addListener(new ChangeListener() {
-            public void changed (ChangeEvent event, Actor actor) {
-                options.aiMovespeed = aiSpeedSlider.getValue();
-                aiSpeedNumber.setText(Integer.toString((int)aiSpeedSlider.getValue()));
-            }
-        });
         buttonResetOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 //note that these are hardcoded
@@ -257,7 +288,6 @@ public class MenuScreen implements Screen {
                 ballInitialSpeedSlider.setValue(3);
                 ballSpeedIncreaseSlider.setValue(1);
                 ballAngleSlider.setValue(60);
-                aiSpeedSlider.setValue(7);
                 buttonResetOptions.setChecked(false);
             }
         });
@@ -270,7 +300,6 @@ public class MenuScreen implements Screen {
             }
         });
 
-        int secondColWidth = 500, spacing = 25, thirdColWidth = 50;
         optionsMenu.add(scoreLimitLabel).space(0, 0, spacing, 0);
         optionsMenu.add(scoreLimitSlider).width(secondColWidth).space(spacing).fillX();
         optionsMenu.add(scoreLimitNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
@@ -289,15 +318,9 @@ public class MenuScreen implements Screen {
         optionsMenu.add(ballSpeedIncreaseSlider).width(secondColWidth).space(spacing).fillX();
         optionsMenu.add(ballSpeedIncreaseNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         optionsMenu.row();
-        optionsMenu.add(ballAngleLabel).space(spacing, 0, spacing, 0);
-        optionsMenu.add(ballAngleSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
-        optionsMenu.add(ballAngleNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
-        optionsMenu.row();
-        optionsMenu.add(aiLabel).spaceTop(spacing * 2).colspan(3);
-        optionsMenu.row();
-        optionsMenu.add(aiSpeedLabel).space(0, 0, spacing * 2, 0);
-        optionsMenu.add(aiSpeedSlider).width(secondColWidth).space(0, spacing, spacing * 2, spacing).fillX();
-        optionsMenu.add(aiSpeedNumber).width(thirdColWidth).space(0, 0, spacing * 2, 0);
+        optionsMenu.add(ballAngleLabel).space(spacing, 0, spacing * 2, 0);
+        optionsMenu.add(ballAngleSlider).width(secondColWidth).space(0, spacing, spacing * 2, spacing).fillX();
+        optionsMenu.add(ballAngleNumber).width(thirdColWidth).space(spacing, 0, spacing * 2, 0);
         optionsMenu.row();
         optionsMenu.add(buttonResetOptions).colspan(3).fillX().height(110).padBottom(10);
         optionsMenu.row();
@@ -308,6 +331,7 @@ public class MenuScreen implements Screen {
         Stack menu = new Stack();
         menu.add(modes);
         menu.add(difficulties);
+        menu.add(customAI);
         menu.add(optionsMenu);
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
