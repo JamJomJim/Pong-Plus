@@ -23,8 +23,8 @@ public class PlayerPaddle extends Paddle {
     private int movePointer; //represents the pointer for the finger that most recently touched within the input capture height,
     //and therefore the one that is controlling the paddle
 
-    public PlayerPaddle(String textureName, float x, float y, World world, OrthographicCamera cam, Options options) {
-        super(textureName, x, y, world, options);
+    public PlayerPaddle(float x, float y, World world, OrthographicCamera cam, Options options) {
+        super(x, y, world, options);
         touchPos = new Vector3(0, 0, 0);
         touchDraggedPos = new Vector3(0, 0, 0);
         this.worldCam = cam;

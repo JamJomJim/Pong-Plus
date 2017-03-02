@@ -87,23 +87,23 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //create p1 depending on the mode
         if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
-            p1 = new AIPaddle("ClassicPaddle9.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
+            p1 = new AIPaddle(0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
         //if Survival mode set a small offset to the X of the player paddle.
         else if (mode == Mode.SURVIVAL) {
             float x = 0;
             while (x == 0)
                 x = (float) (Math.random() * 5 - 2.5) / PowerPong.PPM;
-            p1 = new PlayerPaddle("ClassicPaddle9.png", x, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
+            p1 = new PlayerPaddle(x, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
         } else
-            p1 = new PlayerPaddle("ClassicPaddle9.png", 0, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
+            p1 = new PlayerPaddle(0, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
 
         //create p2 depending on the mode
         if (mode == Mode.TWOPLAYER)
-            p2 = new PlayerPaddle("ClassicPaddle9.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
+            p2 = new PlayerPaddle(0, PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
         else if (mode == Mode.SURVIVAL || mode == Mode.PRACTICE)
             p2 = null;
         else
-            p2 = new AIPaddle("ClassicPaddle9.png", 0, PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
+            p2 = new AIPaddle(0, PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
 
         world.setContactListener(new ContactListener(p1, p2, this));
 

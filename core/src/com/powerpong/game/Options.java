@@ -18,6 +18,8 @@ public class Options {
     public float targetWidth;
     public boolean soundOn;
 
+    public String paddleTexture;
+
     //no args constructor sets stuff to default values
     public Options() {
         ai = AI.CUSTOM;
@@ -35,6 +37,9 @@ public class Options {
         targetWidth = 300;
 
         soundOn = false;
+
+
+        paddleTexture = "ClassicPaddle9.png";
     }
 
     public Options(Mode mode, AI ai, float paddleWidth, float ballInitialSpeed, float ballSpeedIncrease, float ballAngleMultiplier,
@@ -50,5 +55,7 @@ public class Options {
         this.aiMovespeed = aiMovespeed;
         this.aiOffset = aiOffset;
         this.soundOn = soundOn;
+
+        paddleTexture = "ClassicPaddle9.png";
     }
 }

@@ -23,8 +23,8 @@ public class Paddle extends InputAdapter {
     public Paddle() {
     }
 
-    public Paddle(String textureName, float x, float y, World world, Options options) {
-        ninePatch = new NinePatchDrawable(new NinePatch(new Texture(textureName)));
+    public Paddle(float x, float y, World world, Options options) {
+        ninePatch = new NinePatchDrawable(new NinePatch(new Texture(options.paddleTexture)));
         this.options = options;
 
         BodyDef bodyDef = new BodyDef();

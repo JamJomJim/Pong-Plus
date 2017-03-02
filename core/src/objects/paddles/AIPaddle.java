@@ -13,9 +13,9 @@ public class AIPaddle extends Paddle {
     private Ball ball;
     private Vector2 prevVel;
 
-    //constructor for custom offset and movespeed
-    public AIPaddle(String textureName, float x, float y, World world, Ball ball, Options options) {
-        super(textureName, x, y, world, options);
+    
+    public AIPaddle(float x, float y, World world, Ball ball, Options options) {
+        super(x, y, world, options);
         this.prevVel = new Vector2(0, 0);
         this.ball = ball;
         switch (options.ai) {
