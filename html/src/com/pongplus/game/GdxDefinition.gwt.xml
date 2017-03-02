@@ -8,7 +8,7 @@
 	<inherits name='com.badlogic.gdx.ai' />
 
 	<inherits name='PowerPong' />
-	<entry-point class='com.powerpong.game.client.HtmlLauncher' />
+	<entry-point class='com.pongplus.game.client.HtmlLauncher' />
 	<set-configuration-property name='xsiframe.failIfScriptTag' value='FALSE'/>
 	<set-configuration-property name="gdx.assetpath" value="../android/assets" />
 </module>

@@ -1,4 +1,4 @@
-package com.powerpong.game;
+package com.pongplus.game;
 
 public class Options {
     public enum AI {//different AI difficulties

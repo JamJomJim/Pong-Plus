@@ -1,4 +1,4 @@
-package com.powerpong.game;
+package com.pongplus.game;
 
 import java.util.Iterator;
 

@@ -1,15 +1,12 @@
 package objects;
 
-import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.powerpong.game.Options;
-import com.powerpong.game.PowerPong;
-import screens.PlayScreen;
+import com.pongplus.game.Options;
+import com.pongplus.game.PowerPong;
 
 import java.util.Random;
 

@@ -1,15 +1,14 @@
-package com.powerpong.game;
+package com.pongplus.game;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import objects.Wall;
 import objects.paddles.AIPaddle;
 import objects.Ball;
 import objects.paddles.Paddle;
 import screens.PlayScreen;
-import com.powerpong.game.Options.Mode;
+import com.pongplus.game.Options.Mode;
 
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {

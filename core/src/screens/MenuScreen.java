@@ -10,10 +10,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
-import com.powerpong.game.Options;
-import com.powerpong.game.Options.AI;
-import com.powerpong.game.Options.Mode;
-import com.powerpong.game.PowerPong;
+import com.pongplus.game.Options;
+import com.pongplus.game.Options.AI;
+import com.pongplus.game.Options.Mode;
+import com.pongplus.game.PowerPong;
 
 import java.util.Random;
 

@@ -1,4 +1,4 @@
-package com.powerpong.game.client;
+package com.pongplus.game.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;

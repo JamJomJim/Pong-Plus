@@ -2,8 +2,8 @@ package objects.paddles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
-import com.powerpong.game.Options;
-import com.powerpong.game.PowerPong;
+import com.pongplus.game.Options;
+import com.pongplus.game.PowerPong;
 import objects.Ball;
 
 public class AIPaddle extends Paddle {
@@ -13,7 +13,7 @@ public class AIPaddle extends Paddle {
     private Ball ball;
     private Vector2 prevVel;
 
-    
+
     public AIPaddle(float x, float y, World world, Ball ball, Options options) {
         super(x, y, world, options);
         this.prevVel = new Vector2(0, 0);
