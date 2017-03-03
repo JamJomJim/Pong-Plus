@@ -513,6 +513,9 @@ public class MenuScreen extends InputAdapter implements Screen {
                 practiceMenu.setVisible(false);
                 optionsMenu.setVisible(false);
                 modes.setVisible(true);
+                titleText.setVisible(true);
+                verticalPlus.setVisible(true);
+                horizontalPlus.setVisible(true);
             } else
                 Gdx.app.exit();
             return true;
