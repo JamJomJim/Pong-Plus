@@ -5,7 +5,8 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -22,7 +23,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 	private Stage stage;
 	private Table table;
 	private Table modes, difficulties, optionsMenu, customAI, practiceMenu;
-	private Image titleText, titlePlus;
+	private Image titleText, horizontalPlus, verticalPlus;
 	private PowerPong game;
 	private PlayScreen menuBattle;
 	private Options options;
@@ -33,7 +34,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 		this.game = game;
 		this.options = opt;
 		stage = new Stage(new StretchViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
         random = new Random();
 
 		// Create a table that fills the screen
@@ -437,37 +438,45 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         //Stuff for the Title
         //create and position text; origin of the Image is the bottom left corner
-        Texture titleTextImage = new Texture("titleTextImage.png");
+        Texture titleTextImage = new Texture("title/titleTextImage.png");
         titleText = new Image(titleTextImage);
         titleText.setWidth(titleTextImage.getWidth());
         titleText.setHeight(titleTextImage.getHeight());
         stage.addActor(titleText);
         titleText.setX(PowerPong.NATIVE_WIDTH / 2 - titleText.getPrefWidth() / 2);
         titleText.setY(PowerPong.NATIVE_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
-        //create and position plus sign
-        Texture titlePlusImage = new Texture("titlePlusImage.png");
-        titlePlus = new Image(titlePlusImage);
-        titlePlus.setWidth(titlePlusImage.getWidth());
-        titlePlus.setHeight(titlePlusImage.getHeight());
-        stage.addActor(titlePlus);
-        titlePlus.setX(PowerPong.NATIVE_WIDTH);
-        titlePlus.setY(PowerPong.NATIVE_HEIGHT / 4 * 3 - titlePlus.getPrefHeight() / 2);
-        //create the action that will move the plus sign left until it's close to the right of PONG
-        MoveByAction plusMove = new MoveByAction();
-        plusMove.setAmountX(titleText.getX() - titlePlus.getX() + titleText.getPrefWidth() + titlePlus.getPrefWidth() / 8);
-        plusMove.setDuration(1f);
-        //create the action that both parts will use to move left
-        MoveByAction bothMove = new MoveByAction();
-        bothMove.setAmountX(-titlePlus.getPrefWidth() / 2 - titlePlus.getPrefWidth() / 8);
-        bothMove.setDuration(1f);
+        //create and position horizontal part of the eventual plus sign
+        Texture horizontalBarImage = new Texture("title/horizontalBar.png");
+        horizontalPlus = new Image(horizontalBarImage);
+        horizontalPlus.setWidth(horizontalBarImage.getWidth());
+        horizontalPlus.setHeight(horizontalBarImage.getHeight());
+        stage.addActor(horizontalPlus);
+        horizontalPlus.setX(PowerPong.NATIVE_WIDTH);
+        horizontalPlus.setY(PowerPong.NATIVE_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
+        //vertical part
+        Texture verticalBarImage = new Texture("title/verticalBar.png");
+        verticalPlus = new Image(verticalBarImage);
+        verticalPlus.setWidth(verticalBarImage.getWidth());
+        verticalPlus.setHeight(verticalBarImage.getHeight());
+        stage.addActor(verticalPlus);
+        verticalPlus.setX(PowerPong.NATIVE_WIDTH + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 8) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
+        verticalPlus.setY(PowerPong.NATIVE_HEIGHT);
+        //add the movement actions
+        float initialDelay = 1f, verDelay = 0.5f, horDuration = 0.2f, verDuration = 0.05f, bothDuration = 0.2f;
 
-        titlePlus.addAction(plusMove);
-        titleText.addAction(bothMove);
-        //need to remake action because it each action can only be added to one actor apparently -.-
-        bothMove = new MoveByAction();
-        bothMove.setAmountX(-titlePlus.getPrefWidth() / 2 - titlePlus.getPrefWidth() / 8);
-        bothMove.setDuration(1f);
-        titlePlus.addAction(bothMove);
+        verticalPlus.addAction(sequence(
+                delay(initialDelay + verDelay + horDuration + bothDuration),
+                moveBy(0, horizontalPlus.getY() - verticalPlus.getY() - verticalPlus.getPrefHeight() / 2 + horizontalPlus.getPrefHeight() / 2, verDuration)
+        ));
+        horizontalPlus.addAction(sequence(
+                delay(initialDelay),
+                moveBy(titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8, 0, horDuration),//move it to the text
+                moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 8, 0, bothDuration)
+        ));
+        titleText.addAction(sequence(
+                delay(initialDelay + horDuration),
+                moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 8, 0, bothDuration)
+        ));
 	}
 
 	@Override
