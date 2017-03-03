@@ -88,6 +88,9 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 optionsMenu.setVisible(true);
                 modes.setVisible(false);
+                titleText.setVisible(false);
+                verticalPlus.setVisible(false);
+                horizontalPlus.setVisible(false);
             }
         });
 
@@ -298,9 +301,9 @@ public class MenuScreen extends InputAdapter implements Screen {
         ballAngleSlider.setValue(options.ballAngleMultiplier);
         final Label ballAngleNumber = new Label(Integer.toString((int)ballAngleSlider.getValue()), game.skin, "options text");
 
-        final TextButton buttonSmallRandomizeOptions = new TextButton("REASONABLY RANDOMIZE", game.skin, "back button");
+        final TextButton buttonSmallRandomizeOptions = new TextButton("REASONABLY RANDOM", game.skin, "back button");
 
-        final TextButton buttonRandomizeOptions = new TextButton("TOTALLY RANDOMIZE", game.skin, "back button");
+        final TextButton buttonRandomizeOptions = new TextButton("TOTALLY RANDOM", game.skin, "back button");
 
         final TextButton buttonResetOptions = new TextButton("DEFAULT", game.skin, "back button");
 
@@ -377,6 +380,9 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 optionsMenu.setVisible(false);
                 modes.setVisible(true);
+                titleText.setVisible(true);
+                verticalPlus.setVisible(true);
+                horizontalPlus.setVisible(true);
             }
         });
 
@@ -412,7 +418,11 @@ public class MenuScreen extends InputAdapter implements Screen {
         optionsMenu.row();
         optionsMenu.add(buttonResetOptions).colspan(3).fillX().height(110);
         optionsMenu.row();
-        optionsMenu.add(buttonBackOptions).colspan(3).fillX().height(140);
+        optionsMenu.add(buttonBackOptions).colspan(3).fillX().height(110);
+
+        stage.addActor(optionsMenu);
+        optionsMenu.setX(PowerPong.NATIVE_WIDTH / 2);
+        optionsMenu.setY(PowerPong.NATIVE_HEIGHT / 2);
 
 
 
@@ -421,10 +431,9 @@ public class MenuScreen extends InputAdapter implements Screen {
         menu.add(difficulties);
         menu.add(customAI);
         menu.add(practiceMenu);
-        menu.add(optionsMenu);
         stage.addActor(menu);
         menu.setX(PowerPong.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
-        menu.setY(PowerPong.NATIVE_HEIGHT / 2 - menu.getHeight() / 2);
+        menu.setY(PowerPong.NATIVE_HEIGHT / 2.5f - menu.getHeight() / 2);
 
         //to have changes to the options affect the menubattle, pass options to this, rather than a new Options
         menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
@@ -453,16 +462,16 @@ public class MenuScreen extends InputAdapter implements Screen {
         stage.addActor(horizontalPlus);
         horizontalPlus.setX(PowerPong.NATIVE_WIDTH);
         horizontalPlus.setY(PowerPong.NATIVE_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
-        //vertical part
+        //vertical part of the plus
         Texture verticalBarImage = new Texture("title/verticalBar.png");
         verticalPlus = new Image(verticalBarImage);
         verticalPlus.setWidth(verticalBarImage.getWidth());
         verticalPlus.setHeight(verticalBarImage.getHeight());
         stage.addActor(verticalPlus);
-        verticalPlus.setX(PowerPong.NATIVE_WIDTH + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 8) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
+        verticalPlus.setX(PowerPong.NATIVE_WIDTH + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 16) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
         verticalPlus.setY(PowerPong.NATIVE_HEIGHT);
         //add the movement actions
-        float initialDelay = 1f, verDelay = 0.5f, horDuration = 0.2f, verDuration = 0.05f, bothDuration = 0.2f;
+        float initialDelay = 3f, verDelay = 0.5f, horDuration = 0.025f, verDuration = 0.05f, bothDuration = 0.025f;
 
         verticalPlus.addAction(sequence(
                 delay(initialDelay + verDelay + horDuration + bothDuration),
@@ -471,11 +480,11 @@ public class MenuScreen extends InputAdapter implements Screen {
         horizontalPlus.addAction(sequence(
                 delay(initialDelay),
                 moveBy(titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8, 0, horDuration),//move it to the text
-                moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 8, 0, bothDuration)
+                moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16, 0, bothDuration)
         ));
         titleText.addAction(sequence(
                 delay(initialDelay + horDuration),
-                moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 8, 0, bothDuration)
+                moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16, 0, bothDuration)
         ));
 	}
 
