@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
+import com.badlogic.gdx.scenes.scene2d.actions.MoveByAction;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -21,6 +22,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 	private Stage stage;
 	private Table table;
 	private Table modes, difficulties, optionsMenu, customAI, practiceMenu;
+	private Image titleText, titlePlus;
 	private PowerPong game;
 	private PlayScreen menuBattle;
 	private Options options;
@@ -432,6 +434,40 @@ public class MenuScreen extends InputAdapter implements Screen {
         multiplexer.addProcessor(this);
         multiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(multiplexer);
+
+        //Stuff for the Title
+        //create and position text; origin of the Image is the bottom left corner
+        Texture titleTextImage = new Texture("titleTextImage.png");
+        titleText = new Image(titleTextImage);
+        titleText.setWidth(titleTextImage.getWidth());
+        titleText.setHeight(titleTextImage.getHeight());
+        stage.addActor(titleText);
+        titleText.setX(PowerPong.NATIVE_WIDTH / 2 - titleText.getPrefWidth() / 2);
+        titleText.setY(PowerPong.NATIVE_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
+        //create and position plus sign
+        Texture titlePlusImage = new Texture("titlePlusImage.png");
+        titlePlus = new Image(titlePlusImage);
+        titlePlus.setWidth(titlePlusImage.getWidth());
+        titlePlus.setHeight(titlePlusImage.getHeight());
+        stage.addActor(titlePlus);
+        titlePlus.setX(PowerPong.NATIVE_WIDTH);
+        titlePlus.setY(PowerPong.NATIVE_HEIGHT / 4 * 3 - titlePlus.getPrefHeight() / 2);
+        //create the action that will move the plus sign left until it's close to the right of PONG
+        MoveByAction plusMove = new MoveByAction();
+        plusMove.setAmountX(titleText.getX() - titlePlus.getX() + titleText.getPrefWidth() + titlePlus.getPrefWidth() / 8);
+        plusMove.setDuration(1f);
+        //create the action that both parts will use to move left
+        MoveByAction bothMove = new MoveByAction();
+        bothMove.setAmountX(-titlePlus.getPrefWidth() / 2 - titlePlus.getPrefWidth() / 8);
+        bothMove.setDuration(1f);
+
+        titlePlus.addAction(plusMove);
+        titleText.addAction(bothMove);
+        //need to remake action because it each action can only be added to one actor apparently -.-
+        bothMove = new MoveByAction();
+        bothMove.setAmountX(-titlePlus.getPrefWidth() / 2 - titlePlus.getPrefWidth() / 8);
+        bothMove.setDuration(1f);
+        titlePlus.addAction(bothMove);
 	}
 
 	@Override
@@ -440,7 +476,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		menuBattle.render(dt);
 		stage.act(dt);
-		stage.draw();
+		stage.draw(); //note that for scene2d, the origin is the bottom left corner, and it's using pixel coordinates
 	}
 
     public void startPlay() {
