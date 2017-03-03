@@ -20,7 +20,8 @@ import com.pongplus.game.PowerPong;
 import java.util.Random;
 
 public class MenuScreen extends InputAdapter implements Screen {
-	private Stage stage;
+    private final Texture verticalBarImage, horizontalBarImage, titleTextImage;
+    private Stage stage;
 	private Table table;
 	private Table modes, difficulties, optionsMenu, customAI, practiceMenu;
 	private Image titleText, horizontalPlus, verticalPlus;
@@ -447,7 +448,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         //Stuff for the Title
         //create and position text; origin of the Image is the bottom left corner
-        Texture titleTextImage = new Texture("title/titleTextImage.png");
+        titleTextImage = new Texture("title/titleTextImage.png");
         titleText = new Image(titleTextImage);
         titleText.setWidth(titleTextImage.getWidth());
         titleText.setHeight(titleTextImage.getHeight());
@@ -455,7 +456,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         titleText.setX(PowerPong.NATIVE_WIDTH / 2 - titleText.getPrefWidth() / 2);
         titleText.setY(PowerPong.NATIVE_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
         //create and position horizontal part of the eventual plus sign
-        Texture horizontalBarImage = new Texture("title/horizontalBar.png");
+        horizontalBarImage = new Texture("title/horizontalBar.png");
         horizontalPlus = new Image(horizontalBarImage);
         horizontalPlus.setWidth(horizontalBarImage.getWidth());
         horizontalPlus.setHeight(horizontalBarImage.getHeight());
@@ -463,7 +464,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         horizontalPlus.setX(PowerPong.NATIVE_WIDTH);
         horizontalPlus.setY(PowerPong.NATIVE_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
         //vertical part of the plus
-        Texture verticalBarImage = new Texture("title/verticalBar.png");
+        verticalBarImage = new Texture("title/verticalBar.png");
         verticalPlus = new Image(verticalBarImage);
         verticalPlus.setWidth(verticalBarImage.getWidth());
         verticalPlus.setHeight(verticalBarImage.getHeight());
@@ -519,6 +520,15 @@ public class MenuScreen extends InputAdapter implements Screen {
         return super.keyDown(keyCode);
     }
 
+    @Override
+    public void dispose() {
+        menuBattle.dispose();
+        stage.dispose();
+        horizontalBarImage.dispose();
+        verticalBarImage.dispose();
+        titleTextImage.dispose();
+    }
+
 	@Override
 	public void resize(int width, int height) {
 		stage.getViewport().update(width, height,true);
@@ -543,11 +553,4 @@ public class MenuScreen extends InputAdapter implements Screen {
 	public void hide() {
 
 	}
-
-	@Override
-	public void dispose() {
-	    menuBattle.dispose();
-		stage.dispose();
-	}
-
 }
