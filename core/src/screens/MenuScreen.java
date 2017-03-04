@@ -272,7 +272,9 @@ public class MenuScreen extends InputAdapter implements Screen {
         //Options menu stuff
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
-        
+
+        //Creates all of the option's labels.
+
         final Label scoreLimitLabel = new Label("SCORE\nLIMIT", game.skin, "LS75");
         scoreLimitLabel.setAlignment(Align.center);
         final Slider scoreLimitSlider = new Slider(1, 10, 1, false, game.skin);
@@ -317,6 +319,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         final TextButton buttonResetOptions = new TextButton("DEFAULT", game.skin, "LS75");
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "LS75");
+
+        //Adds listeners to each option.
 
         scoreLimitSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
@@ -396,36 +400,47 @@ public class MenuScreen extends InputAdapter implements Screen {
             }
         });
 
+        //Adds the options to the menu.
+
         optionsMenu.add(scoreLimitLabel).space(0, 0, spacing, 0);
         optionsMenu.add(scoreLimitSlider).width(secondColWidth).space(spacing).fillX();
         optionsMenu.add(scoreLimitNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         optionsMenu.row();
+
         optionsMenu.add(paddleWidthLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(paddleWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
         optionsMenu.add(paddleWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
         optionsMenu.row();
+
         optionsMenu.add(ballLabel).spaceTop(spacing * 2).colspan(3);
         optionsMenu.row();
+
         optionsMenu.add(ballSizeLabel).space(0, 0, spacing, 0).height(scoreLimitLabel.getPrefHeight());
         optionsMenu.add(ballSizeSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
         optionsMenu.add(ballSizeNumber).width(thirdColWidth).space(0, 0, spacing, 0);
         optionsMenu.row();
+
         optionsMenu.add(ballInitialSpeedLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).space(spacing).fillX();
         optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         optionsMenu.row();
+
         optionsMenu.add(ballSpeedIncreaseLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(ballSpeedIncreaseSlider).width(secondColWidth).space(spacing).fillX();
         optionsMenu.add(ballSpeedIncreaseNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         optionsMenu.row();
+
         optionsMenu.add(ballAngleLabel).space(spacing, 0, spacing * 2, 0);
         optionsMenu.add(ballAngleSlider).width(secondColWidth).space(0, spacing, spacing * 2, spacing).fillX();
         optionsMenu.add(ballAngleNumber).width(thirdColWidth).space(spacing, 0, spacing * 2, 0);
         optionsMenu.row();
+
         optionsMenu.add(buttonSmallRandomizeOptions).colspan(3).fillX().height(110);
         optionsMenu.row();
+
         optionsMenu.add(buttonRandomizeOptions).colspan(3).fillX().height(110);
         optionsMenu.row();
+
         optionsMenu.add(buttonResetOptions).colspan(3).fillX().height(110);
         optionsMenu.row();
         optionsMenu.add(buttonBackOptions).colspan(3).fillX().height(110);
@@ -433,8 +448,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         stage.addActor(optionsMenu);
         optionsMenu.setX(PongPlus.NATIVE_WIDTH / 2);
         optionsMenu.setY(PongPlus.NATIVE_HEIGHT / 2);
-
-
 
         Stack menu = new Stack();
         menu.add(modes);
