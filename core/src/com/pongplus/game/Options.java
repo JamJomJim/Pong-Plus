@@ -42,7 +42,7 @@ public class Options {
         this.ballAngleMultiplier = ballAngleMultiplier;
         this.aiMovespeed = aiMovespeed;
         this.aiOffset = aiOffset;
-        this.soundOn = soundOn;
+        this.soundOn = true;
 
         paddleTexture = "ClassicPaddle9.png";
     }
@@ -72,7 +72,7 @@ public class Options {
         this.aiMovespeed = prefs.getFloat("aiMovespeed", 7);
         this.aiOffset = prefs.getFloat("aiOffset", 5);
         this.targetWidth = prefs.getFloat("targetWidth", 300);
-        this.soundOn = prefs.getBoolean("soundOn", false);
+        this.soundOn = prefs.getBoolean("soundOn", true);
         this.paddleTexture = prefs.getString("paddleTexture", "ClassicPaddle9.png");
     }
 }

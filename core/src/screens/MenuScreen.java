@@ -447,8 +447,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         optionsMenu.setX(PongPlus.NATIVE_WIDTH / 2);
         optionsMenu.setY(PongPlus.NATIVE_HEIGHT / 2);
 
-
-
         Stack menu = new Stack();
         menu.add(modes);
         menu.add(difficulties);
