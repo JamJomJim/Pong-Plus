@@ -56,6 +56,7 @@ public class Options {
         prefs.putFloat("ballAngleMultiplier", ballAngleMultiplier);
         prefs.putFloat("aiMovespeed", aiMovespeed);
         prefs.putFloat("aiOffset", aiOffset);
+        prefs.putFloat("targetWidth", targetWidth);
         prefs.putBoolean("soundOn", soundOn);
         prefs.putString("paddleTexture", paddleTexture);
         prefs.flush();
@@ -69,7 +70,8 @@ public class Options {
         this.ballSpeedIncrease = prefs.getFloat("ballSpeedIncrease", 1);
         this.ballAngleMultiplier = prefs.getFloat("ballAngleMultiplier", 60);
         this.aiMovespeed = prefs.getFloat("aiMovespeed", 7);
-        this.aiOffset = prefs.getFloat("aiOffset", 2);
+        this.aiOffset = prefs.getFloat("aiOffset", 4);
+        this.targetWidth = prefs.getFloat("targetWidth", 300);
         this.soundOn = prefs.getBoolean("soundOn", false);
         this.paddleTexture = prefs.getString("paddleTexture", "ClassicPaddle9.png");
     }
