@@ -236,6 +236,7 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 options.targetWidth = targetWidthSlider.getValue();
                 targetWidthNumber.setText(Integer.toString((int)targetWidthSlider.getValue()));
+                options.saveOptions();
             }
         });
         buttonPlayPractice.addListener(new ClickListener() {
