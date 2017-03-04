@@ -26,6 +26,7 @@ public class PowerPong extends Game {
 	public SpriteBatch batch;
 	public Skin skin;
 	public Options options;
+	public BitmapFont ls130, ls75, arial130;
 
 	@Override
 	public void create () {
@@ -36,9 +37,12 @@ public class PowerPong extends Game {
 
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();
-		skin.add("LS130", new BitmapFont(Gdx.files.internal("fonts/LS130.fnt"))); //Lilliput Steps size 130
-        skin.add("LS75", new BitmapFont(Gdx.files.internal("fonts/LS75.fnt")));
-        skin.add("Arial130", new BitmapFont(Gdx.files.internal("fonts/Arial130.fnt")));
+		ls130 = new BitmapFont(Gdx.files.internal("fonts/LS130.fnt"));
+		ls75 = new BitmapFont(Gdx.files.internal("fonts/LS75.fnt"));
+		arial130 = new BitmapFont(Gdx.files.internal("fonts/Arial130.fnt"));
+		skin.add("LS130", ls130); //Lilliput Steps size 130
+        skin.add("LS75", ls75);
+        skin.add("Arial130", arial130);
 
         //default TextButtonStyle
         TextButtonStyle textButtonStyle = new TextButtonStyle();
@@ -89,5 +93,8 @@ public class PowerPong extends Game {
 	public void dispose () {
 		batch.dispose();
 		skin.dispose();
+		ls130.dispose();
+		ls75.dispose();
+		arial130.dispose();
 	}
 }
