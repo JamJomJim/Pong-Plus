@@ -76,13 +76,15 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
         }
 
         if (screen.getMode() == Mode.PRACTICE){
-			if(objectA instanceof Ball && objectB instanceof Wall && ((Wall) objectB).getNinePatch() != null) {
-				((Wall) objectB).needsNewLocation(true);
-				screen.score("bot");
-			}
-			else if (objectA instanceof Wall && objectB instanceof Ball && ((Wall) objectA).getNinePatch() != null) {
-				((Wall) objectA).needsNewLocation(true);
-				screen.score("bot");
+			if (objectA instanceof Ball && objectB instanceof Wall && ((Wall) objectB).getNinePatch() != null ||
+                    objectA instanceof Wall && objectB instanceof Ball && ((Wall) objectA).getNinePatch() != null) {
+
+			    if (objectA instanceof Wall) ((Wall) objectA).needsNewLocation(true);
+			    else ((Wall) objectB).needsNewLocation(true);
+
+                int amount = 3 - Math.round(Math.abs((bodyB.getPosition().x - bodyA.getPosition().x) / (options.targetWidth / 2 / PongPlus.PPM)) * 3);
+                if (amount <= 0) amount = 1;
+                screen.score("bot", amount);
 			}
 		}
 	}

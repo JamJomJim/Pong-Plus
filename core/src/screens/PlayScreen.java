@@ -263,6 +263,13 @@ public class PlayScreen extends InputAdapter implements Screen {
             botScore += 1;
     }
 
+    public void score(String side, int amount) {
+        if (side.equals("top"))
+            topScore += amount;
+        else if (side.equals("bot"))
+            botScore += amount;
+    }
+
     public void restart() {
         dispose();
         game.setScreen(new PlayScreen(game, options));
