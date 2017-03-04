@@ -123,8 +123,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         //create the table and the labels that will display the score
         score = new Table();
         score.setSkin(game.skin);
-        topScoreText = new Label(Integer.toString(topScore), game.skin, "score");
-        botScoreText = new Label(Integer.toString(botScore), game.skin, "score");
+        topScoreText = new Label(Integer.toString(topScore), game.skin, "Arial130");
+        botScoreText = new Label(Integer.toString(botScore), game.skin, "Arial130");
         score.add(topScoreText).right();
         score.row();
         score.add(botScoreText).right();
@@ -162,7 +162,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         menu.setY(PowerPong.NATIVE_HEIGHT / 2);
 
         //create the label that's displayed during pause
-        pausedText = new Label("PAUSED", game.skin, "paused");
+        pausedText = new Label("PAUSED", game.skin);
         pausedText.setVisible(false);
         stage.addActor(pausedText);
         pausedText.setX(PowerPong.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);

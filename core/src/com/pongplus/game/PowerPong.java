@@ -2,13 +2,11 @@ package com.pongplus.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator.FreeTypeFontParameter;
 import com.badlogic.gdx.scenes.scene2d.ui.Label.LabelStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
@@ -41,61 +39,38 @@ public class PowerPong extends Game {
 
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();
-
-		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/lilliput steps.ttf"));
-		FreeTypeFontParameter parameter = new FreeTypeFontParameter();
-		parameter.borderColor = Color.BLACK;
-		parameter.borderWidth = 2; //on desktop this causes weird letters sometimes, but on android it seems to not? idk why
-		//parameter.borderStraight = true;
-		parameter.size = 130;
-		skin.add("main menu", generator.generateFont(parameter));
-		parameter.size = 75;
-        skin.add("options text", generator.generateFont(parameter));
-        parameter.size = 120;
-        skin.add("options header", generator.generateFont(parameter));
-        parameter.size = 80;
-        skin.add("back button", generator.generateFont(parameter));
-
-
-        generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/arial.ttf"));
-        parameter.size = 130;
-        skin.add("Arial", generator.generateFont(parameter));
+		skin.add("LS130", new BitmapFont(Gdx.files.internal("fonts/LS130.fnt"))); //Lilliput Steps size 130
+        skin.add("LS75", new BitmapFont(Gdx.files.internal("fonts/LS75.fnt")));
+        skin.add("Arial130", new BitmapFont(Gdx.files.internal("fonts/Arial130.fnt")));
 
         //default TextButtonStyle
         TextButtonStyle textButtonStyle = new TextButtonStyle();
-        textButtonStyle.font = skin.getFont("main menu");
+        textButtonStyle.font = skin.getFont("LS130");
         textButtonStyle.fontColor = Color.WHITE;
         textButtonStyle.overFontColor = Color.GRAY;
         textButtonStyle.downFontColor = Color.GRAY;
         skin.add("default", textButtonStyle);
 
         textButtonStyle = new TextButtonStyle(textButtonStyle);
-        textButtonStyle.font = skin.getFont("back button");
-        skin.add("back button", textButtonStyle);
+        textButtonStyle.font = skin.getFont("LS75");
+        skin.add("LS75", textButtonStyle);
 
-		//LabelStyle for the optionsMenu text
-		LabelStyle labelStyle = new LabelStyle();
-		labelStyle.font = skin.getFont("options text");
-		labelStyle.fontColor = Color.WHITE;
-		skin.add("options text", labelStyle);
 
-        //LabelStyle for the optionsMenu headers text
-        labelStyle = new LabelStyle();
-        labelStyle.font = skin.getFont("options header");
+        LabelStyle labelStyle = new LabelStyle();
+        labelStyle.font = skin.getFont("LS130");
         labelStyle.fontColor = Color.WHITE;
-        skin.add("options header", labelStyle);
+        skin.add("default", labelStyle);
+
+        labelStyle = new LabelStyle();
+        labelStyle.font = skin.getFont("LS75");
+        labelStyle.fontColor = Color.WHITE;
+        skin.add("LS75", labelStyle);
 
 		//LabelStyle for the score text
         labelStyle = new LabelStyle();
-        labelStyle.font = skin.getFont("Arial");
+        labelStyle.font = skin.getFont("Arial130");
         labelStyle.fontColor = Color.WHITE;
-        skin.add("score", labelStyle);
-
-        //LabelStyle for the Paused text
-        labelStyle = new LabelStyle();
-        labelStyle.font = skin.getFont("main menu");
-        labelStyle.fontColor = Color.WHITE;
-        skin.add("paused", labelStyle);
+        skin.add("Arial130", labelStyle);
 
         //Slider style
         SliderStyle sliderStyle = new SliderStyle();
