@@ -384,6 +384,7 @@ public class MenuScreen extends InputAdapter implements Screen {
                 titleText.setVisible(true);
                 verticalPlus.setVisible(true);
                 horizontalPlus.setVisible(true);
+                options.saveOptions();
             }
         });
 
@@ -505,6 +506,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 
     public boolean keyDown(int keyCode) {
         if (keyCode == Input.Keys.BACK || keyCode == Input.Keys.ESCAPE) {
+            options.saveOptions();
             if (customAI.isVisible()) {
                 customAI.setVisible(false);
                 difficulties.setVisible(true);

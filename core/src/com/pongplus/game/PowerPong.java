@@ -2,6 +2,7 @@ package com.pongplus.game;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.NinePatch;
@@ -32,6 +33,11 @@ public class PowerPong extends Game {
 	public void create () {
 		batch = new SpriteBatch();
 		options = new Options();
+        options.loadOptions();
+		//SAVE STUFF
+
+
+
 
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();
