@@ -210,7 +210,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         stage.draw(); //draw the stage (ui elements)
 
         //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
-        debugRenderer.render(world, worldCam.combined);
+        //debugRenderer.render(world, worldCam.combined);
     }
 
     public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
