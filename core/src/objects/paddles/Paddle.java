@@ -8,7 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.pongplus.game.Options;
-import com.pongplus.game.PowerPong;
+import com.pongplus.game.PongPlus;
 
 public class Paddle extends InputAdapter {
 
@@ -36,7 +36,7 @@ public class Paddle extends InputAdapter {
         body.setUserData(this);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(options.paddleWidth / 2 / PowerPong.PPM, ninePatch.getMinHeight() / 2 / PowerPong.PPM);
+        shape.setAsBox(options.paddleWidth / 2 / PongPlus.PPM, ninePatch.getMinHeight() / 2 / PongPlus.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -67,10 +67,10 @@ public class Paddle extends InputAdapter {
     //Draw the paddle, centered at body.x and body.y
     public void draw(SpriteBatch sb) {
         ninePatch.draw(sb,
-                body.getPosition().x - options.paddleWidth / 2 / PowerPong.PPM,
-                body.getPosition().y - ninePatch.getMinHeight() / 2 / PowerPong.PPM,
-                options.paddleWidth / PowerPong.PPM,
-                ninePatch.getMinHeight() / PowerPong.PPM);
+                body.getPosition().x - options.paddleWidth / 2 / PongPlus.PPM,
+                body.getPosition().y - ninePatch.getMinHeight() / 2 / PongPlus.PPM,
+                options.paddleWidth / PongPlus.PPM,
+                ninePatch.getMinHeight() / PongPlus.PPM);
     }
 
     //note that these methods return the x and y coords of the center of the body, in box2d coords/measurements

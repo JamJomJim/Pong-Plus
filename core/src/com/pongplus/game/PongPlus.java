@@ -14,7 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import screens.*;
 
-public class PowerPong extends Game {
+public class PongPlus extends Game {
 	public static final float PPM = 300f; //The number of pixels in one meter
 	//basically, libgdx drawing works in pixels, but box2d works in meters. Using 1 pixel = 1 meter results in very bad
 	//physics simulation. So whenever you draw, you have to divide both the coordinates and the dimensions by PPM

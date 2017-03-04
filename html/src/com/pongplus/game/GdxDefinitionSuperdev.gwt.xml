@@ -7,7 +7,7 @@
 	<inherits name='com.badlogic.gdx.controllers.controllers-gwt' />
 	<inherits name='com.badlogic.gdx.ai' />
 
-    <inherits name='com.powerpong.game.GdxDefinition' />
+    <inherits name='com.pongplus.game.GdxDefinition' />
     
     <collapse-all-properties />
     

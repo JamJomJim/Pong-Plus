@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
 import com.pongplus.game.Options;
-import com.pongplus.game.PowerPong;
+import com.pongplus.game.PongPlus;
 
 import java.util.Random;
 
@@ -33,7 +33,7 @@ public class Wall {
         body.setUserData(this);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2 / PowerPong.PPM, height / 2 / PowerPong.PPM);
+        shape.setAsBox(width / 2 / PongPlus.PPM, height / 2 / PongPlus.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -61,7 +61,7 @@ public class Wall {
         body.setUserData(this);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(options.targetWidth / 2 / PowerPong.PPM, ninePatch.getMinHeight() / 2 / PowerPong.PPM);
+        shape.setAsBox(options.targetWidth / 2 / PongPlus.PPM, ninePatch.getMinHeight() / 2 / PongPlus.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -76,20 +76,20 @@ public class Wall {
     public void randomizeLocation(){
         Random rand = new Random();
         float max, min;
-        max = (PowerPong.NATIVE_WIDTH - options.targetWidth - 20);
-        min = -(PowerPong.NATIVE_WIDTH - options.targetWidth - 20);
+        max = (PongPlus.NATIVE_WIDTH - options.targetWidth - 20);
+        min = -(PongPlus.NATIVE_WIDTH - options.targetWidth - 20);
         float x = rand.nextInt((int)(max - min) + 1) + min;
-        body.setTransform(x / PowerPong.PPM / 2, 1100 / PowerPong.PPM, 0);
+        body.setTransform(x / PongPlus.PPM / 2, 1100 / PongPlus.PPM, 0);
         this.needsNewLocation(false);
     }
 
     //DO NOT CALL DRAW ON INVISIBLE WALLS, IT WILL THROW NULLPOINTEREXCEPTION
     public void draw(SpriteBatch sb) {
         ninePatch.draw(sb,
-                body.getPosition().x - options.targetWidth / 2 / PowerPong.PPM,
-                body.getPosition().y - ninePatch.getMinHeight() / 2 / PowerPong.PPM,
-                options.targetWidth / PowerPong.PPM,
-                ninePatch.getMinHeight() / PowerPong.PPM);
+                body.getPosition().x - options.targetWidth / 2 / PongPlus.PPM,
+                body.getPosition().y - ninePatch.getMinHeight() / 2 / PongPlus.PPM,
+                options.targetWidth / PongPlus.PPM,
+                ninePatch.getMinHeight() / PongPlus.PPM);
     }
 
     public boolean needsNewLocation() {

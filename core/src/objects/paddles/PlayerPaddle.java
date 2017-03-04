@@ -36,8 +36,8 @@ public class PlayerPaddle extends Paddle {
     use camera.unproject() to convert touch coordinates to viewport/world coordinates
     NOTE: after being unprojected, the numbers are in box2d coordinates; 0,0 is the center of the screen, positive y is up, positive x is right
     so touching the top right of the screen, after being unprojected, will yield
-    x: PowerPong.WIDTH / PPM / 2, y: PowerPong.HEIGHT / PPM / 2; REGARDLESS OF RESOLUTION
-    To convert the returned box2d coords to pixels in the viewport, multiply them by PowerPong.PPM
+    x: PongPlus.WIDTH / PPM / 2, y: PongPlus.HEIGHT / PPM / 2; REGARDLESS OF RESOLUTION
+    To convert the returned box2d coords to pixels in the viewport, multiply them by PongPlus.PPM
     If you want the pixel coordinates relative to the device's screen, simply use x and y without any unprojecting or modifying etc.
     Reason for always having a touchPos Vector3 is to minimize resource creation/destruction.
     */

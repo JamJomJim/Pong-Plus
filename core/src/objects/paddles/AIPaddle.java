@@ -3,7 +3,7 @@ package objects.paddles;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.pongplus.game.Options;
-import com.pongplus.game.PowerPong;
+import com.pongplus.game.PongPlus;
 import objects.Ball;
 
 public class AIPaddle extends Paddle {
@@ -59,19 +59,19 @@ public class AIPaddle extends Paddle {
     public float calcFinalDestination(float xPos, float yPos, float xVel, float yVel) {
         float timeToPaddle;
         if (this.getY() > yPos)
-            timeToPaddle = (this.getY() - this.ninePatch.getMinHeight() / PowerPong.PPM - yPos) / yVel;
+            timeToPaddle = (this.getY() - this.ninePatch.getMinHeight() / PongPlus.PPM - yPos) / yVel;
         else
-            timeToPaddle = (this.getY() + this.ninePatch.getMinHeight() / PowerPong.PPM - yPos) / yVel;
+            timeToPaddle = (this.getY() + this.ninePatch.getMinHeight() / PongPlus.PPM - yPos) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
-        if (finalDestination < -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
-            yPos = yPos + ((-PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos + options.ballSize / PowerPong.PPM) / xVel) * yVel;
-            xPos = -PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM;
+        if (finalDestination < -PongPlus.NATIVE_WIDTH / 2 / PongPlus.PPM) {
+            yPos = yPos + ((-PongPlus.NATIVE_WIDTH / 2 / PongPlus.PPM - xPos + options.ballSize / PongPlus.PPM) / xVel) * yVel;
+            xPos = -PongPlus.NATIVE_WIDTH / 2 / PongPlus.PPM;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
         }
-        else if (finalDestination > PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM) {
-            yPos = yPos + ((PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM - xPos - options.ballSize / PowerPong.PPM) / xVel) * yVel;
-            xPos = PowerPong.NATIVE_WIDTH / 2 / PowerPong.PPM;
+        else if (finalDestination > PongPlus.NATIVE_WIDTH / 2 / PongPlus.PPM) {
+            yPos = yPos + ((PongPlus.NATIVE_WIDTH / 2 / PongPlus.PPM - xPos - options.ballSize / PongPlus.PPM) / xVel) * yVel;
+            xPos = PongPlus.NATIVE_WIDTH / 2 / PongPlus.PPM;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
         }
@@ -84,6 +84,6 @@ public class AIPaddle extends Paddle {
     }
 
     public void randomizeOffset() {
-        offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PowerPong.PPM;
+        offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PongPlus.PPM;
     }
 }

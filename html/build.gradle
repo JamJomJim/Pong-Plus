@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'com.powerpong.game.GdxDefinition'
-    devModules 'com.powerpong.game.GdxDefinitionSuperdev'
+    modules 'com.pongplus.game.GdxDefinition'
+    devModules 'com.pongplus.game.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {

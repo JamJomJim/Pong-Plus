@@ -16,7 +16,7 @@ import com.pongplus.game.ContactListener;
 import com.pongplus.game.Options;
 import com.pongplus.game.Options.Mode;
 import com.pongplus.game.Options.AI;
-import com.pongplus.game.PowerPong;
+import com.pongplus.game.PongPlus;
 import objects.*;
 import objects.paddles.AIPaddle;
 import objects.paddles.Paddle;
@@ -42,7 +42,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected int botScore = 0;
 
     //game world stuff
-    protected PowerPong game;
+    protected PongPlus game;
     protected World world;
     protected OrthographicCamera worldCam;
     protected Box2DDebugRenderer debugRenderer;
@@ -54,7 +54,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     protected Table score, menu;
 
 
-    protected PlayScreen(PowerPong game, Options options) {
+    protected PlayScreen(PongPlus game, Options options) {
         this.game = game;
         this.mode = options.mode;
         this.ai = options.ai;
@@ -65,21 +65,21 @@ public class PlayScreen extends InputAdapter implements Screen {
         world = new World(new Vector2(0, GRAVITY), true);
         world.setVelocityThreshold(0.01f);
 
-        worldCam = new OrthographicCamera(PowerPong.NATIVE_WIDTH / PowerPong.PPM,
-                PowerPong.NATIVE_HEIGHT / PowerPong.PPM); //scale camera viewport to meters
+        worldCam = new OrthographicCamera(PongPlus.NATIVE_WIDTH / PongPlus.PPM,
+                PongPlus.NATIVE_HEIGHT / PongPlus.PPM); //scale camera viewport to meters
 
         topScore = 0;
         botScore = 0;
 
         //create the side walls (and top wall if it's survival mode)
-        new Wall((PowerPong.NATIVE_WIDTH + 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //right wall
-        new Wall((-PowerPong.NATIVE_WIDTH - 2) / PowerPong.PPM / 2, 0, 1, PowerPong.NATIVE_HEIGHT, 0, world); //left wall
+        new Wall((PongPlus.NATIVE_WIDTH + 2) / PongPlus.PPM / 2, 0, 1, PongPlus.NATIVE_HEIGHT, 0, world); //right wall
+        new Wall((-PongPlus.NATIVE_WIDTH - 2) / PongPlus.PPM / 2, 0, 1, PongPlus.NATIVE_HEIGHT, 0, world); //left wall
         if (mode == Mode.SURVIVAL)
-            new Wall(0, (PowerPong.NATIVE_HEIGHT + 1) / PowerPong.PPM / 2, PowerPong.NATIVE_WIDTH, 1, 0, world);
+            new Wall(0, (PongPlus.NATIVE_HEIGHT + 1) / PongPlus.PPM / 2, PongPlus.NATIVE_WIDTH, 1, 0, world);
 
         //Creates the initial practice wall.
         if (mode == Mode.PRACTICE) {
-            practiceWall = new Wall("ClassicPaddle9.png", 0, PADDLE_OFFSET / PowerPong.PPM, 0, world, options);
+            practiceWall = new Wall("ClassicPaddle9.png", 0, PADDLE_OFFSET / PongPlus.PPM, 0, world, options);
             practiceWall.randomizeLocation();
         }
         //create the ball
@@ -87,23 +87,23 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //create p1 depending on the mode
         if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
-            p1 = new AIPaddle(0, -PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
+            p1 = new AIPaddle(0, -PADDLE_OFFSET / PongPlus.PPM, world, ball, options);
         //if Survival mode set a small offset to the X of the player paddle.
         else if (mode == Mode.SURVIVAL) {
             float x = 0;
             while (x == 0)
-                x = (float) (Math.random() * 5 - 2.5) / PowerPong.PPM;
-            p1 = new PlayerPaddle(x, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
+                x = (float) (Math.random() * 5 - 2.5) / PongPlus.PPM;
+            p1 = new PlayerPaddle(x, -PADDLE_OFFSET / PongPlus.PPM, world, worldCam, options);
         } else
-            p1 = new PlayerPaddle(0, -PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
+            p1 = new PlayerPaddle(0, -PADDLE_OFFSET / PongPlus.PPM, world, worldCam, options);
 
         //create p2 depending on the mode
         if (mode == Mode.TWOPLAYER)
-            p2 = new PlayerPaddle(0, PADDLE_OFFSET / PowerPong.PPM, world, worldCam, options);
+            p2 = new PlayerPaddle(0, PADDLE_OFFSET / PongPlus.PPM, world, worldCam, options);
         else if (mode == Mode.SURVIVAL || mode == Mode.PRACTICE)
             p2 = null;
         else
-            p2 = new AIPaddle(0, PADDLE_OFFSET / PowerPong.PPM, world, ball, options);
+            p2 = new AIPaddle(0, PADDLE_OFFSET / PongPlus.PPM, world, ball, options);
 
         world.setContactListener(new ContactListener(p1, p2, this));
 
@@ -112,7 +112,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
 
         //UI STUFF******************************************************************************************************
-        stage = new Stage(new FitViewport(PowerPong.NATIVE_WIDTH, PowerPong.NATIVE_HEIGHT), game.batch);
+        stage = new Stage(new FitViewport(PongPlus.NATIVE_WIDTH, PongPlus.NATIVE_HEIGHT), game.batch);
         //create and add the table that fills the entire screen
         //stage.setDebugAll(true);
         Table table = new Table();
@@ -130,8 +130,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         score.add(botScoreText).right();
         //add it to the stage and position it
         table.add(score);
-        score.setX(PowerPong.NATIVE_WIDTH - score.getPrefWidth() / 2);
-        score.setY(PowerPong.NATIVE_HEIGHT / 2);
+        score.setX(PongPlus.NATIVE_WIDTH - score.getPrefWidth() / 2);
+        score.setY(PongPlus.NATIVE_HEIGHT / 2);
         if (mode == Mode.MENUBATTLE)
             score.setVisible(false);
 
@@ -158,15 +158,15 @@ public class PlayScreen extends InputAdapter implements Screen {
         menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
 
         stage.addActor(menu);
-        menu.setX(PowerPong.NATIVE_WIDTH / 2);
-        menu.setY(PowerPong.NATIVE_HEIGHT / 2);
+        menu.setX(PongPlus.NATIVE_WIDTH / 2);
+        menu.setY(PongPlus.NATIVE_HEIGHT / 2);
 
         //create the label that's displayed during pause
         pausedText = new Label("PAUSED", game.skin);
         pausedText.setVisible(false);
         stage.addActor(pausedText);
-        pausedText.setX(PowerPong.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);
-        pausedText.setY(PowerPong.NATIVE_HEIGHT / 2 - pausedText.getPrefHeight() / 2);
+        pausedText.setX(PongPlus.NATIVE_WIDTH / 2 - pausedText.getPrefWidth() / 2);
+        pausedText.setY(PongPlus.NATIVE_HEIGHT / 2 - pausedText.getPrefHeight() / 2);
 
         //create InputMultiplexer, to handle input on multiple paddles and the ui
         multiplexer = new InputMultiplexer();
@@ -220,25 +220,25 @@ public class PlayScreen extends InputAdapter implements Screen {
         int direction;
         //checking the ball and updating scores is handled differently if it's survival mode
         if (mode == Mode.SURVIVAL) {
-            if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+            if (body.getPosition().y < -PongPlus.NATIVE_HEIGHT / 2 / PongPlus.PPM) {
                 if (botScore > topScore)
                     topScore = botScore;
                 direction = -1;
                 botScore = 0;
             } else return;
         } else if (mode == Mode.PRACTICE) {
-            if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM
-                    || body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+            if (body.getPosition().y < -PongPlus.NATIVE_HEIGHT / 2 / PongPlus.PPM
+                    || body.getPosition().y > PongPlus.NATIVE_HEIGHT / 2 / PongPlus.PPM) {
                 if (botScore > topScore)
                     topScore = botScore;
                 direction = -1;
                 botScore = 0;
                 practiceWall.randomizeLocation();
             } else return;
-        } else if (body.getPosition().y < -PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) { //this is the stuff that happens if it's not survival mode
+        } else if (body.getPosition().y < -PongPlus.NATIVE_HEIGHT / 2 / PongPlus.PPM) { //this is the stuff that happens if it's not survival mode
             score("top");
             direction = -1;
-        } else if (body.getPosition().y > PowerPong.NATIVE_HEIGHT / 2 / PowerPong.PPM) {
+        } else if (body.getPosition().y > PongPlus.NATIVE_HEIGHT / 2 / PongPlus.PPM) {
             score("bot");
             direction = 1;
         } else return; //return if the ball hasn't passed anywhere that it should be reset

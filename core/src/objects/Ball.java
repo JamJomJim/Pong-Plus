@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.pongplus.game.Options;
-import com.pongplus.game.PowerPong;
+import com.pongplus.game.PongPlus;
 import objects.paddles.Paddle;
 
 public class Ball {
@@ -37,7 +37,7 @@ public class Ball {
         body.setUserData(this);
 
         CircleShape shape = new CircleShape();
-        shape.setRadius(options.ballSize / 2 / PowerPong.PPM);
+        shape.setRadius(options.ballSize / 2 / PongPlus.PPM);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -55,7 +55,7 @@ public class Ball {
     public void draw(Camera cam) {
         sr.setProjectionMatrix(cam.combined);
         sr.begin(ShapeRenderer.ShapeType.Filled);
-        sr.circle(body.getPosition().x, body.getPosition().y, options.ballSize / 2 / PowerPong.PPM, (int)options.ballSize);
+        sr.circle(body.getPosition().x, body.getPosition().y, options.ballSize / 2 / PongPlus.PPM, (int)options.ballSize);
         sr.end();
     }
 
