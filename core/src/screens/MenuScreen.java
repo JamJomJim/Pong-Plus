@@ -35,7 +35,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 		this.game = game;
 		this.options = opt;
 		stage = new Stage(new StretchViewport(PongPlus.NATIVE_WIDTH, PongPlus.NATIVE_HEIGHT), game.batch);
-        //stage.setDebugAll(true);
+        stage.setDebugAll(true);
         random = new Random();
 
 		// Create a table that fills the screen
@@ -122,7 +122,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         final TextButton buttonHard = new TextButton("HARD", game.skin);
         final TextButton buttonSkynet = new TextButton("SKYNET", game.skin);
         final TextButton buttonCustom = new TextButton("CUSTOM", game.skin);
-        final TextButton buttonBack = new TextButton("BACK", game.skin, "LS75");
+        final TextButton buttonBack = new TextButton("BACK", game.skin, "LS90");
         buttonEasy.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 options.ai = AI.EASY;
@@ -177,15 +177,15 @@ public class MenuScreen extends InputAdapter implements Screen {
         customAI = new Table();
         customAI.setVisible(false);
         final Label aiLabel = new Label("CUSTOM AI", game.skin);
-        final Label aiSpeedLabel = new Label("MOVE\nSPEED", game.skin, "LS75");
+        final Label aiSpeedLabel = new Label("MOVE\nSPEED", game.skin, "LS90");
         aiSpeedLabel.setAlignment(Align.center);
         final Slider aiSpeedSlider = new Slider(1, 100, 1, false, game.skin);
         aiSpeedSlider.setValue(options.aiMovespeed);
-        final Label aiSpeedNumber = new Label(Integer.toString((int)aiSpeedSlider.getValue()), game.skin, "LS75");
+        final Label aiSpeedNumber = new Label(Integer.toString((int)aiSpeedSlider.getValue()), game.skin, "LS90");
 
         final TextButton buttonPlayAI = new TextButton("PLAY", game.skin);
 
-        final TextButton buttonBackAI = new TextButton("BACK", game.skin, "LS75");
+        final TextButton buttonBackAI = new TextButton("BACK", game.skin, "LS90");
 
         aiSpeedSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
@@ -205,7 +205,7 @@ public class MenuScreen extends InputAdapter implements Screen {
             }
         });
 
-        int secondColWidth = 500, thirdColWidth = 140, spacing = 25;
+        int secondColWidth = 500, thirdColWidth = 160, spacing = 25;
         customAI.add(aiLabel).colspan(3).spaceBottom(spacing);
         customAI.row();
         customAI.add(aiSpeedLabel).space(0, 0, spacing, 0);
@@ -219,18 +219,17 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         practiceMenu = new Table();
         practiceMenu.setVisible(false);
-        final Label practiceLabel = new Label("PRACTICE", game.skin);
-        final Label targetWidthLabel = new Label("TARGET\nWIDTH", game.skin, "LS75");
+        final Label targetWidthLabel = new Label("TARGET\nWIDTH", game.skin, "LS90");
         targetWidthLabel.setAlignment(Align.center);
         final Slider targetWidthSlider = new Slider(10, 1000, 10, false, game.skin);
         targetWidthSlider.setValue(options.targetWidth);
-        final Label targetWidthNumber = new Label(Integer.toString((int)targetWidthSlider.getValue()), game.skin, "LS75");
+        final Label targetWidthNumber = new Label(Integer.toString((int)targetWidthSlider.getValue()), game.skin, "LS90");
 
         final TextButton buttonPlayPractice = new TextButton("TARGETs", game.skin);
 
         final TextButton buttonWall = new TextButton("SURVIVAL", game.skin);
 
-        final TextButton buttonBackPractice = new TextButton("BACK", game.skin, "LS75");
+        final TextButton buttonBackPractice = new TextButton("BACK", game.skin, "LS90");
 
         targetWidthSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
@@ -256,15 +255,13 @@ public class MenuScreen extends InputAdapter implements Screen {
             }
         });
 
-        practiceMenu.add(practiceLabel).colspan(3).spaceBottom(spacing);
-        practiceMenu.row();
-        practiceMenu.add(targetWidthLabel).space(0, 0, spacing, 0);
-        practiceMenu.add(targetWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
-        practiceMenu.add(targetWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        practiceMenu.add(buttonWall).colspan(3).fillX().height(button1P.getHeight()).spaceBottom(spacing);
         practiceMenu.row();
         practiceMenu.add(buttonPlayPractice).colspan(3).fillX().height(button1P.getHeight());
         practiceMenu.row();
-        practiceMenu.add(buttonWall).colspan(3).fillX().height(button1P.getHeight());
+        practiceMenu.add(targetWidthLabel).space(spacing, 0, spacing, 0);
+        practiceMenu.add(targetWidthSlider).width(secondColWidth).space(spacing).fillX();
+        practiceMenu.add(targetWidthNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         practiceMenu.row();
         practiceMenu.add(buttonBackPractice).colspan(3).fillX().height(button1P.getHeight());
 
@@ -273,50 +270,50 @@ public class MenuScreen extends InputAdapter implements Screen {
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
         
-        final Label scoreLimitLabel = new Label("SCORE\nLIMIT", game.skin, "LS75");
+        final Label scoreLimitLabel = new Label("SCORE\nLIMIT", game.skin, "LS90");
         scoreLimitLabel.setAlignment(Align.center);
         final Slider scoreLimitSlider = new Slider(1, 10, 1, false, game.skin);
         scoreLimitSlider.setValue(options.scoreLimit);
-        final Label scoreLimitNumber = new Label(Integer.toString((int)scoreLimitSlider.getValue()), game.skin, "LS75");
+        final Label scoreLimitNumber = new Label(Integer.toString((int)scoreLimitSlider.getValue()), game.skin, "LS90");
 
-        final Label paddleWidthLabel = new Label("PADDLE\nWIDTH", game.skin, "LS75");
+        final Label paddleWidthLabel = new Label("PADDLE\nWIDTH", game.skin, "LS90");
         paddleWidthLabel.setAlignment(Align.center);
         final Slider paddleWidthSlider = new Slider(100, 1000, 10, false, game.skin);
         paddleWidthSlider.setValue(options.paddleWidth);
-        final Label paddleWidthNumber = new Label(Integer.toString((int)paddleWidthSlider.getValue()), game.skin, "LS75");
+        final Label paddleWidthNumber = new Label(Integer.toString((int)paddleWidthSlider.getValue()), game.skin, "LS90");
 
         final Label ballLabel = new Label("BALL", game.skin);
-        final Label ballSizeLabel = new Label("SIZE", game.skin, "LS75");
+        final Label ballSizeLabel = new Label("SIZE", game.skin, "LS90");
         ballSizeLabel.setAlignment(Align.center);
         final Slider ballSizeSlider = new Slider(10, 1000, 10, false, game.skin);
         ballSizeSlider.setValue(options.ballSize);
-        final Label ballSizeNumber = new Label(Integer.toString((int)ballSizeSlider.getValue()), game.skin, "LS75");
+        final Label ballSizeNumber = new Label(Integer.toString((int)ballSizeSlider.getValue()), game.skin, "LS90");
         
-        final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "LS75");
+        final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "LS90");
         ballInitialSpeedLabel.setAlignment(Align.center);
         final Slider ballInitialSpeedSlider = new Slider(1, 100, 1, false, game.skin);
         ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
-        final Label ballInitialSpeedNumber = new Label(Integer.toString((int)ballInitialSpeedSlider.getValue()), game.skin, "LS75");
+        final Label ballInitialSpeedNumber = new Label(Integer.toString((int)ballInitialSpeedSlider.getValue()), game.skin, "LS90");
 
-        final Label ballSpeedIncreaseLabel = new Label("SPEED\nINCREASE", game.skin, "LS75");
+        final Label ballSpeedIncreaseLabel = new Label("SPEED\nINCREASE", game.skin, "LS90");
         ballSpeedIncreaseLabel.setAlignment(Align.center);
         final Slider ballSpeedIncreaseSlider = new Slider(0, 10, 1, false, game.skin);
         ballSpeedIncreaseSlider.setValue(options.ballSpeedIncrease);
-        final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int)ballSpeedIncreaseSlider.getValue()), game.skin, "LS75");
+        final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int)ballSpeedIncreaseSlider.getValue()), game.skin, "LS90");
 
-        final Label ballAngleLabel = new Label("REBOUND\nANGLE", game.skin, "LS75");
+        final Label ballAngleLabel = new Label("REBOUND\nANGLE", game.skin, "LS90");
         ballAngleLabel.setAlignment(Align.center);
         final Slider ballAngleSlider = new Slider(0, 100, 1, false, game.skin);
         ballAngleSlider.setValue(options.ballAngleMultiplier);
-        final Label ballAngleNumber = new Label(Integer.toString((int)ballAngleSlider.getValue()), game.skin, "LS75");
+        final Label ballAngleNumber = new Label(Integer.toString((int)ballAngleSlider.getValue()), game.skin, "LS90");
 
-        final TextButton buttonSmallRandomizeOptions = new TextButton("REASONABLY RANDOM", game.skin, "LS75");
+        final TextButton buttonSmallRandomizeOptions = new TextButton("REASONABLY RANDOM", game.skin, "LS90");
 
-        final TextButton buttonRandomizeOptions = new TextButton("TOTALLY RANDOM", game.skin, "LS75");
+        final TextButton buttonRandomizeOptions = new TextButton("TOTALLY RANDOM", game.skin, "LS90");
 
-        final TextButton buttonResetOptions = new TextButton("DEFAULT", game.skin, "LS75");
+        final TextButton buttonResetOptions = new TextButton("DEFAULT", game.skin, "LS90");
 
-        final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "LS75");
+        final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "LS90");
 
         scoreLimitSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {

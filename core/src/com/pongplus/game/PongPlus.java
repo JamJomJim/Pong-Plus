@@ -26,7 +26,7 @@ public class PongPlus extends Game {
 	public SpriteBatch batch;
 	public Skin skin;
 	public Options options;
-	public BitmapFont ls130, ls75, arial130;
+	public BitmapFont ls130, ls90, arial130;
 
 	@Override
 	public void create () {
@@ -38,10 +38,10 @@ public class PongPlus extends Game {
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();
 		ls130 = new BitmapFont(Gdx.files.internal("fonts/LS130.fnt"));
-		ls75 = new BitmapFont(Gdx.files.internal("fonts/LS75.fnt"));
+		ls90 = new BitmapFont(Gdx.files.internal("fonts/LS90.fnt"));
 		arial130 = new BitmapFont(Gdx.files.internal("fonts/Arial130.fnt"));
 		skin.add("LS130", ls130); //Lilliput Steps size 130
-        skin.add("LS75", ls75);
+        skin.add("LS90", ls90);
         skin.add("Arial130", arial130);
 
         //default TextButtonStyle
@@ -53,8 +53,8 @@ public class PongPlus extends Game {
         skin.add("default", textButtonStyle);
 
         textButtonStyle = new TextButtonStyle(textButtonStyle);
-        textButtonStyle.font = skin.getFont("LS75");
-        skin.add("LS75", textButtonStyle);
+        textButtonStyle.font = skin.getFont("LS90");
+        skin.add("LS90", textButtonStyle);
 
 
         LabelStyle labelStyle = new LabelStyle();
@@ -63,9 +63,9 @@ public class PongPlus extends Game {
         skin.add("default", labelStyle);
 
         labelStyle = new LabelStyle();
-        labelStyle.font = skin.getFont("LS75");
+        labelStyle.font = skin.getFont("LS90");
         labelStyle.fontColor = Color.WHITE;
-        skin.add("LS75", labelStyle);
+        skin.add("LS90", labelStyle);
 
 		//LabelStyle for the score text
         labelStyle = new LabelStyle();
@@ -94,7 +94,7 @@ public class PongPlus extends Game {
 		batch.dispose();
 		skin.dispose();
 		ls130.dispose();
-		ls75.dispose();
+		ls90.dispose();
 		arial130.dispose();
 	}
 }
