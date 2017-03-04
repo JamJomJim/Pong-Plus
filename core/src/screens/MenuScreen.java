@@ -54,6 +54,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         final TextButton buttonAIBattle = new TextButton("AI BATTLE", game.skin);
         final TextButton buttonPractice = new TextButton("PRACTICE", game.skin);
         final TextButton buttonOptions = new TextButton("OPTIONS", game.skin);
+        final TextButton buttonExit = new TextButton("EXIT", game.skin);
         // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
         // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
         // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
@@ -94,6 +95,11 @@ public class MenuScreen extends InputAdapter implements Screen {
                 horizontalPlus.setVisible(false);
             }
         });
+        buttonExit.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                Gdx.app.exit();
+            }
+        });
 
         modes.add(button1P).width(button1P.getWidth()).height(button1P.getHeight());
         modes.row();
@@ -104,6 +110,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         modes.add(buttonPractice).fillX().height(button1P.getHeight());
         modes.row();
         modes.add(buttonOptions).fillX().height(button1P.getHeight());
+        modes.row();
+        modes.add(buttonExit).fillX().height(button1P.getHeight());
 
 
         //difficulties stuff
@@ -197,7 +205,7 @@ public class MenuScreen extends InputAdapter implements Screen {
             }
         });
 
-        int secondColWidth = 500, thirdColWidth = 160, spacing = 25;
+        int secondColWidth = 500, thirdColWidth = 140, spacing = 25;
         customAI.add(aiLabel).colspan(3).spaceBottom(spacing);
         customAI.row();
         customAI.add(aiSpeedLabel).space(0, 0, spacing, 0);
@@ -254,11 +262,11 @@ public class MenuScreen extends InputAdapter implements Screen {
         practiceMenu.add(targetWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
         practiceMenu.add(targetWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
         practiceMenu.row();
-        practiceMenu.add(buttonPlayPractice).colspan(3).fillX().height(button1P.getPrefHeight());
+        practiceMenu.add(buttonPlayPractice).colspan(3).fillX().height(button1P.getHeight());
         practiceMenu.row();
-        practiceMenu.add(buttonWall).colspan(3).fillX().height(button1P.getPrefHeight());
+        practiceMenu.add(buttonWall).colspan(3).fillX().height(button1P.getHeight());
         practiceMenu.row();
-        practiceMenu.add(buttonBackPractice).colspan(3).fillX().height(button1P.getPrefHeight());
+        practiceMenu.add(buttonBackPractice).colspan(3).fillX().height(button1P.getHeight());
 
 
         //Options menu stuff
@@ -519,7 +527,7 @@ public class MenuScreen extends InputAdapter implements Screen {
                 verticalPlus.setVisible(true);
                 horizontalPlus.setVisible(true);
             } else
-                Gdx.app.exit();
+                //Gdx.app.exit();
             return true;
         }
         return super.keyDown(keyCode);
