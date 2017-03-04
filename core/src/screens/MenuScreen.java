@@ -359,7 +359,7 @@ public class MenuScreen extends InputAdapter implements Screen {
                 scoreLimitSlider.setValue(3 + random.nextInt(8)); //bound is non-inclusive
                 paddleWidthSlider.setValue(100 + random.nextInt(401));
                 ballSizeSlider.setValue(50 + random.nextInt(101));
-                ballInitialSpeedSlider.setValue(1 + random.nextInt(10));
+                ballInitialSpeedSlider.setValue(1 + random.nextInt(5));
                 ballSpeedIncreaseSlider.setValue(1 + random.nextInt(3));
                 ballAngleSlider.setValue(30 + random.nextInt(51));
             }

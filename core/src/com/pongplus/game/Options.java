@@ -24,30 +24,11 @@ public class Options {
 
     public String paddleTexture;
     public Preferences prefs = Gdx.app.getPreferences("My Preferences");
-    ;
 
-    //no args constructor sets stuff to default values
     public Options() {
-        ai = AI.CUSTOM;
-        mode = Mode.MENUBATTLE;
-        paddleWidth = 300;
-        scoreLimit = 5;
-        ballSize = 80;
-        ballInitialSpeed = 3;
-        ballSpeedIncrease = 1f;
-        ballAngleMultiplier = 60;
-
-        aiMovespeed = 7;
-        aiOffset = 2; //the width of the paddle is divided by this. So a value of 2 means the offset can be to either end. 4 means halfway to either end, etc
-
-        targetWidth = 300;
-
-        soundOn = false;
-
-
-        paddleTexture = "ClassicPaddle9.png";
     }
 
+    //this is just for creating a separate Options for the menu ai battle
     public Options(Mode mode, AI ai, float paddleWidth, float ballInitialSpeed, float ballSpeedIncrease, float ballAngleMultiplier,
                    float aiMovespeed, float aiOffset, boolean soundOn) {
         this.mode = mode;
