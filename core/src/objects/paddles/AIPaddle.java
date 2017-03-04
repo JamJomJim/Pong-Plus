@@ -21,22 +21,22 @@ public class AIPaddle extends Paddle {
         switch (options.ai) {
             case EASY:
                 maxOffset = 0;
-                movespeed = 2;
+                movespeed = 3;
                 break;
             case MEDIUM:
-                maxOffset = options.paddleWidth / 4;
-                movespeed = 3;
+                maxOffset = options.paddleWidth / 3;
+                movespeed = 5;
                 break;
             case HARD:
                 maxOffset = options.paddleWidth / 2;
-                movespeed = 5;
+                movespeed = 7;
                 break;
             case SKYNET:
                 maxOffset = options.paddleWidth / 2;
-                movespeed = 15;
+                movespeed = 20;
                 break;
             case CUSTOM:
-                maxOffset = options.paddleWidth / options.aiOffset;
+                maxOffset = options.paddleWidth / 2 * options.aiOffset / 10;
                 movespeed = options.aiMovespeed;
         }
         randomizeOffset();

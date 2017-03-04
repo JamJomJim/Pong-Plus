@@ -120,7 +120,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         final TextButton buttonEasy = new TextButton("EASY", game.skin);
         final TextButton buttonMedium = new TextButton("MEDIUM", game.skin);
         final TextButton buttonHard = new TextButton("HARD", game.skin);
-        final TextButton buttonSkynet = new TextButton("SKYNET", game.skin);
+        final TextButton buttonSkynet = new TextButton("IMPOSSIBLE", game.skin);
         final TextButton buttonCustom = new TextButton("CUSTOM", game.skin);
         final TextButton buttonBack = new TextButton("BACK", game.skin, "LS90");
         buttonEasy.addListener(new ClickListener() {
@@ -183,6 +183,12 @@ public class MenuScreen extends InputAdapter implements Screen {
         aiSpeedSlider.setValue(options.aiMovespeed);
         final Label aiSpeedNumber = new Label(Integer.toString((int)aiSpeedSlider.getValue()), game.skin, "LS90");
 
+        final Label aiOffsetLabel = new Label("AIM", game.skin, "LS90");
+        aiOffsetLabel.setAlignment(Align.center);
+        final Slider aiOffsetSlider = new Slider(0, 10, 1, false, game.skin);
+        aiOffsetSlider.setValue(options.aiOffset);
+        final Label aiOffsetNumber = new Label(Integer.toString((int)aiOffsetSlider.getValue()), game.skin, "LS90");
+
         final TextButton buttonPlayAI = new TextButton("PLAY", game.skin);
 
         final TextButton buttonBackAI = new TextButton("BACK", game.skin, "LS90");
@@ -191,6 +197,12 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void changed(ChangeEvent event, Actor actor) {
                 options.aiMovespeed = aiSpeedSlider.getValue();
                 aiSpeedNumber.setText(Integer.toString((int)aiSpeedSlider.getValue()));
+            }
+        });
+        aiOffsetSlider.addListener(new ChangeListener() {
+            public void changed(ChangeEvent event, Actor actor) {
+                options.aiOffset = aiOffsetSlider.getValue();
+                aiOffsetNumber.setText(Integer.toString((int)aiOffsetSlider.getValue()));
             }
         });
         buttonPlayAI.addListener(new ClickListener() {
@@ -212,9 +224,13 @@ public class MenuScreen extends InputAdapter implements Screen {
         customAI.add(aiSpeedSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
         customAI.add(aiSpeedNumber).width(thirdColWidth).space(0, 0, spacing, 0);
         customAI.row();
-        customAI.add(buttonPlayAI).colspan(3).fillX();
+        customAI.add(aiOffsetLabel).space(spacing, 0, spacing, 0).height(aiSpeedLabel.getPrefHeight());
+        customAI.add(aiOffsetSlider).width(secondColWidth).space(spacing).fillX();
+        customAI.add(aiOffsetNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
         customAI.row();
-        customAI.add(buttonBackAI).colspan(3).fillX().height(160);
+        customAI.add(buttonPlayAI).colspan(3).fillX().height(button1P.getHeight());
+        customAI.row();
+        customAI.add(buttonBackAI).colspan(3).fillX().height(button1P.getHeight());
 
 
         practiceMenu = new Table();

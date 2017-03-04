@@ -70,7 +70,7 @@ public class Options {
         this.ballSpeedIncrease = prefs.getFloat("ballSpeedIncrease", 1);
         this.ballAngleMultiplier = prefs.getFloat("ballAngleMultiplier", 60);
         this.aiMovespeed = prefs.getFloat("aiMovespeed", 7);
-        this.aiOffset = prefs.getFloat("aiOffset", 4);
+        this.aiOffset = prefs.getFloat("aiOffset", 5);
         this.targetWidth = prefs.getFloat("targetWidth", 300);
         this.soundOn = prefs.getBoolean("soundOn", false);
         this.paddleTexture = prefs.getString("paddleTexture", "ClassicPaddle9.png");
