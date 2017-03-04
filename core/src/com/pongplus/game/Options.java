@@ -84,11 +84,11 @@ public class Options {
         this.paddleWidth = prefs.getFloat("paddleWidth", 300);
         this.scoreLimit = prefs.getFloat("scoreLimit", 5);
         this.ballSize = prefs.getFloat("ballSize", 80);
-        this.ballInitialSpeed = prefs.getFloat("ballInitialSpeed", 300);
-        this.ballSpeedIncrease = prefs.getFloat("ballSpeedIncrease", 300);
-        this.ballAngleMultiplier = prefs.getFloat("ballAngleMultiplier", 300);
-        this.aiMovespeed = prefs.getFloat("aiMovespeed", 300);
-        this.aiOffset = prefs.getFloat("aiOffset", 300);
+        this.ballInitialSpeed = prefs.getFloat("ballInitialSpeed", 3);
+        this.ballSpeedIncrease = prefs.getFloat("ballSpeedIncrease", 1);
+        this.ballAngleMultiplier = prefs.getFloat("ballAngleMultiplier", 60);
+        this.aiMovespeed = prefs.getFloat("aiMovespeed", 7);
+        this.aiOffset = prefs.getFloat("aiOffset", 2);
         this.soundOn = prefs.getBoolean("soundOn", false);
         this.paddleTexture = prefs.getString("paddleTexture", "ClassicPaddle9.png");
     }
