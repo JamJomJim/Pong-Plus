@@ -32,9 +32,6 @@ public class PowerPong extends Game {
 		batch = new SpriteBatch();
 		options = new Options();
         options.loadOptions();
-		//SAVE STUFF
-
-
 
 
 		//SKIN STUFF***************************************************************************************************
