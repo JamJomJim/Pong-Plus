@@ -176,6 +176,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             multiplexer.addProcessor(p1);
         if (p2 instanceof PlayerPaddle)
             multiplexer.addProcessor(p2);
+        Gdx.input.setCatchBackKey(true);
     }
 
     public void render(float dt) {
@@ -308,7 +309,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void show() {
-        Gdx.input.setCatchBackKey(true);
+
     }
 
     @Override
@@ -330,7 +331,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void hide() {
-        Gdx.input.setCatchBackKey(false);
+
     }
 
     @Override
