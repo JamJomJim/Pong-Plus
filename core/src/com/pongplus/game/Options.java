@@ -13,6 +13,7 @@ public class Options {
         ONEPLAYER, TWOPLAYER, SURVIVAL, PRACTICE, AIBATTLE, MENUBATTLE
     }
 
+    public boolean startup;
     public AI ai;
     public Mode mode;
     public float paddleWidth;
@@ -26,6 +27,7 @@ public class Options {
     public Preferences prefs = Gdx.app.getPreferences("My Preferences");
 
     public Options() {
+        startup = true;
     }
 
     //this is just for creating a separate Options for the menu ai battle
@@ -42,7 +44,7 @@ public class Options {
         this.ballAngleMultiplier = ballAngleMultiplier;
         this.aiMovespeed = aiMovespeed;
         this.aiOffset = aiOffset;
-        this.soundOn = true;
+        this.soundOn = soundOn;
 
         paddleTexture = "ClassicPaddle9.png";
     }
@@ -67,7 +69,7 @@ public class Options {
         this.scoreLimit = prefs.getFloat("scoreLimit", 5);
         this.ballSize = prefs.getFloat("ballSize", 80);
         this.ballInitialSpeed = prefs.getFloat("ballInitialSpeed", 3);
-        this.ballSpeedIncrease = prefs.getFloat("ballSpeedIncrease", 1);
+        this.ballSpeedIncrease = prefs.getFloat("ballSpeedIncrease", 1.0f);
         this.ballAngleMultiplier = prefs.getFloat("ballAngleMultiplier", 60);
         this.aiMovespeed = prefs.getFloat("aiMovespeed", 7);
         this.aiOffset = prefs.getFloat("aiOffset", 5);

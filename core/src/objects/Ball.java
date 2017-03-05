@@ -31,7 +31,7 @@ public class Ball {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.position.set(x, y); //note that the origin for bodys is at the center; so the player will initially be centered at the passed x and y coordinates
+        bodyDef.position.set(x, y);
 
         body = world.createBody(bodyDef);
         body.setUserData(this);

@@ -13,7 +13,6 @@ import com.pongplus.game.Options.Mode;
 
 public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactListener {
 	private Paddle paddleOne, paddleTwo;
-	//private Vector2 ballVel;
 	private PlayScreen screen;
 	private Options options;
 
@@ -25,7 +24,6 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
         this.paddleTwo = paddleTwo;
         this.screen = screen;
         this.options = screen.options;
-        //ballVel = new Vector2();
 
         botSound = Gdx.audio.newSound(Gdx.files.internal("sounds/botboop.wav")); //TODO: dispose this later
         topSound = Gdx.audio.newSound(Gdx.files.internal("sounds/topboop.wav")); //TODO: dispose this later
@@ -42,7 +40,6 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		if (objectA instanceof Paddle && objectB instanceof Ball &&
                 Math.abs(bodyB.getPosition().y) < Math.abs(bodyA.getPosition().y)) {
 			((Ball) objectB).paddleRebound((Paddle )objectA);
-            //ballVel.set(bodyB.getLinearVelocity());
             if (options.soundOn) {
                 if (objectA == paddleOne)
                     botSound.play();
@@ -52,7 +49,6 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		} else if (objectB instanceof Paddle && objectA instanceof Ball &&
                 Math.abs(bodyA.getPosition().y) < Math.abs(bodyB.getPosition().y)) {
 			((Ball) objectA).paddleRebound((Paddle )objectB);
-            //ballVel.set(bodyA.getLinearVelocity());
             if (options.soundOn) {
                 if (objectB == paddleOne)
                     botSound.play();
@@ -91,26 +87,18 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 
 	@Override
 	public void endContact (Contact contact){
-		// TODO Auto-generated method stub
+
 
 	}
 
 	@Override
 	public void preSolve (Contact contact, Manifold oldManifold){
-		// TODO Auto-generated method stub
+
 
 	}
 
 	@Override
 	public void postSolve (Contact contact, ContactImpulse impulse) {
-//        Object objectA = contact.getFixtureA().getBody().getUserData(); //These might be redundant
-//        Object objectB = contact.getFixtureB().getBody().getUserData();
-//        Body bodyA = contact.getFixtureA().getBody();
-//        Body bodyB = contact.getFixtureB().getBody();
-//        if (objectA instanceof Paddle && objectB instanceof Ball) {
-//            bodyB.setLinearVelocity(ballVel);
-//        } else if (objectB instanceof Paddle && objectA instanceof Ball) {
-//            bodyA.setLinearVelocity(ballVel);
-//        }
+
 	}
 }

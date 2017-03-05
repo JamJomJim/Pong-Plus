@@ -26,35 +26,34 @@ public class PlayScreen extends InputAdapter implements Screen {
     static final float GRAVITY = 0f; //-9.8 is -9.8m/s^2, as in real life. I think.
     static final int PADDLE_OFFSET = 1100; //vertical distance from the center of the screen that the paddles are set at
 
-    public Mode mode;
     public Options options;
-    public AI ai;
+    private Mode mode;
+    private AI ai;
 
-    //ball stuff
-    protected float BALL_DIRECTION = (float) Math.PI * 3 / 2;
-    protected Ball ball;
+    private float BALL_DIRECTION = (float) Math.PI * 3 / 2;
+    private Ball ball;
 
-    protected Paddle p1, p2;
+    private Paddle p1, p2;
 
     private Wall practiceWall;
 
-    protected int topScore = 0;
-    protected int botScore = 0;
+    private int topScore = 0;
+    private int botScore = 0;
 
     //game world stuff
     protected PongPlus game;
-    protected World world;
-    protected OrthographicCamera worldCam;
-    protected Box2DDebugRenderer debugRenderer;
+    private World world;
+    private OrthographicCamera worldCam;
+    private Box2DDebugRenderer debugRenderer;
 
     //ui stuff
-    protected InputMultiplexer multiplexer;
-    protected Stage stage;
-    protected Label topScoreText, botScoreText, pausedText;
-    protected Table score, menu;
+    private InputMultiplexer multiplexer;
+    private Stage stage;
+    private Label topScoreText, botScoreText, pausedText;
+    private Table score, menu;
 
 
-    protected PlayScreen(PongPlus game, Options options) {
+    PlayScreen(PongPlus game, Options options) {
         this.game = game;
         this.mode = options.mode;
         this.ai = options.ai;
@@ -72,14 +71,14 @@ public class PlayScreen extends InputAdapter implements Screen {
         botScore = 0;
 
         //create the side walls (and top wall if it's survival mode)
-        new Wall((PongPlus.NATIVE_WIDTH + 2) / PongPlus.PPM / 2, 0, 1, PongPlus.NATIVE_HEIGHT, 0, world); //right wall
-        new Wall((-PongPlus.NATIVE_WIDTH - 2) / PongPlus.PPM / 2, 0, 1, PongPlus.NATIVE_HEIGHT, 0, world); //left wall
+        new Wall(false, (PongPlus.NATIVE_WIDTH + 2) / PongPlus.PPM / 2, 0, 1, PongPlus.NATIVE_HEIGHT, 0, world, options); //right wall
+        new Wall(false, (-PongPlus.NATIVE_WIDTH - 2) / PongPlus.PPM / 2, 0, 1, PongPlus.NATIVE_HEIGHT, 0, world, options); //left wall
         if (mode == Mode.SURVIVAL)
-            new Wall(0, (PongPlus.NATIVE_HEIGHT + 1) / PongPlus.PPM / 2, PongPlus.NATIVE_WIDTH, 1, 0, world);
+            new Wall(false, 0, (PongPlus.NATIVE_HEIGHT + 1) / PongPlus.PPM / 2, PongPlus.NATIVE_WIDTH, 1, 0, world, options);
 
         //Creates the initial practice wall.
         if (mode == Mode.PRACTICE) {
-            practiceWall = new Wall("ClassicPaddle9.png", 0, PADDLE_OFFSET / PongPlus.PPM, 0, world, options);
+            practiceWall = new Wall(true, 0, PADDLE_OFFSET / PongPlus.PPM, 0, 0, 0, world, options);
             practiceWall.randomizeLocation();
         }
         //create the ball

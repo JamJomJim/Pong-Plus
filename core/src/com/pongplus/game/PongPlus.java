@@ -16,9 +16,6 @@ import screens.*;
 
 public class PongPlus extends Game {
 	public static final float PPM = 300f; //The number of pixels in one meter
-	//basically, libgdx drawing works in pixels, but box2d works in meters. Using 1 pixel = 1 meter results in very bad
-	//physics simulation. So whenever you draw, you have to divide both the coordinates and the dimensions by PPM
-	//tbh it is pretty confusing
 
 	public static int NATIVE_WIDTH = 1440;
 	public static int NATIVE_HEIGHT = 2560;
@@ -26,7 +23,7 @@ public class PongPlus extends Game {
 	public SpriteBatch batch;
 	public Skin skin;
 	public Options options;
-	public BitmapFont ls130, ls90, arial130;
+	private BitmapFont ls130, ls90, arial130;
 
 	@Override
 	public void create () {
@@ -37,10 +34,10 @@ public class PongPlus extends Game {
 
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();
-		ls130 = new BitmapFont(Gdx.files.internal("fonts/LS130.fnt"));
+		ls130 = new BitmapFont(Gdx.files.internal("fonts/LS130.fnt")); //Lilliput Steps size 130
 		ls90 = new BitmapFont(Gdx.files.internal("fonts/LS90.fnt"));
 		arial130 = new BitmapFont(Gdx.files.internal("fonts/Arial130.fnt"));
-		skin.add("LS130", ls130); //Lilliput Steps size 130
+		skin.add("LS130", ls130);
         skin.add("LS90", ls90);
         skin.add("Arial130", arial130);
 

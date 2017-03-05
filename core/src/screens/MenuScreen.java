@@ -31,11 +31,11 @@ public class MenuScreen extends InputAdapter implements Screen {
 
 	private Random random;
 
-	public MenuScreen(PongPlus game, Options opt) {
+	public MenuScreen(PongPlus game, final Options opt) {
 		this.game = game;
 		this.options = opt;
 		stage = new Stage(new StretchViewport(PongPlus.NATIVE_WIDTH, PongPlus.NATIVE_HEIGHT), game.batch);
-        stage.setDebugAll(true);
+        //stage.setDebugAll(true);
         random = new Random();
 
 		// Create a table that fills the screen
@@ -55,10 +55,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         final TextButton buttonPractice = new TextButton("PRACTICE", game.skin);
         final TextButton buttonOptions = new TextButton("OPTIONS", game.skin);
         final TextButton buttonExit = new TextButton("EXIT", game.skin);
-        // Add a listener to the button. ChangeListener is fired when the button's checked state changes, eg when clicked,
-        // Button#setChecked() is called, via a key press, etc. If the event.cancel() is called, the checked state will be reverted.
-        // ClickListener could have been used, but would only fire when clicked. Also, canceling a ClickListener event won't
-        // revert the checked state.
         button1P.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 difficulties.setVisible(true);
@@ -113,6 +109,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         modes.row();
         modes.add(buttonExit).fillX().height(button1P.getHeight());
 
+        int secondColWidth = 500, thirdColWidth = 160, spacing = 25;
 
         //difficulties stuff
         difficulties = new Table();
@@ -176,12 +173,15 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         customAI = new Table();
         customAI.setVisible(false);
+
         final Label aiLabel = new Label("CUSTOM AI", game.skin);
+
         final Label aiSpeedLabel = new Label("MOVE\nSPEED", game.skin, "LS90");
         aiSpeedLabel.setAlignment(Align.center);
         final Slider aiSpeedSlider = new Slider(1, 100, 1, false, game.skin);
         aiSpeedSlider.setValue(options.aiMovespeed);
         final Label aiSpeedNumber = new Label(Integer.toString((int)aiSpeedSlider.getValue()), game.skin, "LS90");
+        aiSpeedNumber.setAlignment(Align.center);
 
         final Label aiOffsetLabel = new Label("AIM", game.skin, "LS90");
         aiOffsetLabel.setAlignment(Align.center);
@@ -217,16 +217,15 @@ public class MenuScreen extends InputAdapter implements Screen {
             }
         });
 
-        int secondColWidth = 500, thirdColWidth = 160, spacing = 25;
-        customAI.add(aiLabel).colspan(3).spaceBottom(spacing);
+        customAI.add(aiLabel).colspan(3).spaceBottom(spacing * 2);
         customAI.row();
         customAI.add(aiSpeedLabel).space(0, 0, spacing, 0);
         customAI.add(aiSpeedSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
-        customAI.add(aiSpeedNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        customAI.add(aiSpeedNumber).space(0, 0, spacing, 0).width(thirdColWidth);
         customAI.row();
         customAI.add(aiOffsetLabel).space(spacing, 0, spacing, 0).height(aiSpeedLabel.getPrefHeight());
         customAI.add(aiOffsetSlider).width(secondColWidth).space(spacing).fillX();
-        customAI.add(aiOffsetNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
+        customAI.add(aiOffsetNumber).space(spacing, 0, spacing, 0);
         customAI.row();
         customAI.add(buttonPlayAI).colspan(3).fillX().height(button1P.getHeight());
         customAI.row();
@@ -235,11 +234,13 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         practiceMenu = new Table();
         practiceMenu.setVisible(false);
+
         final Label targetWidthLabel = new Label("TARGET\nWIDTH", game.skin, "LS90");
         targetWidthLabel.setAlignment(Align.center);
-        final Slider targetWidthSlider = new Slider(10, 1000, 10, false, game.skin);
+        final Slider targetWidthSlider = new Slider(10, 999, 10, false, game.skin);
         targetWidthSlider.setValue(options.targetWidth);
         final Label targetWidthNumber = new Label(Integer.toString((int)targetWidthSlider.getValue()), game.skin, "LS90");
+        targetWidthNumber.setAlignment(Align.center);
 
         final TextButton buttonPlayPractice = new TextButton("TARGETs", game.skin);
 
@@ -277,7 +278,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         practiceMenu.row();
         practiceMenu.add(targetWidthLabel).space(spacing, 0, spacing, 0);
         practiceMenu.add(targetWidthSlider).width(secondColWidth).space(spacing).fillX();
-        practiceMenu.add(targetWidthNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
+        practiceMenu.add(targetWidthNumber).space(spacing, 0, spacing, 0).width(thirdColWidth);
         practiceMenu.row();
         practiceMenu.add(buttonBackPractice).colspan(3).fillX().height(button1P.getHeight());
 
@@ -285,7 +286,15 @@ public class MenuScreen extends InputAdapter implements Screen {
         //Options menu stuff
         optionsMenu = new Table();
         optionsMenu.setVisible(false);
-        
+
+        final TextButton buttonSound = new TextButton("SOUND", game.skin, "LS90");
+        final Label sound = new Label("hi", game.skin, "LS90");
+        if (options.soundOn)
+            sound.setText("ON");
+        else
+            sound.setText("OFF");
+        sound.setAlignment(Align.center);
+
         final Label scoreLimitLabel = new Label("SCORE\nLIMIT", game.skin, "LS90");
         scoreLimitLabel.setAlignment(Align.center);
         final Slider scoreLimitSlider = new Slider(1, 10, 1, false, game.skin);
@@ -294,14 +303,14 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final Label paddleWidthLabel = new Label("PADDLE\nWIDTH", game.skin, "LS90");
         paddleWidthLabel.setAlignment(Align.center);
-        final Slider paddleWidthSlider = new Slider(100, 1000, 10, false, game.skin);
+        final Slider paddleWidthSlider = new Slider(10, 999, 10, false, game.skin);
         paddleWidthSlider.setValue(options.paddleWidth);
         final Label paddleWidthNumber = new Label(Integer.toString((int)paddleWidthSlider.getValue()), game.skin, "LS90");
 
         final Label ballLabel = new Label("BALL", game.skin);
         final Label ballSizeLabel = new Label("SIZE", game.skin, "LS90");
         ballSizeLabel.setAlignment(Align.center);
-        final Slider ballSizeSlider = new Slider(10, 1000, 10, false, game.skin);
+        final Slider ballSizeSlider = new Slider(10, 999, 10, false, game.skin);
         ballSizeSlider.setValue(options.ballSize);
         final Label ballSizeNumber = new Label(Integer.toString((int)ballSizeSlider.getValue()), game.skin, "LS90");
         
@@ -313,7 +322,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final Label ballSpeedIncreaseLabel = new Label("SPEED\nINCREASE", game.skin, "LS90");
         ballSpeedIncreaseLabel.setAlignment(Align.center);
-        final Slider ballSpeedIncreaseSlider = new Slider(0, 10, 1, false, game.skin);
+        final Slider ballSpeedIncreaseSlider = new Slider(0f, 9.9f, 0.5f, false, game.skin);
         ballSpeedIncreaseSlider.setValue(options.ballSpeedIncrease);
         final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int)ballSpeedIncreaseSlider.getValue()), game.skin, "LS90");
 
@@ -331,6 +340,15 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final TextButton buttonBackOptions = new TextButton("BACK", game.skin, "LS90");
 
+        buttonSound.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                options.soundOn = !options.soundOn;
+                if (options.soundOn)
+                    sound.setText("ON");
+                else
+                    sound.setText("OFF");
+            }
+        });
         scoreLimitSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.scoreLimit = scoreLimitSlider.getValue();
@@ -358,7 +376,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         ballSpeedIncreaseSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.ballSpeedIncrease = ballSpeedIncreaseSlider.getValue();
-                ballSpeedIncreaseNumber.setText(Integer.toString((int)ballSpeedIncreaseSlider.getValue()));
+                ballSpeedIncreaseNumber.setText(Float.toString(ballSpeedIncreaseSlider.getValue()));
             }
         });
         ballAngleSlider.addListener(new ChangeListener() {
@@ -409,31 +427,35 @@ public class MenuScreen extends InputAdapter implements Screen {
             }
         });
 
-        optionsMenu.add(scoreLimitLabel).space(0, 0, spacing, 0);
+        optionsMenu.add(buttonSound).height(scoreLimitLabel.getHeight());
+        optionsMenu.add();
+        optionsMenu.add(sound).width(thirdColWidth);
+        optionsMenu.row();
+        optionsMenu.add(scoreLimitLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(scoreLimitSlider).width(secondColWidth).space(spacing).fillX();
-        optionsMenu.add(scoreLimitNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
+        optionsMenu.add(scoreLimitNumber).space(spacing, 0, spacing, 0);
         optionsMenu.row();
         optionsMenu.add(paddleWidthLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(paddleWidthSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
-        optionsMenu.add(paddleWidthNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        optionsMenu.add(paddleWidthNumber).space(0, 0, spacing, 0);
         optionsMenu.row();
         optionsMenu.add(ballLabel).spaceTop(spacing * 2).colspan(3);
         optionsMenu.row();
         optionsMenu.add(ballSizeLabel).space(0, 0, spacing, 0).height(scoreLimitLabel.getPrefHeight());
         optionsMenu.add(ballSizeSlider).width(secondColWidth).space(0, spacing, spacing, spacing).fillX();
-        optionsMenu.add(ballSizeNumber).width(thirdColWidth).space(0, 0, spacing, 0);
+        optionsMenu.add(ballSizeNumber).space(0, 0, spacing, 0);
         optionsMenu.row();
         optionsMenu.add(ballInitialSpeedLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(ballInitialSpeedSlider).width(secondColWidth).space(spacing).fillX();
-        optionsMenu.add(ballInitialSpeedNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
+        optionsMenu.add(ballInitialSpeedNumber).space(spacing, 0, spacing, 0);
         optionsMenu.row();
         optionsMenu.add(ballSpeedIncreaseLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(ballSpeedIncreaseSlider).width(secondColWidth).space(spacing).fillX();
-        optionsMenu.add(ballSpeedIncreaseNumber).width(thirdColWidth).space(spacing, 0, spacing, 0);
+        optionsMenu.add(ballSpeedIncreaseNumber).space(spacing, 0, spacing, 0);
         optionsMenu.row();
         optionsMenu.add(ballAngleLabel).space(spacing, 0, spacing * 2, 0);
         optionsMenu.add(ballAngleSlider).width(secondColWidth).space(0, spacing, spacing * 2, spacing).fillX();
-        optionsMenu.add(ballAngleNumber).width(thirdColWidth).space(spacing, 0, spacing * 2, 0);
+        optionsMenu.add(ballAngleNumber).space(spacing, 0, spacing * 2, 0);
         optionsMenu.row();
         optionsMenu.add(buttonSmallRandomizeOptions).colspan(3).fillX().height(110);
         optionsMenu.row();
@@ -456,16 +478,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         menu.setX(PongPlus.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
         menu.setY(PongPlus.NATIVE_HEIGHT / 2.5f - menu.getHeight() / 2);
 
-        //to have changes to the options affect the menubattle, pass options to this, rather than a new Options
-        menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
-                5, 2, false));
-
-        Gdx.input.setCatchBackKey(true);
-        InputMultiplexer multiplexer = new InputMultiplexer();
-        multiplexer.addProcessor(this);
-        multiplexer.addProcessor(stage);
-        Gdx.input.setInputProcessor(multiplexer);
-
         //Stuff for the Title
         //create and position text; origin of the Image is the bottom left corner
         titleTextImage = new Texture("title/titleTextImage.png");
@@ -473,40 +485,61 @@ public class MenuScreen extends InputAdapter implements Screen {
         titleText.setWidth(titleTextImage.getWidth());
         titleText.setHeight(titleTextImage.getHeight());
         stage.addActor(titleText);
-        titleText.setX(PongPlus.NATIVE_WIDTH / 2 - titleText.getPrefWidth() / 2);
-        titleText.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
         //create and position horizontal part of the eventual plus sign
         horizontalBarImage = new Texture("title/horizontalBar.png");
         horizontalPlus = new Image(horizontalBarImage);
         horizontalPlus.setWidth(horizontalBarImage.getWidth());
         horizontalPlus.setHeight(horizontalBarImage.getHeight());
         stage.addActor(horizontalPlus);
-        horizontalPlus.setX(PongPlus.NATIVE_WIDTH);
-        horizontalPlus.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
         //vertical part of the plus
         verticalBarImage = new Texture("title/verticalBar.png");
         verticalPlus = new Image(verticalBarImage);
         verticalPlus.setWidth(verticalBarImage.getWidth());
         verticalPlus.setHeight(verticalBarImage.getHeight());
         stage.addActor(verticalPlus);
-        verticalPlus.setX(PongPlus.NATIVE_WIDTH + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 16) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
-        verticalPlus.setY(PongPlus.NATIVE_HEIGHT);
-        //add the movement actions
-        float initialDelay = 3f, verDelay = 0.5f, horDuration = 0.025f, verDuration = 0.05f, bothDuration = 0.025f;
 
-        verticalPlus.addAction(sequence(
-                delay(initialDelay + verDelay + horDuration + bothDuration),
-                moveBy(0, horizontalPlus.getY() - verticalPlus.getY() - verticalPlus.getPrefHeight() / 2 + horizontalPlus.getPrefHeight() / 2, verDuration)
-        ));
-        horizontalPlus.addAction(sequence(
-                delay(initialDelay),
-                moveBy(titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8, 0, horDuration),//move it to the text
-                moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16, 0, bothDuration)
-        ));
-        titleText.addAction(sequence(
-                delay(initialDelay + horDuration),
-                moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16, 0, bothDuration)
-        ));
+        if (options.startup) {
+            titleText.setX(PongPlus.NATIVE_WIDTH / 2 - titleText.getPrefWidth() / 2);
+            titleText.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
+            horizontalPlus.setX(PongPlus.NATIVE_WIDTH);
+            horizontalPlus.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
+            verticalPlus.setX(PongPlus.NATIVE_WIDTH + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 16) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
+            verticalPlus.setY(PongPlus.NATIVE_HEIGHT);
+            //add the movement actions
+            float initialDelay = 3f, verDelay = 0.5f, horDuration = 0.025f, verDuration = 0.05f, bothDuration = 0.025f;
+
+            verticalPlus.addAction(sequence(
+                    delay(initialDelay + verDelay + horDuration + bothDuration),
+                    moveBy(0, horizontalPlus.getY() - verticalPlus.getY() - verticalPlus.getPrefHeight() / 2 + horizontalPlus.getPrefHeight() / 2, verDuration)
+            ));
+            horizontalPlus.addAction(sequence(
+                    delay(initialDelay),
+                    moveBy(titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8, 0, horDuration),//move it to the text
+                    moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16, 0, bothDuration)
+            ));
+            titleText.addAction(sequence(
+                    delay(initialDelay + horDuration),
+                    moveBy(-horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16, 0, bothDuration)
+            ));
+            options.startup = false;
+        } else {
+            titleText.setX((PongPlus.NATIVE_WIDTH / 2 - titleText.getPrefWidth() / 2) - horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16);
+            titleText.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
+            horizontalPlus.setX(titleText.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8);
+            horizontalPlus.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
+            verticalPlus.setX(horizontalPlus.getX() + horizontalPlus.getPrefWidth() / 2 - verticalPlus.getPrefWidth() / 2);
+            verticalPlus.setY(horizontalPlus.getY() - verticalPlus.getPrefHeight() / 2 + horizontalPlus.getPrefHeight() / 2);
+        }
+
+        //to have changes to the options affect the menubattle, pass options to this, rather than a new Options
+        menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
+                5, 8, false));
+
+        Gdx.input.setCatchBackKey(true);
+        InputMultiplexer multiplexer = new InputMultiplexer();
+        multiplexer.addProcessor(this);
+        multiplexer.addProcessor(stage);
+        Gdx.input.setInputProcessor(multiplexer);
 	}
 
 	@Override

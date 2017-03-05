@@ -18,14 +18,15 @@ public class Wall {
 
     private boolean needsNewLocation =  false;
 
-    //constructor for invisible wall of specified size
     //pass angle as degrees
-    public Wall(float x, float y, float width, float height, float angle, World world) {
-
+    public Wall(boolean textured, float x, float y, float width, float height, float angle, World world, Options options) {
+        if (textured)
+            ninePatch = new NinePatchDrawable(new NinePatch(new Texture("ClassicPaddle9.png")));
+        this.options = options;
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.fixedRotation = true;
-        bodyDef.position.set(x, y); //note that the origin for bodys is at the center; so the wall will initially be centered at the passed x and y coordinates
+        bodyDef.position.set(x, y);
 
         body = world.createBody(bodyDef);
         angle = (float)(angle / 180 * Math.PI);
@@ -38,36 +39,8 @@ public class Wall {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0f;
-        fixtureDef.friction = 0f; //set friction to 0 so that moving into a wall while falling will not slow the player
-        fixtureDef.restitution = 1f; //1 restitution so that the ball rebounds perfectly
-
-        body.createFixture(fixtureDef);
-        shape.dispose();
-    }
-
-    //constructor for textured wall of the texture's size
-    public Wall(String textureName, float x, float y, float angle, World world, Options options) {
-        this.options = options;
-        ninePatch = new NinePatchDrawable(new NinePatch(new Texture(textureName)));
-
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.fixedRotation = true;
-        bodyDef.position.set(x, y);
-
-        body = world.createBody(bodyDef);
-        angle = (float)(angle / 180 * Math.PI);
-        body.setTransform(body.getPosition(), angle);
-        body.setUserData(this);
-
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(options.targetWidth / 2 / PongPlus.PPM, ninePatch.getMinHeight() / 2 / PongPlus.PPM);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 0f;
         fixtureDef.friction = 0f;
-        fixtureDef.restitution = 1f;
+        fixtureDef.restitution = 1f; //1 restitution so that the ball rebounds perfectly
 
         body.createFixture(fixtureDef);
         shape.dispose();
@@ -83,7 +56,6 @@ public class Wall {
         this.needsNewLocation(false);
     }
 
-    //DO NOT CALL DRAW ON INVISIBLE WALLS, IT WILL THROW NULLPOINTEREXCEPTION
     public void draw(SpriteBatch sb) {
         ninePatch.draw(sb,
                 body.getPosition().x - options.targetWidth / 2 / PongPlus.PPM,

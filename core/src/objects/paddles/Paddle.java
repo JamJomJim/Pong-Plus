@@ -30,7 +30,7 @@ public class Paddle extends InputAdapter {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.KinematicBody;
         bodyDef.fixedRotation = true;
-        bodyDef.position.set(x, y); //note that the origin for bodys is at the center; so the player will initially be centered at the passed x and y coordinates
+        bodyDef.position.set(x, y);
 
         body = world.createBody(bodyDef);
         body.setUserData(this);
@@ -41,7 +41,7 @@ public class Paddle extends InputAdapter {
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0f;
-        fixtureDef.friction = 0f; //set friction to 0 so that moving into a wall while falling will not slow the player
+        fixtureDef.friction = 0f;
         fixtureDef.restitution = 1f; //1 restitution so that the ball rebounds perfectly
 
         body.createFixture(fixtureDef);
@@ -73,25 +73,12 @@ public class Paddle extends InputAdapter {
                 ninePatch.getMinHeight() / PongPlus.PPM);
     }
 
-    //note that these methods return the x and y coords of the center of the body, in box2d coords/measurements
-    public float getX() {
-        return body.getPosition().x;
-    }
-
     public float getY() {
         return body.getPosition().y;
     }
 
     public Body getBody() {
         return body;
-    }
-
-    public Vector2 getDest() {
-        return destination;
-    }
-
-    public NinePatchDrawable getNinePatch() {
-        return ninePatch;
     }
 
     public void dispose() {
