@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
+import com.badlogic.gdx.utils.viewport.FitViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.pongplus.game.Options;
 import com.pongplus.game.Options.AI;
@@ -28,13 +29,15 @@ public class MenuScreen extends InputAdapter implements Screen {
 	private PongPlus game;
 	private PlayScreen menuBattle;
 	private Options options;
+	
+	private float width = Gdx.graphics.getWidth(), height = Gdx.graphics.getHeight();
 
 	private Random random;
 
 	public MenuScreen(PongPlus game, final Options opt) {
 		this.game = game;
 		this.options = opt;
-		stage = new Stage(new StretchViewport(PongPlus.NATIVE_WIDTH, PongPlus.NATIVE_HEIGHT), game.batch);
+		stage = new Stage(new FitViewport(width, height), game.batch);
         //stage.setDebugAll(true);
         random = new Random();
 
@@ -466,8 +469,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         optionsMenu.add(buttonBackOptions).colspan(3).fillX().height(110);
 
         stage.addActor(optionsMenu);
-        optionsMenu.setX(PongPlus.NATIVE_WIDTH / 2);
-        optionsMenu.setY(PongPlus.NATIVE_HEIGHT / 2);
+        optionsMenu.setX(width / 2);
+        optionsMenu.setY(height / 2);
 
         Stack menu = new Stack();
         menu.add(modes);
@@ -475,8 +478,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         menu.add(customAI);
         menu.add(practiceMenu);
         stage.addActor(menu);
-        menu.setX(PongPlus.NATIVE_WIDTH / 2 - menu.getWidth() / 2);
-        menu.setY(PongPlus.NATIVE_HEIGHT / 2.5f - menu.getHeight() / 2);
+        menu.setX(width / 2 - menu.getWidth() / 2);
+        menu.setY(height / 2.5f - menu.getHeight() / 2);
 
         //Stuff for the Title
         //create and position text; origin of the Image is the bottom left corner
@@ -499,12 +502,12 @@ public class MenuScreen extends InputAdapter implements Screen {
         stage.addActor(verticalPlus);
 
         if (options.startup) {
-            titleText.setX(PongPlus.NATIVE_WIDTH / 2 - titleText.getPrefWidth() / 2);
-            titleText.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
-            horizontalPlus.setX(PongPlus.NATIVE_WIDTH);
-            horizontalPlus.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
-            verticalPlus.setX(PongPlus.NATIVE_WIDTH + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 16) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
-            verticalPlus.setY(PongPlus.NATIVE_HEIGHT);
+            titleText.setX(width / 2 - titleText.getPrefWidth() / 2);
+            titleText.setY(height / 4 * 3 - titleText.getPrefHeight() / 2);
+            horizontalPlus.setX(width);
+            horizontalPlus.setY(height / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
+            verticalPlus.setX(width + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 16) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
+            verticalPlus.setY(height);
             //add the movement actions
             float initialDelay = 3f, verDelay = 0.5f, horDuration = 0.025f, verDuration = 0.05f, bothDuration = 0.025f;
 
@@ -523,10 +526,10 @@ public class MenuScreen extends InputAdapter implements Screen {
             ));
             options.startup = false;
         } else {
-            titleText.setX((PongPlus.NATIVE_WIDTH / 2 - titleText.getPrefWidth() / 2) - horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16);
-            titleText.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
+            titleText.setX((width / 2 - titleText.getPrefWidth() / 2) - horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16);
+            titleText.setY(height / 4 * 3 - titleText.getPrefHeight() / 2);
             horizontalPlus.setX(titleText.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8);
-            horizontalPlus.setY(PongPlus.NATIVE_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
+            horizontalPlus.setY(height / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
             verticalPlus.setX(horizontalPlus.getX() + horizontalPlus.getPrefWidth() / 2 - verticalPlus.getPrefWidth() / 2);
             verticalPlus.setY(horizontalPlus.getY() - verticalPlus.getPrefHeight() / 2 + horizontalPlus.getPrefHeight() / 2);
         }
