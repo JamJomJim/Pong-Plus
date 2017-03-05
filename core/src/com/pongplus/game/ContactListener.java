@@ -71,7 +71,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 		    screen.score("bot");
         }
 
-        if (screen.getMode() == Mode.PRACTICE){
+        if (screen.getMode() == Mode.TARGETS){
 			if (objectA instanceof Ball && objectB instanceof Wall && ((Wall) objectB).getNinePatch() != null ||
                     objectA instanceof Wall && objectB instanceof Ball && ((Wall) objectA).getNinePatch() != null) {
 

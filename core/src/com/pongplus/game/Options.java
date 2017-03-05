@@ -10,7 +10,7 @@ public class Options {
     }
 
     public enum Mode {//different modes of play
-        ONEPLAYER, TWOPLAYER, SURVIVAL, PRACTICE, AIBATTLE, MENUBATTLE
+        ONEPLAYER, TWOPLAYER, SURVIVAL, TARGETS, AIBATTLE, MENUBATTLE
     }
 
     public boolean startup;

@@ -66,28 +66,25 @@ public class PlayScreen extends InputAdapter implements Screen {
         world.setVelocityThreshold(0.01f);
 
         worldCam = new OrthographicCamera();
-        vp = new ExtendViewport(PongPlus.VIRTUAL_WIDTH, PongPlus.VIRTUAL_HEIGHT, worldCam);
-        vp.update(PongPlus.ACTUAL_WIDTH, PongPlus.ACTUAL_HEIGHT);
-        //vp.setScreenX((int)((PongPlus.ACTUAL_WIDTH - vp.getWorldWidth()) / 2));
-        vp.apply(true);
+        vp = new ExtendViewport(PongPlus.VIRTUAL_WIDTH / PongPlus.PPM, PongPlus.VIRTUAL_HEIGHT / PongPlus.PPM, worldCam);
+        vp.update(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        vp.apply();
+        worldCam.position.set(0, 0, 0);
 
-        PADDLE_OFFSET = vp.getWorldHeight() - 300;
-
-        System.out.println(vp.getWorldWidth());
-        System.out.println(vp.getWorldHeight());
+        PADDLE_OFFSET = vp.getWorldHeight() / 2 - 200 / PongPlus.PPM;
 
         topScore = 0;
         botScore = 0;
 
         //create the side walls (and top wall if it's survival mode)
-        new Wall(false, (vp.getWorldWidth() + 2) / PongPlus.PPM / 2, 0, 1, vp.getWorldHeight(), 0, world, options); //right wall
-        new Wall(false, (-vp.getWorldWidth() - 2) / PongPlus.PPM / 2, 0, 1, vp.getWorldHeight(), 0, world, options); //left wall
+        new Wall(false, (vp.getWorldWidth() + 2 / PongPlus.PPM) / 2, 0, 1 / PongPlus.PPM, vp.getWorldHeight(), 0, world, options); //right wall
+        new Wall(false, (-vp.getWorldWidth() - 2 / PongPlus.PPM) / 2, 0, 1 / PongPlus.PPM, vp.getWorldHeight(), 0, world, options); //left wall
         if (mode == Mode.SURVIVAL)
-            new Wall(false, 0, (vp.getWorldHeight() + 1) / PongPlus.PPM / 2, vp.getWorldWidth(), 1, 0, world, options);
+            new Wall(false, 0, (vp.getWorldHeight() + 1) / 2, vp.getWorldWidth(), 1, 0, world, options);
 
         //Creates the initial practice wall.
-        if (mode == Mode.PRACTICE) {
-            practiceWall = new Wall(true, 0, PADDLE_OFFSET / PongPlus.PPM, 0, 0, 0, world, options);
+        if (mode == Mode.TARGETS) {
+            practiceWall = new Wall(true, 0, PADDLE_OFFSET, 0, 0, 0, world, options);
             practiceWall.randomizeLocation();
         }
         //create the ball
@@ -95,23 +92,23 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         //create p1 depending on the mode
         if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
-            p1 = new AIPaddle(0, -PADDLE_OFFSET / PongPlus.PPM, world, ball, options);
+            p1 = new AIPaddle(0, -PADDLE_OFFSET, world, ball, vp, options);
         //if Survival mode set a small offset to the X of the player paddle.
         else if (mode == Mode.SURVIVAL) {
             float x = 0;
             while (x == 0)
                 x = (float) (Math.random() * 5 - 2.5) / PongPlus.PPM;
-            p1 = new PlayerPaddle(x, -PADDLE_OFFSET / PongPlus.PPM, world, worldCam, options);
+            p1 = new PlayerPaddle(x, -PADDLE_OFFSET, world, worldCam, options);
         } else
-            p1 = new PlayerPaddle(0, 0, world, worldCam, options);
+            p1 = new PlayerPaddle(0, -PADDLE_OFFSET, world, worldCam, options);
 
         //create p2 depending on the mode
         if (mode == Mode.TWOPLAYER)
-            p2 = new PlayerPaddle(0, PADDLE_OFFSET / PongPlus.PPM, world, worldCam, options);
-        else if (mode == Mode.SURVIVAL || mode == Mode.PRACTICE)
+            p2 = new PlayerPaddle(0, PADDLE_OFFSET, world, worldCam, options);
+        else if (mode == Mode.SURVIVAL || mode == Mode.TARGETS)
             p2 = null;
         else
-            p2 = new AIPaddle(0, PADDLE_OFFSET / PongPlus.PPM, world, ball, options);
+            p2 = new AIPaddle(0, PADDLE_OFFSET, world, ball, vp, options);
 
         world.setContactListener(new ContactListener(p1, p2, this));
 
@@ -120,7 +117,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
 
         //UI STUFF******************************************************************************************************
-        stage = new Stage(vp);
+        ExtendViewport stageVp = new ExtendViewport(PongPlus.VIRTUAL_WIDTH, PongPlus.VIRTUAL_HEIGHT);
+        stage = new Stage(stageVp);
         //create and add the table that fills the entire screen
         //stage.setDebugAll(true);
         Table table = new Table();
@@ -138,8 +136,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         score.add(botScoreText).right();
         //add it to the stage and position it
         table.add(score);
-        score.setX(vp.getWorldWidth() / 2 - score.getPrefWidth() / 2);
-        score.setY(vp.getWorldHeight() / 2);
+        score.setX(stageVp.getWorldWidth() / 2 - score.getPrefWidth() / 2);
+        score.setY(stageVp.getWorldHeight() / 2);
         if (mode == Mode.MENUBATTLE)
             score.setVisible(false);
 
@@ -166,15 +164,15 @@ public class PlayScreen extends InputAdapter implements Screen {
         menu.add(buttonMenu).fillX().height(buttonRestart.getHeight());
 
         stage.addActor(menu);
-        menu.setX(vp.getWorldWidth() / 2);
-        menu.setY(vp.getWorldHeight() / 2);
+        menu.setX(stageVp.getWorldWidth() / 2);
+        menu.setY(stageVp.getWorldHeight() / 2);
 
         //create the label that's displayed during pause
         pausedText = new Label("PAUSED", game.skin);
         pausedText.setVisible(false);
         stage.addActor(pausedText);
-        pausedText.setX(vp.getWorldWidth() / 2 - pausedText.getPrefWidth() / 2);
-        pausedText.setY(vp.getWorldHeight() / 2 - pausedText.getPrefHeight() / 2);
+        pausedText.setX(stageVp.getWorldWidth() / 2 - pausedText.getPrefWidth() / 2);
+        pausedText.setY(stageVp.getWorldHeight() / 2 - pausedText.getPrefHeight() / 2);
 
         //create InputMultiplexer, to handle input on multiple paddles and the ui
         multiplexer = new InputMultiplexer();
@@ -201,7 +199,7 @@ public class PlayScreen extends InputAdapter implements Screen {
             botScoreText.setText(Integer.toString(botScore));
         }
         //randomizes the location of the practice wall when needed.
-        if (mode == Mode.PRACTICE && practiceWall.needsNewLocation())
+        if (mode == Mode.TARGETS && practiceWall.needsNewLocation())
             practiceWall.randomizeLocation();
         stage.act(dt);
         Gdx.gl.glClearColor(0, 0, 0, 1);
@@ -212,9 +210,9 @@ public class PlayScreen extends InputAdapter implements Screen {
         game.batch.setProjectionMatrix(vp.getCamera().combined); //have to set this every time because when the stage is drawn, it sets it to a different one
         game.batch.begin();
         p1.draw(game.batch);
-        if (mode != Mode.SURVIVAL && mode != Mode.PRACTICE)
+        if (mode != Mode.SURVIVAL && mode != Mode.TARGETS)
             p2.draw(game.batch);
-        if (mode == Mode.PRACTICE)
+        if (mode == Mode.TARGETS)
             practiceWall.draw(game.batch);
         game.batch.end();
         stage.draw(); //draw the stage (ui elements)
@@ -230,25 +228,25 @@ public class PlayScreen extends InputAdapter implements Screen {
         int direction;
         //checking the ball and updating scores is handled differently if it's survival mode
         if (mode == Mode.SURVIVAL) {
-            if (body.getPosition().y < -vp.getWorldHeight() / 2 / PongPlus.PPM) {
+            if (body.getPosition().y < -vp.getWorldHeight() / 2) {
                 if (botScore > topScore)
                     topScore = botScore;
                 direction = -1;
                 botScore = 0;
             } else return;
-        } else if (mode == Mode.PRACTICE) {
-            if (body.getPosition().y < -vp.getWorldHeight() / 2 / PongPlus.PPM
-                    || body.getPosition().y > vp.getWorldHeight() / 2 / PongPlus.PPM) {
+        } else if (mode == Mode.TARGETS) {
+            if (body.getPosition().y < -vp.getWorldHeight() / 2
+                    || body.getPosition().y > vp.getWorldHeight() / 2) {
                 if (botScore > topScore)
                     topScore = botScore;
                 direction = -1;
                 botScore = 0;
                 practiceWall.randomizeLocation();
             } else return;
-        } else if (body.getPosition().y < -vp.getWorldHeight() / 2 / PongPlus.PPM) { //this is the stuff that happens if it's not survival mode
+        } else if (body.getPosition().y < -vp.getWorldHeight() / 2) { //this is the stuff that happens if it's not survival mode
             score("top");
             direction = -1;
-        } else if (body.getPosition().y > vp.getWorldHeight() / 2 / PongPlus.PPM) {
+        } else if (body.getPosition().y > vp.getWorldHeight() / 2) {
             score("bot");
             direction = 1;
         } else return; //return if the ball hasn't passed anywhere that it should be reset
@@ -325,18 +323,16 @@ public class PlayScreen extends InputAdapter implements Screen {
     @Override
     public void resize(int width, int height) {
         vp.update(width, height);
-        vp.apply(true);
-        System.out.println(vp.getWorldWidth());
-        System.out.println(vp.getWorldHeight());
+        vp.apply();
+        worldCam.position.set(0, 0, 0);
+        stage.getViewport().update(width, height);
     }
 
-    //pause() is called when the application loses focus/is no longer active
     @Override
     public void pause() {
 
     }
 
-    //resume() is called when the app regains focus/is active again
     @Override
     public void resume() {
 

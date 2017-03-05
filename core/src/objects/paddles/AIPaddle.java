@@ -2,6 +2,7 @@ package objects.paddles;
 
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.pongplus.game.Options;
 import com.pongplus.game.PongPlus;
 import objects.Ball;
@@ -12,12 +13,15 @@ public class AIPaddle extends Paddle {
 
     private Ball ball;
     private Vector2 prevVel;
+    
+    private ExtendViewport vp;
 
 
-    public AIPaddle(float x, float y, World world, Ball ball, Options options) {
+    public AIPaddle(float x, float y, World world, Ball ball, ExtendViewport vp, Options options) {
         super(x, y, world, options);
         this.prevVel = new Vector2(0, 0);
         this.ball = ball;
+        this.vp = vp;
         switch (options.ai) {
             case EASY:
                 maxOffset = 0;
@@ -63,15 +67,15 @@ public class AIPaddle extends Paddle {
         else
             timeToPaddle = (this.getY() + this.ninePatch.getMinHeight() / PongPlus.PPM - yPos) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
-        if (finalDestination < -PongPlus.VIRTUAL_WIDTH / 2 / PongPlus.PPM + options.ballSize / 2 / PongPlus.PPM) {
-            yPos = yPos + ((-PongPlus.VIRTUAL_WIDTH / 2 / PongPlus.PPM - xPos + options.ballSize / PongPlus.PPM) / xVel) * yVel;
-            xPos = -PongPlus.VIRTUAL_WIDTH / 2 / PongPlus.PPM;
+        if (finalDestination < -vp.getWorldWidth() / 2 + options.ballSize / 2 / PongPlus.PPM) {
+            yPos = yPos + ((-vp.getWorldWidth() / 2 - xPos + options.ballSize / PongPlus.PPM) / xVel) * yVel;
+            xPos = -vp.getWorldWidth() / 2;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
         }
-        else if (finalDestination > PongPlus.VIRTUAL_WIDTH / 2 / PongPlus.PPM - options.ballSize / 2 / PongPlus.PPM) {
-            yPos = yPos + ((PongPlus.VIRTUAL_WIDTH / 2 / PongPlus.PPM - xPos - options.ballSize / PongPlus.PPM) / xVel) * yVel;
-            xPos = PongPlus.VIRTUAL_WIDTH / 2 / PongPlus.PPM;
+        else if (finalDestination > vp.getWorldWidth() / 2 - options.ballSize / 2 / PongPlus.PPM) {
+            yPos = yPos + ((vp.getWorldWidth() / 2 - xPos - options.ballSize / PongPlus.PPM) / xVel) * yVel;
+            xPos = vp.getWorldWidth() / 2;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
         }

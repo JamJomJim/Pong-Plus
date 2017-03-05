@@ -16,13 +16,27 @@ public class Wall {
 
     protected Options options;
 
+    protected float width, height;
+
     private boolean needsNewLocation =  false;
 
     //pass angle as degrees
-    public Wall(boolean textured, float x, float y, float width, float height, float angle, World world, Options options) {
+    public Wall(boolean textured, float x, float y, float w, float h, float angle, World world, Options options) {
+        System.out.println(options.mode);
+        System.out.println(textured);
         if (textured)
             ninePatch = new NinePatchDrawable(new NinePatch(new Texture("ClassicPaddle9.png")));
         this.options = options;
+        if (options.mode == Options.Mode.TARGETS && textured) {
+            width = options.targetWidth / PongPlus.PPM;
+            height = ninePatch.getMinHeight() / PongPlus.PPM;
+            System.out.println(this.width);
+            System.out.println(this.height);
+        } else {
+            width = w;
+            height = h;
+        }
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.fixedRotation = true;
@@ -34,7 +48,7 @@ public class Wall {
         body.setUserData(this);
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(width / 2 / PongPlus.PPM, height / 2 / PongPlus.PPM);
+        shape.setAsBox(width / 2, height / 2);
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
@@ -58,10 +72,10 @@ public class Wall {
 
     public void draw(SpriteBatch sb) {
         ninePatch.draw(sb,
-                body.getPosition().x - options.targetWidth / 2 / PongPlus.PPM,
-                body.getPosition().y - ninePatch.getMinHeight() / 2 / PongPlus.PPM,
-                options.targetWidth / PongPlus.PPM,
-                ninePatch.getMinHeight() / PongPlus.PPM);
+                body.getPosition().x - width / 2,
+                body.getPosition().y - height / 2,
+                width,
+                height);
     }
 
     public boolean needsNewLocation() {

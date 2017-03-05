@@ -10,7 +10,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.viewport.FitViewport;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.pongplus.game.Options;
 import com.pongplus.game.Options.AI;
 import com.pongplus.game.Options.Mode;
@@ -33,7 +33,8 @@ public class MenuScreen extends InputAdapter implements Screen {
 	public MenuScreen(PongPlus game, final Options opt) {
 		this.game = game;
 		this.options = opt;
-		stage = new Stage(new FitViewport(PongPlus.VIRTUAL_WIDTH, PongPlus.VIRTUAL_HEIGHT), game.batch);
+		ExtendViewport vp = new ExtendViewport(PongPlus.VIRTUAL_WIDTH, PongPlus.VIRTUAL_HEIGHT);
+		stage = new Stage(vp);
         //stage.setDebugAll(true);
         random = new Random();
 
@@ -69,7 +70,6 @@ public class MenuScreen extends InputAdapter implements Screen {
         });
         buttonPractice.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                options.mode = Mode.PRACTICE;
                 modes.setVisible(false);
                 practiceMenu.setVisible(true);
             }
@@ -241,9 +241,9 @@ public class MenuScreen extends InputAdapter implements Screen {
         final Label targetWidthNumber = new Label(Integer.toString((int)targetWidthSlider.getValue()), game.skin, "LS90");
         targetWidthNumber.setAlignment(Align.center);
 
-        final TextButton buttonPlayPractice = new TextButton("TARGETs", game.skin);
+        final TextButton buttonTargets = new TextButton("TARGETS", game.skin);
 
-        final TextButton buttonWall = new TextButton("SURVIVAL", game.skin);
+        final TextButton buttonSurvival = new TextButton("SURVIVAL", game.skin);
 
         final TextButton buttonBackPractice = new TextButton("BACK", game.skin, "LS90");
 
@@ -253,12 +253,13 @@ public class MenuScreen extends InputAdapter implements Screen {
                 targetWidthNumber.setText(Integer.toString((int)targetWidthSlider.getValue()));
             }
         });
-        buttonPlayPractice.addListener(new ClickListener() {
+        buttonTargets.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
+                options.mode = Mode.TARGETS;
                 startPlay();
             }
         });
-        buttonWall.addListener(new ClickListener() {
+        buttonSurvival.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 options.mode = Mode.SURVIVAL;
                 startPlay();
@@ -271,9 +272,9 @@ public class MenuScreen extends InputAdapter implements Screen {
             }
         });
 
-        practiceMenu.add(buttonWall).colspan(3).fillX().height(button1P.getHeight()).spaceBottom(spacing);
+        practiceMenu.add(buttonSurvival).colspan(3).fillX().height(button1P.getHeight()).spaceBottom(spacing);
         practiceMenu.row();
-        practiceMenu.add(buttonPlayPractice).colspan(3).fillX().height(button1P.getHeight());
+        practiceMenu.add(buttonTargets).colspan(3).fillX().height(button1P.getHeight());
         practiceMenu.row();
         practiceMenu.add(targetWidthLabel).space(spacing, 0, spacing, 0);
         practiceMenu.add(targetWidthSlider).width(secondColWidth).space(spacing).fillX();
@@ -465,8 +466,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         optionsMenu.add(buttonBackOptions).colspan(3).fillX().height(110);
 
         stage.addActor(optionsMenu);
-        optionsMenu.setX(PongPlus.VIRTUAL_WIDTH / 2);
-        optionsMenu.setY(PongPlus.VIRTUAL_HEIGHT / 2);
+        optionsMenu.setX(vp.getWorldWidth() / 2);
+        optionsMenu.setY(vp.getWorldHeight() / 2);
 
         Stack menu = new Stack();
         menu.add(modes);
@@ -474,8 +475,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         menu.add(customAI);
         menu.add(practiceMenu);
         stage.addActor(menu);
-        menu.setX(PongPlus.VIRTUAL_WIDTH / 2 - menu.getWidth() / 2);
-        menu.setY(PongPlus.VIRTUAL_HEIGHT / 2.5f - menu.getHeight() / 2);
+        menu.setX(vp.getWorldWidth() / 2 - menu.getWidth() / 2);
+        menu.setY(vp.getWorldHeight() / 2.5f - menu.getHeight() / 2);
 
         //Stuff for the Title
         //create and position text; origin of the Image is the bottom left corner
@@ -498,12 +499,12 @@ public class MenuScreen extends InputAdapter implements Screen {
         stage.addActor(verticalPlus);
 
         if (options.startup) {
-            titleText.setX(PongPlus.VIRTUAL_WIDTH / 2 - titleText.getPrefWidth() / 2);
-            titleText.setY(PongPlus.VIRTUAL_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
-            horizontalPlus.setX(PongPlus.VIRTUAL_WIDTH);
-            horizontalPlus.setY(PongPlus.VIRTUAL_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
-            verticalPlus.setX(PongPlus.VIRTUAL_WIDTH + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 16) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
-            verticalPlus.setY(PongPlus.VIRTUAL_HEIGHT);
+            titleText.setX(vp.getWorldWidth() / 2 - titleText.getPrefWidth() / 2);
+            titleText.setY(vp.getWorldHeight() / 4 * 3 - titleText.getPrefHeight() / 2);
+            horizontalPlus.setX(vp.getWorldWidth());
+            horizontalPlus.setY(vp.getWorldHeight() / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
+            verticalPlus.setX(vp.getWorldWidth() + (-verticalPlus.getPrefWidth() / 2) + (-horizontalPlus.getPrefWidth() / 16) + (titleText.getX() - horizontalPlus.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8));
+            verticalPlus.setY(vp.getWorldHeight());
             //add the movement actions
             float initialDelay = 3f, verDelay = 0.5f, horDuration = 0.025f, verDuration = 0.05f, bothDuration = 0.025f;
 
@@ -522,10 +523,10 @@ public class MenuScreen extends InputAdapter implements Screen {
             ));
             options.startup = false;
         } else {
-            titleText.setX((PongPlus.VIRTUAL_WIDTH / 2 - titleText.getPrefWidth() / 2) - horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16);
-            titleText.setY(PongPlus.VIRTUAL_HEIGHT / 4 * 3 - titleText.getPrefHeight() / 2);
+            titleText.setX((vp.getWorldWidth() / 2 - titleText.getPrefWidth() / 2) - horizontalPlus.getPrefWidth() / 2 - horizontalPlus.getPrefWidth() / 16);
+            titleText.setY(vp.getWorldHeight() / 4 * 3 - titleText.getPrefHeight() / 2);
             horizontalPlus.setX(titleText.getX() + titleText.getPrefWidth() + horizontalPlus.getPrefWidth() / 8);
-            horizontalPlus.setY(PongPlus.VIRTUAL_HEIGHT / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
+            horizontalPlus.setY(vp.getWorldHeight() / 4 * 3 - horizontalPlus.getPrefHeight() / 2);
             verticalPlus.setX(horizontalPlus.getX() + horizontalPlus.getPrefWidth() / 2 - verticalPlus.getPrefWidth() / 2);
             verticalPlus.setY(horizontalPlus.getY() - verticalPlus.getPrefHeight() / 2 + horizontalPlus.getPrefHeight() / 2);
         }
@@ -587,9 +588,10 @@ public class MenuScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-		stage.getViewport().update(width, height,true);
-		//menuBattle.resize(width, height);
-	}
+	    //TODO: get neither of these to stretch
+		menuBattle.resize(width, height);
+        stage.getViewport().update(width, height,true);
+    }
 
 	@Override
 	public void pause() {
