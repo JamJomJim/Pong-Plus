@@ -17,8 +17,11 @@ import screens.*;
 public class PongPlus extends Game {
 	public static final float PPM = 300f; //The number of pixels in one meter
 
-	public static int NATIVE_WIDTH = 1440;
-	public static int NATIVE_HEIGHT = 2560;
+	public static int VIRTUAL_WIDTH = 1440;
+	public static int VIRTUAL_HEIGHT = 2560;
+
+    public static int ACTUAL_WIDTH;
+    public static int ACTUAL_HEIGHT;
 
 	public SpriteBatch batch;
 	public Skin skin;
@@ -31,6 +34,8 @@ public class PongPlus extends Game {
 		options = new Options();
         options.loadOptions();
 
+        ACTUAL_WIDTH = Gdx.graphics.getWidth();
+        ACTUAL_HEIGHT = Gdx.graphics.getHeight();
 
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();
