@@ -22,16 +22,12 @@ public class Wall {
 
     //pass angle as degrees
     public Wall(boolean textured, float x, float y, float w, float h, float angle, World world, Options options) {
-        System.out.println(options.mode);
-        System.out.println(textured);
         if (textured)
             ninePatch = new NinePatchDrawable(new NinePatch(new Texture("ClassicPaddle9.png")));
         this.options = options;
         if (options.mode == Options.Mode.TARGETS && textured) {
             width = options.targetWidth / PongPlus.PPM;
             height = ninePatch.getMinHeight() / PongPlus.PPM;
-            System.out.println(this.width);
-            System.out.println(this.height);
         } else {
             width = w;
             height = h;
