@@ -13,7 +13,7 @@ public class AIPaddle extends Paddle {
 
     private Ball ball;
     private Vector2 prevVel;
-    
+
     private ExtendViewport vp;
 
 
@@ -47,10 +47,10 @@ public class AIPaddle extends Paddle {
     }
 
     public void update(float dt) {
-       if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()) &&
-               ((this.getY() < 0 && ball.getBody().getLinearVelocity().y < 0) ||
-                       (this.getY() > 0 && ball.getBody().getLinearVelocity().y > 0)))
-           destination.set(calcFinalDestination(
+        if (!prevVel.isCollinear(ball.getBody().getLinearVelocity()) &&
+                ((this.getY() < 0 && ball.getBody().getLinearVelocity().y < 0) ||
+                        (this.getY() > 0 && ball.getBody().getLinearVelocity().y > 0)))
+            destination.set(calcFinalDestination(
                     ball.getX(),
                     ball.getY(),
                     ball.getBody().getLinearVelocity().x,
@@ -72,8 +72,7 @@ public class AIPaddle extends Paddle {
             xPos = -vp.getWorldWidth() / 2;
             xVel = -xVel;
             return calcFinalDestination(xPos, yPos, xVel, yVel);
-        }
-        else if (finalDestination > vp.getWorldWidth() / 2 - options.ballSize / 2 / PongPlus.PPM) {
+        } else if (finalDestination > vp.getWorldWidth() / 2 - options.ballSize / 2 / PongPlus.PPM) {
             yPos = yPos + ((vp.getWorldWidth() / 2 - xPos - options.ballSize / PongPlus.PPM) / xVel) * yVel;
             xPos = vp.getWorldWidth() / 2;
             xVel = -xVel;
@@ -88,6 +87,6 @@ public class AIPaddle extends Paddle {
     }
 
     public void randomizeOffset() {
-        offset = (float)Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PongPlus.PPM;
+        offset = (float) Math.floor(Math.random() * (maxOffset * 2 + 1) - maxOffset) / PongPlus.PPM;
     }
 }

@@ -1,11 +1,11 @@
 package screens;
 
 import com.badlogic.gdx.*;
-import com.badlogic.gdx.graphics.*;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
 import com.badlogic.gdx.scenes.scene2d.ui.*;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
@@ -18,31 +18,33 @@ import com.pongplus.game.PongPlus;
 
 import java.util.Random;
 
+import static com.badlogic.gdx.scenes.scene2d.actions.Actions.*;
+
 public class MenuScreen extends InputAdapter implements Screen {
     private final Texture verticalBarImage, horizontalBarImage, titleTextImage;
     private Stage stage;
-	private Table table;
-	private Table modes, difficulties, optionsMenu, customAI, practiceMenu;
-	private Image titleText, horizontalPlus, verticalPlus;
-	private PongPlus game;
-	private PlayScreen menuBattle;
-	private Options options;
+    private Table table;
+    private Table modes, difficulties, optionsMenu, customAI, practiceMenu;
+    private Image titleText, horizontalPlus, verticalPlus;
+    private PongPlus game;
+    private PlayScreen menuBattle;
+    private Options options;
 
-	private Random random;
+    private Random random;
 
-	public MenuScreen(PongPlus game, final Options opt) {
-		this.game = game;
-		this.options = opt;
-		ExtendViewport vp = new ExtendViewport(PongPlus.VIRTUAL_WIDTH, PongPlus.VIRTUAL_HEIGHT);
-		stage = new Stage(vp);
+    public MenuScreen(PongPlus game, final Options opt) {
+        this.game = game;
+        this.options = opt;
+        ExtendViewport vp = new ExtendViewport(PongPlus.VIRTUAL_WIDTH, PongPlus.VIRTUAL_HEIGHT);
+        stage = new Stage(vp);
         //stage.setDebugAll(true);
         random = new Random();
 
-		// Create a table that fills the screen
-		table = new Table();
-		table.setSkin(game.skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
-		table.setFillParent(true);
-		stage.addActor(table);
+        // Create a table that fills the screen
+        table = new Table();
+        table.setSkin(game.skin); //set the table's skin. This means that all widgets within this table will use the skin's definitions by default
+        table.setFillParent(true);
+        stage.addActor(table);
 
 
         //stuff for the different modes
@@ -179,14 +181,14 @@ public class MenuScreen extends InputAdapter implements Screen {
         aiSpeedLabel.setAlignment(Align.center);
         final Slider aiSpeedSlider = new Slider(1, 100, 1, false, game.skin);
         aiSpeedSlider.setValue(options.aiMovespeed);
-        final Label aiSpeedNumber = new Label(Integer.toString((int)aiSpeedSlider.getValue()), game.skin, "LS90");
+        final Label aiSpeedNumber = new Label(Integer.toString((int) aiSpeedSlider.getValue()), game.skin, "LS90");
         aiSpeedNumber.setAlignment(Align.center);
 
         final Label aiOffsetLabel = new Label("AIM", game.skin, "LS90");
         aiOffsetLabel.setAlignment(Align.center);
         final Slider aiOffsetSlider = new Slider(0, 10, 1, false, game.skin);
         aiOffsetSlider.setValue(options.aiOffset);
-        final Label aiOffsetNumber = new Label(Integer.toString((int)aiOffsetSlider.getValue()), game.skin, "LS90");
+        final Label aiOffsetNumber = new Label(Integer.toString((int) aiOffsetSlider.getValue()), game.skin, "LS90");
 
         final TextButton buttonPlayAI = new TextButton("PLAY", game.skin);
 
@@ -195,13 +197,13 @@ public class MenuScreen extends InputAdapter implements Screen {
         aiSpeedSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.aiMovespeed = aiSpeedSlider.getValue();
-                aiSpeedNumber.setText(Integer.toString((int)aiSpeedSlider.getValue()));
+                aiSpeedNumber.setText(Integer.toString((int) aiSpeedSlider.getValue()));
             }
         });
         aiOffsetSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.aiOffset = aiOffsetSlider.getValue();
-                aiOffsetNumber.setText(Integer.toString((int)aiOffsetSlider.getValue()));
+                aiOffsetNumber.setText(Integer.toString((int) aiOffsetSlider.getValue()));
             }
         });
         buttonPlayAI.addListener(new ClickListener() {
@@ -238,7 +240,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         targetWidthLabel.setAlignment(Align.center);
         final Slider targetWidthSlider = new Slider(10, 999, 10, false, game.skin);
         targetWidthSlider.setValue(options.targetWidth);
-        final Label targetWidthNumber = new Label(Integer.toString((int)targetWidthSlider.getValue()), game.skin, "LS90");
+        final Label targetWidthNumber = new Label(Integer.toString((int) targetWidthSlider.getValue()), game.skin, "LS90");
         targetWidthNumber.setAlignment(Align.center);
 
         final TextButton buttonTargets = new TextButton("TARGETS", game.skin);
@@ -250,7 +252,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         targetWidthSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.targetWidth = targetWidthSlider.getValue();
-                targetWidthNumber.setText(Integer.toString((int)targetWidthSlider.getValue()));
+                targetWidthNumber.setText(Integer.toString((int) targetWidthSlider.getValue()));
             }
         });
         buttonTargets.addListener(new ClickListener() {
@@ -298,38 +300,38 @@ public class MenuScreen extends InputAdapter implements Screen {
         scoreLimitLabel.setAlignment(Align.center);
         final Slider scoreLimitSlider = new Slider(1, 10, 1, false, game.skin);
         scoreLimitSlider.setValue(options.scoreLimit);
-        final Label scoreLimitNumber = new Label(Integer.toString((int)scoreLimitSlider.getValue()), game.skin, "LS90");
+        final Label scoreLimitNumber = new Label(Integer.toString((int) scoreLimitSlider.getValue()), game.skin, "LS90");
 
         final Label paddleWidthLabel = new Label("PADDLE\nWIDTH", game.skin, "LS90");
         paddleWidthLabel.setAlignment(Align.center);
         final Slider paddleWidthSlider = new Slider(10, 999, 10, false, game.skin);
         paddleWidthSlider.setValue(options.paddleWidth);
-        final Label paddleWidthNumber = new Label(Integer.toString((int)paddleWidthSlider.getValue()), game.skin, "LS90");
+        final Label paddleWidthNumber = new Label(Integer.toString((int) paddleWidthSlider.getValue()), game.skin, "LS90");
 
         final Label ballLabel = new Label("BALL", game.skin);
         final Label ballSizeLabel = new Label("SIZE", game.skin, "LS90");
         ballSizeLabel.setAlignment(Align.center);
         final Slider ballSizeSlider = new Slider(10, 999, 10, false, game.skin);
         ballSizeSlider.setValue(options.ballSize);
-        final Label ballSizeNumber = new Label(Integer.toString((int)ballSizeSlider.getValue()), game.skin, "LS90");
-        
+        final Label ballSizeNumber = new Label(Integer.toString((int) ballSizeSlider.getValue()), game.skin, "LS90");
+
         final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "LS90");
         ballInitialSpeedLabel.setAlignment(Align.center);
         final Slider ballInitialSpeedSlider = new Slider(1, 100, 1, false, game.skin);
         ballInitialSpeedSlider.setValue(options.ballInitialSpeed);
-        final Label ballInitialSpeedNumber = new Label(Integer.toString((int)ballInitialSpeedSlider.getValue()), game.skin, "LS90");
+        final Label ballInitialSpeedNumber = new Label(Integer.toString((int) ballInitialSpeedSlider.getValue()), game.skin, "LS90");
 
         final Label ballSpeedIncreaseLabel = new Label("SPEED\nINCREASE", game.skin, "LS90");
         ballSpeedIncreaseLabel.setAlignment(Align.center);
         final Slider ballSpeedIncreaseSlider = new Slider(0f, 9.9f, 0.5f, false, game.skin);
         ballSpeedIncreaseSlider.setValue(options.ballSpeedIncrease);
-        final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int)ballSpeedIncreaseSlider.getValue()), game.skin, "LS90");
+        final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int) ballSpeedIncreaseSlider.getValue()), game.skin, "LS90");
 
         final Label ballAngleLabel = new Label("REBOUND\nANGLE", game.skin, "LS90");
         ballAngleLabel.setAlignment(Align.center);
         final Slider ballAngleSlider = new Slider(0, 100, 1, false, game.skin);
         ballAngleSlider.setValue(options.ballAngleMultiplier);
-        final Label ballAngleNumber = new Label(Integer.toString((int)ballAngleSlider.getValue()), game.skin, "LS90");
+        final Label ballAngleNumber = new Label(Integer.toString((int) ballAngleSlider.getValue()), game.skin, "LS90");
 
         final TextButton buttonSmallRandomizeOptions = new TextButton("REASONABLY RANDOM", game.skin, "LS90");
 
@@ -360,25 +362,25 @@ public class MenuScreen extends InputAdapter implements Screen {
         scoreLimitSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.scoreLimit = scoreLimitSlider.getValue();
-                scoreLimitNumber.setText(Integer.toString((int)scoreLimitSlider.getValue()));
+                scoreLimitNumber.setText(Integer.toString((int) scoreLimitSlider.getValue()));
             }
         });
         paddleWidthSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.paddleWidth = paddleWidthSlider.getValue();
-                paddleWidthNumber.setText(Integer.toString((int)paddleWidthSlider.getValue()));
+                paddleWidthNumber.setText(Integer.toString((int) paddleWidthSlider.getValue()));
             }
         });
         ballSizeSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.ballSize = ballSizeSlider.getValue();
-                ballSizeNumber.setText(Integer.toString((int)ballSizeSlider.getValue()));
+                ballSizeNumber.setText(Integer.toString((int) ballSizeSlider.getValue()));
             }
         });
         ballInitialSpeedSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.ballInitialSpeed = ballInitialSpeedSlider.getValue();
-                ballInitialSpeedNumber.setText(Integer.toString((int)ballInitialSpeedSlider.getValue()));
+                ballInitialSpeedNumber.setText(Integer.toString((int) ballInitialSpeedSlider.getValue()));
             }
         });
         ballSpeedIncreaseSlider.addListener(new ChangeListener() {
@@ -390,7 +392,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         ballAngleSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
                 options.ballAngleMultiplier = ballAngleSlider.getValue();
-                ballAngleNumber.setText(Integer.toString((int)ballAngleSlider.getValue()));
+                ballAngleNumber.setText(Integer.toString((int) ballAngleSlider.getValue()));
             }
         });
         buttonSmallRandomizeOptions.addListener(new ClickListener() {
@@ -405,12 +407,12 @@ public class MenuScreen extends InputAdapter implements Screen {
         });
         buttonRandomizeOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) { //gives random value to each slider, between its min and max values
-                scoreLimitSlider.setValue(scoreLimitSlider.getMinValue() + random.nextInt((int)(scoreLimitSlider.getMaxValue() + 1 - scoreLimitSlider.getMinValue())));
-                paddleWidthSlider.setValue(paddleWidthSlider.getMinValue() + random.nextInt((int)(paddleWidthSlider.getMaxValue() + 1 - paddleWidthSlider.getMinValue())));
-                ballSizeSlider.setValue(ballSizeSlider.getMinValue() + random.nextInt((int)(ballSizeSlider.getMaxValue() + 1 - ballSizeSlider.getMinValue())));
-                ballInitialSpeedSlider.setValue(ballInitialSpeedSlider.getMinValue() + random.nextInt((int)(ballInitialSpeedSlider.getMaxValue() + 1 - ballInitialSpeedSlider.getMinValue())));
-                ballSpeedIncreaseSlider.setValue(ballSpeedIncreaseSlider.getMinValue() + random.nextInt((int)(ballSpeedIncreaseSlider.getMaxValue() + 1 - ballSpeedIncreaseSlider.getMinValue())));
-                ballAngleSlider.setValue(ballAngleSlider.getMinValue() + random.nextInt((int)(ballAngleSlider.getMaxValue() + 1 - ballAngleSlider.getMinValue())));
+                scoreLimitSlider.setValue(scoreLimitSlider.getMinValue() + random.nextInt((int) (scoreLimitSlider.getMaxValue() + 1 - scoreLimitSlider.getMinValue())));
+                paddleWidthSlider.setValue(paddleWidthSlider.getMinValue() + random.nextInt((int) (paddleWidthSlider.getMaxValue() + 1 - paddleWidthSlider.getMinValue())));
+                ballSizeSlider.setValue(ballSizeSlider.getMinValue() + random.nextInt((int) (ballSizeSlider.getMaxValue() + 1 - ballSizeSlider.getMinValue())));
+                ballInitialSpeedSlider.setValue(ballInitialSpeedSlider.getMinValue() + random.nextInt((int) (ballInitialSpeedSlider.getMaxValue() + 1 - ballInitialSpeedSlider.getMinValue())));
+                ballSpeedIncreaseSlider.setValue(ballSpeedIncreaseSlider.getMinValue() + random.nextInt((int) (ballSpeedIncreaseSlider.getMaxValue() + 1 - ballSpeedIncreaseSlider.getMinValue())));
+                ballAngleSlider.setValue(ballAngleSlider.getMinValue() + random.nextInt((int) (ballAngleSlider.getMaxValue() + 1 - ballAngleSlider.getMinValue())));
             }
         });
         buttonResetOptions.addListener(new ClickListener() {
@@ -548,16 +550,16 @@ public class MenuScreen extends InputAdapter implements Screen {
         multiplexer.addProcessor(this);
         multiplexer.addProcessor(stage);
         Gdx.input.setInputProcessor(multiplexer);
-	}
+    }
 
-	@Override
-	public void render(float dt) {
-		Gdx.gl.glClearColor(0, 0, 0, 1);
-		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-		menuBattle.render(dt);
-		stage.act(dt);
-		stage.draw(); //note that for scene2d, the origin is the bottom left corner, and it's using pixel coordinates
-	}
+    @Override
+    public void render(float dt) {
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        menuBattle.render(dt);
+        stage.act(dt);
+        stage.draw(); //note that for scene2d, the origin is the bottom left corner, and it's using pixel coordinates
+    }
 
     public void startPlay() {
         dispose();
@@ -593,29 +595,29 @@ public class MenuScreen extends InputAdapter implements Screen {
         titleTextImage.dispose();
     }
 
-	@Override
-	public void resize(int width, int height) {
-		menuBattle.resize(width, height);
-        stage.getViewport().update(width, height,true);
+    @Override
+    public void resize(int width, int height) {
+        menuBattle.resize(width, height);
+        stage.getViewport().update(width, height, true);
     }
 
-	@Override
-	public void pause() {
+    @Override
+    public void pause() {
 
-	}
+    }
 
-	@Override
-	public void resume() {
+    @Override
+    public void resume() {
 
-	}
+    }
 
     @Override
     public void show() {
 
     }
 
-	@Override
-	public void hide() {
+    @Override
+    public void hide() {
 
-	}
+    }
 }

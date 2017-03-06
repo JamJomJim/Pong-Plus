@@ -12,31 +12,31 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.Slider.SliderStyle;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton.TextButtonStyle;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import screens.*;
+import screens.MenuScreen;
 
 public class PongPlus extends Game {
-	public static final float PPM = 300f; //The number of pixels in one meter
+    public static final float PPM = 300f; //The number of pixels in one meter
 
-	public static int VIRTUAL_WIDTH = 1440;
-	public static int VIRTUAL_HEIGHT = 2560;
+    public static int VIRTUAL_WIDTH = 1440;
+    public static int VIRTUAL_HEIGHT = 2560;
 
-	public SpriteBatch batch;
-	public Skin skin;
-	public Options options;
-	private BitmapFont ls130, ls90, arial130;
+    public SpriteBatch batch;
+    public Skin skin;
+    public Options options;
+    private BitmapFont ls130, ls90, arial130;
 
-	@Override
-	public void create () {
-		batch = new SpriteBatch();
-		options = new Options();
+    @Override
+    public void create() {
+        batch = new SpriteBatch();
+        options = new Options();
         options.loadOptions();
 
-		//SKIN STUFF***************************************************************************************************
-		skin = new Skin();
-		ls130 = new BitmapFont(Gdx.files.internal("fonts/LS130.fnt")); //Lilliput Steps size 130
-		ls90 = new BitmapFont(Gdx.files.internal("fonts/LS90.fnt"));
-		arial130 = new BitmapFont(Gdx.files.internal("fonts/Arial130.fnt"));
-		skin.add("LS130", ls130);
+        //SKIN STUFF***************************************************************************************************
+        skin = new Skin();
+        ls130 = new BitmapFont(Gdx.files.internal("fonts/LS130.fnt")); //Lilliput Steps size 130
+        ls90 = new BitmapFont(Gdx.files.internal("fonts/LS90.fnt"));
+        arial130 = new BitmapFont(Gdx.files.internal("fonts/Arial130.fnt"));
+        skin.add("LS130", ls130);
         skin.add("LS90", ls90);
         skin.add("Arial130", arial130);
 
@@ -63,7 +63,7 @@ public class PongPlus extends Game {
         labelStyle.fontColor = Color.WHITE;
         skin.add("LS90", labelStyle);
 
-		//LabelStyle for the score text
+        //LabelStyle for the score text
         labelStyle = new LabelStyle();
         labelStyle.font = skin.getFont("Arial130");
         labelStyle.fontColor = Color.WHITE;
@@ -78,19 +78,19 @@ public class PongPlus extends Game {
 
 
         this.setScreen(new MenuScreen(this, options));
-	}
+    }
 
-	@Override
-	public void render () {
-		super.render();
-	}
-	
-	@Override
-	public void dispose () {
-		batch.dispose();
-		skin.dispose();
-		ls130.dispose();
-		ls90.dispose();
-		arial130.dispose();
-	}
+    @Override
+    public void render() {
+        super.render();
+    }
+
+    @Override
+    public void dispose() {
+        batch.dispose();
+        skin.dispose();
+        ls130.dispose();
+        ls90.dispose();
+        arial130.dispose();
+    }
 }

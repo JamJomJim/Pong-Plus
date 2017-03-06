@@ -19,9 +19,9 @@ public class Wall {
 
     protected float width, height;
 
-    private boolean needsNewLocation =  false;
+    private boolean needsNewLocation = false;
 
-    //pass angle as degrees
+
     public Wall(boolean textured, float x, float y, float w, float h, float angle, World world, Options options) {
         if (textured) {
             texture = new Texture("ClassicPaddle9.png");
@@ -42,7 +42,7 @@ public class Wall {
         bodyDef.position.set(x, y);
 
         body = world.createBody(bodyDef);
-        angle = (float)(angle / 180 * Math.PI);
+        angle = (float) (angle / 180 * Math.PI); //pass angle as degrees
         body.setTransform(body.getPosition(), angle);
         body.setUserData(this);
 
@@ -59,12 +59,12 @@ public class Wall {
         shape.dispose();
     }
 
-    public void randomizeLocation(){
+    public void randomizeLocation() {
         Random rand = new Random();
         float max, min;
         max = (PongPlus.VIRTUAL_WIDTH - options.targetWidth - 20);
         min = -(PongPlus.VIRTUAL_WIDTH - options.targetWidth - 20);
-        float x = rand.nextInt((int)(max - min) + 1) + min;
+        float x = rand.nextInt((int) (max - min) + 1) + min;
         body.setTransform(x / PongPlus.PPM / 2, 1100 / PongPlus.PPM, 0);
         this.needsNewLocation(false);
     }

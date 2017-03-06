@@ -63,7 +63,7 @@ public class PlayerPaddle extends Paddle {
     the paddle's current position; this will prevent further movement. Also set the movePointer to -1, so that not finger is controlling the paddle
     until another touchDown() event occurs within the input area.
      */
-    public boolean touchUp (int x, int y, int pointer, int button) {
+    public boolean touchUp(int x, int y, int pointer, int button) {
         if (pointer == movePointer) {
             destination.set(body.getPosition().x, body.getPosition().y);
             movePointer = -1;

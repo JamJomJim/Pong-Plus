@@ -9,15 +9,18 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.*;
+import com.badlogic.gdx.scenes.scene2d.ui.Label;
+import com.badlogic.gdx.scenes.scene2d.ui.Table;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.pongplus.game.ContactListener;
 import com.pongplus.game.Options;
-import com.pongplus.game.Options.Mode;
 import com.pongplus.game.Options.AI;
+import com.pongplus.game.Options.Mode;
 import com.pongplus.game.PongPlus;
-import objects.*;
+import objects.Ball;
+import objects.Wall;
 import objects.paddles.AIPaddle;
 import objects.paddles.Paddle;
 import objects.paddles.PlayerPaddle;
@@ -94,7 +97,7 @@ public class PlayScreen extends InputAdapter implements Screen {
         //create p1 depending on the mode
         if (mode == Mode.AIBATTLE || mode == Mode.MENUBATTLE)
             p1 = new AIPaddle(0, -PADDLE_OFFSET, world, ball, vp, options);
-        //if Survival mode set a small offset to the X of the player paddle.
+            //if Survival mode set a small offset to the X of the player paddle.
         else if (mode == Mode.SURVIVAL) {
             float x = 0;
             while (x == 0)

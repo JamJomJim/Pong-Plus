@@ -18,7 +18,7 @@ public class Paddle extends InputAdapter {
 
     protected float movespeed;
     protected Vector2 destination;
-    
+
     protected Options options;
 
     public Paddle() {
