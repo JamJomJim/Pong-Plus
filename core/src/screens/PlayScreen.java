@@ -358,7 +358,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         if (p2 != null)
             p2.dispose();
         contactListener.dispose();
-        practiceWall.dispose();
+        if (practiceWall != null)
+            practiceWall.dispose();
     }
 
     public Mode getMode() {
