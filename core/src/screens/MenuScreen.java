@@ -288,12 +288,11 @@ public class MenuScreen extends InputAdapter implements Screen {
         optionsMenu.setVisible(false);
 
         final TextButton buttonSound = new TextButton("SOUND", game.skin, "LS90");
-        final Label sound = new Label("hi", game.skin, "LS90");
+        final TextButton buttonSoundRight = new TextButton("hi", game.skin, "LS90");
         if (options.soundOn)
-            sound.setText("ON");
+            buttonSoundRight.setText("ON");
         else
-            sound.setText("OFF");
-        sound.setAlignment(Align.center);
+            buttonSoundRight.setText("OFF");
 
         final Label scoreLimitLabel = new Label("SCORE\nLIMIT", game.skin, "LS90");
         scoreLimitLabel.setAlignment(Align.center);
@@ -344,9 +343,18 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 options.soundOn = !options.soundOn;
                 if (options.soundOn)
-                    sound.setText("ON");
+                    buttonSoundRight.setText("ON");
                 else
-                    sound.setText("OFF");
+                    buttonSoundRight.setText("OFF");
+            }
+        });
+        buttonSoundRight.addListener(new ClickListener() {
+            public void clicked(InputEvent event, float x, float y) {
+                options.soundOn = !options.soundOn;
+                if (options.soundOn)
+                    buttonSoundRight.setText("ON");
+                else
+                    buttonSoundRight.setText("OFF");
             }
         });
         scoreLimitSlider.addListener(new ChangeListener() {
@@ -429,7 +437,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         optionsMenu.add(buttonSound).height(scoreLimitLabel.getHeight());
         optionsMenu.add();
-        optionsMenu.add(sound).width(thirdColWidth);
+        optionsMenu.add(buttonSoundRight).width(thirdColWidth);
         optionsMenu.row();
         optionsMenu.add(scoreLimitLabel).space(spacing, 0, spacing, 0);
         optionsMenu.add(scoreLimitSlider).width(secondColWidth).space(spacing).fillX();
