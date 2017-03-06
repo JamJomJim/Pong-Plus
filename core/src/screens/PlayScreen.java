@@ -330,7 +330,10 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
-
+        if (!pausedText.isVisible()) {
+            ball.pause();
+            pausedText.setVisible(true);
+        }
     }
 
     @Override
