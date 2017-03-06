@@ -20,9 +20,6 @@ public class PongPlus extends Game {
 	public static int VIRTUAL_WIDTH = 1440;
 	public static int VIRTUAL_HEIGHT = 2560;
 
-    public static int ACTUAL_WIDTH;
-    public static int ACTUAL_HEIGHT;
-
 	public SpriteBatch batch;
 	public Skin skin;
 	public Options options;
@@ -33,9 +30,6 @@ public class PongPlus extends Game {
 		batch = new SpriteBatch();
 		options = new Options();
         options.loadOptions();
-
-        ACTUAL_WIDTH = Gdx.graphics.getWidth();
-        ACTUAL_HEIGHT = Gdx.graphics.getHeight();
 
 		//SKIN STUFF***************************************************************************************************
 		skin = new Skin();

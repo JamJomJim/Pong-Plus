@@ -12,6 +12,7 @@ import java.util.Random;
 
 public class Wall {
     protected NinePatchDrawable ninePatch;
+    protected Texture texture;
     protected Body body;
 
     protected Options options;
@@ -22,8 +23,10 @@ public class Wall {
 
     //pass angle as degrees
     public Wall(boolean textured, float x, float y, float w, float h, float angle, World world, Options options) {
-        if (textured)
-            ninePatch = new NinePatchDrawable(new NinePatch(new Texture("ClassicPaddle9.png")));
+        if (textured) {
+            texture = new Texture("ClassicPaddle9.png");
+            ninePatch = new NinePatchDrawable(new NinePatch(texture));
+        }
         this.options = options;
         if (options.mode == Options.Mode.TARGETS && textured) {
             width = options.targetWidth / PongPlus.PPM;
@@ -87,6 +90,7 @@ public class Wall {
     }
 
     public void dispose() {
-
+        if (texture != null)
+            texture.dispose();
     }
 }

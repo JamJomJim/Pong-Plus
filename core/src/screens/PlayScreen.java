@@ -46,6 +46,7 @@ public class PlayScreen extends InputAdapter implements Screen {
     private OrthographicCamera worldCam;
     private ExtendViewport vp;
     private Box2DDebugRenderer debugRenderer;
+    private ContactListener contactListener;
 
     //ui stuff
     private InputMultiplexer multiplexer;
@@ -110,7 +111,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         else
             p2 = new AIPaddle(0, PADDLE_OFFSET, world, ball, vp, options);
 
-        world.setContactListener(new ContactListener(p1, p2, this));
+        contactListener = new ContactListener(p1, p2, this);
+        world.setContactListener(contactListener);
 
         if (p1 instanceof PlayerPaddle)
             ball.pause(); //ball starts paused
@@ -355,6 +357,8 @@ public class PlayScreen extends InputAdapter implements Screen {
         stage.dispose();
         if (p2 != null)
             p2.dispose();
+        contactListener.dispose();
+        practiceWall.dispose();
     }
 
     public Mode getMode() {

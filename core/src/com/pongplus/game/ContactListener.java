@@ -25,13 +25,13 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
         this.screen = screen;
         this.options = screen.options;
 
-        botSound = Gdx.audio.newSound(Gdx.files.internal("sounds/botboop.wav")); //TODO: dispose this later
-        topSound = Gdx.audio.newSound(Gdx.files.internal("sounds/topboop.wav")); //TODO: dispose this later
+        botSound = Gdx.audio.newSound(Gdx.files.internal("sounds/botboop.wav"));
+        topSound = Gdx.audio.newSound(Gdx.files.internal("sounds/topboop.wav"));
 	}
 
 	@Override
 	public void beginContact(Contact contact) {
-		Object objectA = contact.getFixtureA().getBody().getUserData(); //These might be redundant
+		Object objectA = contact.getFixtureA().getBody().getUserData();
 		Object objectB = contact.getFixtureB().getBody().getUserData();
 		Body bodyA = contact.getFixtureA().getBody();
 		Body bodyB = contact.getFixtureB().getBody();
@@ -100,5 +100,10 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
 	@Override
 	public void postSolve (Contact contact, ContactImpulse impulse) {
 
+	}
+
+	public void dispose() {
+		botSound.dispose();
+		topSound.dispose();
 	}
 }

@@ -108,7 +108,7 @@ public class Ball {
     }
 
     public void dispose() {
-
+        sr.dispose();
     }
 }
 

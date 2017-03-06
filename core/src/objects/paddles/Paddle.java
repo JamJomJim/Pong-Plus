@@ -13,6 +13,7 @@ import com.pongplus.game.PongPlus;
 public class Paddle extends InputAdapter {
 
     protected NinePatchDrawable ninePatch;
+    protected Texture texture;
     protected Body body;
 
     protected float movespeed;
@@ -24,7 +25,8 @@ public class Paddle extends InputAdapter {
     }
 
     public Paddle(float x, float y, World world, Options options) {
-        ninePatch = new NinePatchDrawable(new NinePatch(new Texture(options.paddleTexture)));
+        texture = new Texture(options.paddleTexture);
+        ninePatch = new NinePatchDrawable(new NinePatch(texture));
         this.options = options;
 
         BodyDef bodyDef = new BodyDef();
@@ -82,6 +84,6 @@ public class Paddle extends InputAdapter {
     }
 
     public void dispose() {
-
+        texture.dispose();
     }
 }

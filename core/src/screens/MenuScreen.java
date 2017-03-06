@@ -578,8 +578,7 @@ public class MenuScreen extends InputAdapter implements Screen {
                 titleText.setVisible(true);
                 verticalPlus.setVisible(true);
                 horizontalPlus.setVisible(true);
-            } else
-                //Gdx.app.exit();
+            }
             return true;
         }
         return super.keyDown(keyCode);
@@ -596,7 +595,6 @@ public class MenuScreen extends InputAdapter implements Screen {
 
 	@Override
 	public void resize(int width, int height) {
-	    //TODO: get neither of these to stretch
 		menuBattle.resize(width, height);
         stage.getViewport().update(width, height,true);
     }
