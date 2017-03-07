@@ -48,7 +48,6 @@ public class PlayScreen extends InputAdapter implements Screen {
     private World world;
     private OrthographicCamera worldCam;
     private ExtendViewport vp;
-    private Box2DDebugRenderer debugRenderer;
     private ContactListener contactListener;
 
     //ui stuff
@@ -119,7 +118,6 @@ public class PlayScreen extends InputAdapter implements Screen {
 
         if (p1 instanceof PlayerPaddle)
             ball.pause(); //ball starts paused
-        debugRenderer = new Box2DDebugRenderer(); //displays hitboxes in order to see what bodies "look like"
 
         //UI STUFF******************************************************************************************************
         ExtendViewport stageVp = new ExtendViewport(PongPlus.VIRTUAL_WIDTH, PongPlus.VIRTUAL_HEIGHT);
@@ -221,9 +219,6 @@ public class PlayScreen extends InputAdapter implements Screen {
             practiceWall.draw(game.batch);
         game.batch.end();
         stage.draw(); //draw the stage (ui elements)
-
-        //render fixtures from world; scaled properly because it uses the projection matrix from worldCam, which is scaled properly
-        debugRenderer.render(world, worldCam.combined);
     }
 
     public void checkBall() { //check if the ball is past the bottom/top of the screen for scoring, and reset if it is
@@ -335,7 +330,7 @@ public class PlayScreen extends InputAdapter implements Screen {
 
     @Override
     public void pause() {
-        if (!pausedText.isVisible()) {
+        if (!pausedText.isVisible() && !menu.isVisible()) {
             ball.pause();
             pausedText.setVisible(true);
         }
@@ -355,7 +350,6 @@ public class PlayScreen extends InputAdapter implements Screen {
     public void dispose() {
         world.dispose();
         p1.dispose();
-        debugRenderer.dispose();
         ball.dispose();
         stage.dispose();
         if (p2 != null)

@@ -6,7 +6,7 @@ import com.badlogic.gdx.Preferences;
 
 public class Options {
     public enum AI {//different AI difficulties
-        EASY, MEDIUM, HARD, SKYNET, CUSTOM
+        EASY, MEDIUM, HARD, IMPOSSIBLE, CUSTOM
     }
 
     public enum Mode {//different modes of play

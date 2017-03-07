@@ -141,7 +141,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         });
         buttonSkynet.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
-                options.ai = AI.SKYNET;
+                options.ai = AI.IMPOSSIBLE;
                 startPlay();
             }
         });
