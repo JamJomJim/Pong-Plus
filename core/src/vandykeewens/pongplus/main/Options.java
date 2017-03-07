@@ -31,20 +31,19 @@ public class Options {
     }
 
     //this is just for creating a separate Options for the menu ai battle
-    public Options(Mode mode, AI ai, float paddleWidth, float ballInitialSpeed, float ballSpeedIncrease, float ballAngleMultiplier,
-                   float aiMovespeed, float aiOffset, boolean soundOn) {
+    public Options(Mode mode) {
         this.mode = mode;
-        this.ai = ai;
+        this.ai = AI.CUSTOM;
 
-        this.paddleWidth = paddleWidth;
+        this.paddleWidth = 300;
         this.scoreLimit = 5;
-        this.ballSize = 80;
-        this.ballInitialSpeed = ballInitialSpeed;
-        this.ballSpeedIncrease = ballSpeedIncrease;
-        this.ballAngleMultiplier = ballAngleMultiplier;
-        this.aiMovespeed = aiMovespeed;
-        this.aiOffset = aiOffset;
-        this.soundOn = soundOn;
+        this.ballSize = 60;
+        this.ballInitialSpeed = 5;
+        this.ballSpeedIncrease = 0;
+        this.ballAngleMultiplier = 50;
+        this.aiMovespeed = 3;
+        this.aiOffset = 10;
+        this.soundOn = false;
 
         paddleTexture = "ClassicPaddle9.png";
     }

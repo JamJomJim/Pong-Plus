@@ -62,10 +62,15 @@ public class AIPaddle extends Paddle {
 
     public float calcFinalDestination(float xPos, float yPos, float xVel, float yVel) {
         float timeToPaddle;
-        if (this.getY() > yPos)
-            timeToPaddle = (this.getY() - this.ninePatch.getMinHeight() / PongPlus.PPM - options.ballSize / PongPlus.PPM / 2 - yPos ) / yVel;
-        else
-            timeToPaddle = (this.getY() + this.ninePatch.getMinHeight() / PongPlus.PPM + options.ballSize / PongPlus.PPM / 2 - yPos ) / yVel;
+        float paddleY = this.getY();
+        if (paddleY > 0 && yPos > paddleY - this.ninePatch.getMinHeight() / PongPlus.PPM / 2)
+            return 0;
+        else if (paddleY < 0 && yPos < paddleY - this.ninePatch.getMinHeight() / PongPlus.PPM / 2)
+            return 0;
+        if (paddleY > yPos) //paddle is above ball
+            timeToPaddle = (paddleY - this.ninePatch.getMinHeight() / PongPlus.PPM / 2 - options.ballSize / PongPlus.PPM / 2 - yPos ) / yVel;
+        else //paddle is below ball
+            timeToPaddle = (paddleY + this.ninePatch.getMinHeight() / PongPlus.PPM / 2 + options.ballSize / PongPlus.PPM / 2 - yPos ) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
         if (finalDestination < -vp.getWorldWidth() / 2 + options.ballSize / 2 / PongPlus.PPM) {
             yPos = yPos + ((-vp.getWorldWidth() / 2 - xPos + options.ballSize / PongPlus.PPM) / xVel) * yVel;

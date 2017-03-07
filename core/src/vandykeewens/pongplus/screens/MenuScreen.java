@@ -542,8 +542,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         }
 
         //to have changes to the options affect the menubattle, pass options to this, rather than a new Options
-        menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE, AI.CUSTOM, 300, 5, 0, 60,
-                5, 8, false));
+        menuBattle = new PlayScreen(game, new Options(Mode.MENUBATTLE
+        ));
 
         Gdx.input.setCatchBackKey(true);
         InputMultiplexer multiplexer = new InputMultiplexer();
