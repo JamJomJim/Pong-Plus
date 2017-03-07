@@ -1,4 +1,4 @@
-package com.pongplus.game;
+package com.vandykeewens.pongplus;
 
 import android.os.Bundle;
 

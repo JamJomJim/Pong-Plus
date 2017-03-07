@@ -1,8 +1,8 @@
-package com.pongplus.game.desktop;
+package com.vandykeewens.pongplus.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
-import com.pongplus.game.PongPlus;
+import com.vandykeewens.pongplus.PongPlus;
 
 public class DesktopLauncher {
 	public static void main(String[] arg) {

@@ -1,9 +1,9 @@
-package com.pongplus.game.client;
+package com.vandykeewens.pongplus.client;
 
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.pongplus.game.PongPlus;
+import com.vandykeewens.pongplus.PongPlus;
 
 public class HtmlLauncher extends GwtApplication {
 

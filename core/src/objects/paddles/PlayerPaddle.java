@@ -3,7 +3,7 @@ package objects.paddles;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.World;
-import com.pongplus.game.Options;
+import com.vandykeewens.pongplus.Options;
 
 public class PlayerPaddle extends Paddle {
 

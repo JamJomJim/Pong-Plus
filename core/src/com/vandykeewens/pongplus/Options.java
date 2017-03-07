@@ -1,4 +1,4 @@
-package com.pongplus.game;
+package com.vandykeewens.pongplus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;

@@ -11,10 +11,10 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Align;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.pongplus.game.Options;
-import com.pongplus.game.Options.AI;
-import com.pongplus.game.Options.Mode;
-import com.pongplus.game.PongPlus;
+import com.vandykeewens.pongplus.Options;
+import com.vandykeewens.pongplus.Options.AI;
+import com.vandykeewens.pongplus.Options.Mode;
+import com.vandykeewens.pongplus.PongPlus;
 
 import java.util.Random;
 
@@ -238,8 +238,8 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final Label targetWidthLabel = new Label("TARGET\nWIDTH", game.skin, "LS90");
         targetWidthLabel.setAlignment(Align.center);
-        final Slider targetWidthSlider = new Slider(10, 999, 10, false, game.skin);
-        targetWidthSlider.setValue(options.targetWidth);
+        final Slider targetWidthSlider = new Slider(1, 100, 1, false, game.skin);
+        targetWidthSlider.setValue((int)(options.targetWidth / 10));
         final Label targetWidthNumber = new Label(Integer.toString((int) targetWidthSlider.getValue()), game.skin, "LS90");
         targetWidthNumber.setAlignment(Align.center);
 
@@ -251,7 +251,7 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         targetWidthSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                options.targetWidth = targetWidthSlider.getValue();
+                options.targetWidth = targetWidthSlider.getValue() * 10;
                 targetWidthNumber.setText(Integer.toString((int) targetWidthSlider.getValue()));
             }
         });
@@ -304,15 +304,15 @@ public class MenuScreen extends InputAdapter implements Screen {
 
         final Label paddleWidthLabel = new Label("PADDLE\nWIDTH", game.skin, "LS90");
         paddleWidthLabel.setAlignment(Align.center);
-        final Slider paddleWidthSlider = new Slider(10, 999, 10, false, game.skin);
-        paddleWidthSlider.setValue(options.paddleWidth);
+        final Slider paddleWidthSlider = new Slider(1, 100, 1, false, game.skin);
+        paddleWidthSlider.setValue((int)(options.paddleWidth / 10));
         final Label paddleWidthNumber = new Label(Integer.toString((int) paddleWidthSlider.getValue()), game.skin, "LS90");
 
         final Label ballLabel = new Label("BALL", game.skin);
         final Label ballSizeLabel = new Label("SIZE", game.skin, "LS90");
         ballSizeLabel.setAlignment(Align.center);
-        final Slider ballSizeSlider = new Slider(10, 999, 10, false, game.skin);
-        ballSizeSlider.setValue(options.ballSize);
+        final Slider ballSizeSlider = new Slider(1, 100, 1, false, game.skin);
+        ballSizeSlider.setValue((int)(options.ballSize / 10));
         final Label ballSizeNumber = new Label(Integer.toString((int) ballSizeSlider.getValue()), game.skin, "LS90");
 
         final Label ballInitialSpeedLabel = new Label("START\nSPEED", game.skin, "LS90");
@@ -367,13 +367,13 @@ public class MenuScreen extends InputAdapter implements Screen {
         });
         paddleWidthSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                options.paddleWidth = paddleWidthSlider.getValue();
+                options.paddleWidth = paddleWidthSlider.getValue() * 10;
                 paddleWidthNumber.setText(Integer.toString((int) paddleWidthSlider.getValue()));
             }
         });
         ballSizeSlider.addListener(new ChangeListener() {
             public void changed(ChangeEvent event, Actor actor) {
-                options.ballSize = ballSizeSlider.getValue();
+                options.ballSize = ballSizeSlider.getValue() * 10;
                 ballSizeNumber.setText(Integer.toString((int) ballSizeSlider.getValue()));
             }
         });
@@ -398,8 +398,8 @@ public class MenuScreen extends InputAdapter implements Screen {
         buttonSmallRandomizeOptions.addListener(new ClickListener() {
             public void clicked(InputEvent event, float x, float y) {
                 scoreLimitSlider.setValue(3 + random.nextInt(8)); //bound is non-inclusive
-                paddleWidthSlider.setValue(100 + random.nextInt(401));
-                ballSizeSlider.setValue(50 + random.nextInt(101));
+                paddleWidthSlider.setValue(10 + random.nextInt(41));
+                ballSizeSlider.setValue(5 + random.nextInt(11));
                 ballInitialSpeedSlider.setValue(1 + random.nextInt(5));
                 ballSpeedIncreaseSlider.setValue(1 + random.nextInt(3));
                 ballAngleSlider.setValue(30 + random.nextInt(51));
@@ -419,8 +419,8 @@ public class MenuScreen extends InputAdapter implements Screen {
             public void clicked(InputEvent event, float x, float y) {
                 //note that these are hardcoded
                 scoreLimitSlider.setValue(5);
-                paddleWidthSlider.setValue(300);
-                ballSizeSlider.setValue(75);
+                paddleWidthSlider.setValue(30);
+                ballSizeSlider.setValue(7);
                 ballInitialSpeedSlider.setValue(3);
                 ballSpeedIncreaseSlider.setValue(1);
                 ballAngleSlider.setValue(60);

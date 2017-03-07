@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.pongplus.game.Options;
-import com.pongplus.game.PongPlus;
+import com.vandykeewens.pongplus.Options;
+import com.vandykeewens.pongplus.PongPlus;
 import objects.paddles.Paddle;
 
 public class Ball {

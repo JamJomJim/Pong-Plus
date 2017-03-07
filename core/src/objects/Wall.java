@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.g2d.NinePatch;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.scenes.scene2d.utils.NinePatchDrawable;
-import com.pongplus.game.Options;
-import com.pongplus.game.PongPlus;
+import com.vandykeewens.pongplus.Options;
+import com.vandykeewens.pongplus.PongPlus;
 
 import java.util.Random;
 

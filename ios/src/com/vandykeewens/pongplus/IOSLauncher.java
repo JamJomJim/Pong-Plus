@@ -1,4 +1,4 @@
-package com.pongplus.game;
+package com.vandykeewens.pongplus;
 
 import org.robovm.apple.foundation.NSAutoreleasePool;
 import org.robovm.apple.uikit.UIApplication;

@@ -1,4 +1,4 @@
-package com.pongplus.game;
+package com.vandykeewens.pongplus;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
@@ -6,7 +6,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.Manifold;
-import com.pongplus.game.Options.Mode;
+import com.vandykeewens.pongplus.Options.Mode;
 import objects.Ball;
 import objects.Wall;
 import objects.paddles.AIPaddle;
@@ -83,7 +83,7 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
                 else
                     ((Wall) objectB).needsNewLocation(true);
 
-                int amount = 3 - Math.round(Math.abs((bodyB.getPosition().x - bodyA.getPosition().x) / (options.targetWidth / 2 / PongPlus.PPM)) * 3);
+                int amount = 3 - Math.round(Math.abs((bodyB.getPosition().x - bodyA.getPosition().x) / (options.targetWidth / 2 / com.vandykeewens.pongplus.PongPlus.PPM)) * 3);
                 if (amount <= 0) amount = 1;
                 screen.score("bot", amount);
             }

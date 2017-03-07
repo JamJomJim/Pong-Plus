@@ -3,8 +3,8 @@ package objects.paddles;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.pongplus.game.Options;
-import com.pongplus.game.PongPlus;
+import com.vandykeewens.pongplus.Options;
+import com.vandykeewens.pongplus.PongPlus;
 import objects.Ball;
 
 public class AIPaddle extends Paddle {
