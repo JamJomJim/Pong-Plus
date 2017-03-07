@@ -64,9 +64,9 @@ public class AIPaddle extends Paddle {
         float timeToPaddle;
         float paddleY = this.getY();
         if (paddleY > 0 && yPos > paddleY - this.ninePatch.getMinHeight() / PongPlus.PPM / 2)
-            return 0;
+            return body.getPosition().x;
         else if (paddleY < 0 && yPos < paddleY - this.ninePatch.getMinHeight() / PongPlus.PPM / 2)
-            return 0;
+            return body.getPosition().x;
         if (paddleY > yPos) //paddle is above ball
             timeToPaddle = (paddleY - this.ninePatch.getMinHeight() / PongPlus.PPM / 2 - options.ballSize / PongPlus.PPM / 2 - yPos ) / yVel;
         else //paddle is below ball

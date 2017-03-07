@@ -38,10 +38,10 @@ public class Options {
         this.paddleWidth = 300;
         this.scoreLimit = 5;
         this.ballSize = 60;
-        this.ballInitialSpeed = 5;
+        this.ballInitialSpeed = 7;
         this.ballSpeedIncrease = 0;
         this.ballAngleMultiplier = 50;
-        this.aiMovespeed = 3;
+        this.aiMovespeed = 5;
         this.aiOffset = 10;
         this.soundOn = false;
 
