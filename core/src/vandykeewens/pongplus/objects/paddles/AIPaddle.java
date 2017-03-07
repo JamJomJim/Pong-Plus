@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import vandykeewens.pongplus.main.Options;
 import vandykeewens.pongplus.main.PongPlus;
+import vandykeewens.pongplus.objects.Ball;
 
 public class AIPaddle extends Paddle {
     private float maxOffset; //options.paddleWidth of paddle is currently 320 so an offset above 160 would cause the AI to miss sometimes.
@@ -16,7 +17,7 @@ public class AIPaddle extends Paddle {
     private ExtendViewport vp;
 
 
-    public AIPaddle(float x, float y, World world, vandykeewens.pongplus.objects.Ball ball, ExtendViewport vp, Options options) {
+    public AIPaddle(float x, float y, World world, Ball ball, ExtendViewport vp, Options options) {
         super(x, y, world, options);
         this.prevVel = new Vector2(0, 0);
         this.ball = ball;
@@ -28,11 +29,11 @@ public class AIPaddle extends Paddle {
                 break;
             case MEDIUM:
                 maxOffset = options.paddleWidth / 3;
-                movespeed = 3.5f;
+                movespeed = 4;
                 break;
             case HARD:
                 maxOffset = options.paddleWidth / 2;
-                movespeed = 5.5f;
+                movespeed = 6;
                 break;
             case IMPOSSIBLE:
                 maxOffset = options.paddleWidth / 2;
@@ -62,9 +63,9 @@ public class AIPaddle extends Paddle {
     public float calcFinalDestination(float xPos, float yPos, float xVel, float yVel) {
         float timeToPaddle;
         if (this.getY() > yPos)
-            timeToPaddle = (this.getY() - this.ninePatch.getMinHeight() / PongPlus.PPM - yPos) / yVel;
+            timeToPaddle = (this.getY() - this.ninePatch.getMinHeight() / PongPlus.PPM - options.ballSize / PongPlus.PPM / 2 - yPos ) / yVel;
         else
-            timeToPaddle = (this.getY() + this.ninePatch.getMinHeight() / PongPlus.PPM - yPos) / yVel;
+            timeToPaddle = (this.getY() + this.ninePatch.getMinHeight() / PongPlus.PPM + options.ballSize / PongPlus.PPM / 2 - yPos ) / yVel;
         float finalDestination = xPos + xVel * timeToPaddle;
         if (finalDestination < -vp.getWorldWidth() / 2 + options.ballSize / 2 / PongPlus.PPM) {
             yPos = yPos + ((-vp.getWorldWidth() / 2 - xPos + options.ballSize / PongPlus.PPM) / xVel) * yVel;

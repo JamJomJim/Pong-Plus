@@ -67,10 +67,10 @@ public class Options {
     public void loadOptions() {
         this.paddleWidth = prefs.getFloat("paddleWidth", 300);
         this.scoreLimit = prefs.getFloat("scoreLimit", 5);
-        this.ballSize = prefs.getFloat("ballSize", 80);
+        this.ballSize = prefs.getFloat("ballSize", 70);
         this.ballInitialSpeed = prefs.getFloat("ballInitialSpeed", 3);
         this.ballSpeedIncrease = prefs.getFloat("ballSpeedIncrease", 1.0f);
-        this.ballAngleMultiplier = prefs.getFloat("ballAngleMultiplier", 60);
+        this.ballAngleMultiplier = prefs.getFloat("ballAngleMultiplier", 50);
         this.aiMovespeed = prefs.getFloat("aiMovespeed", 7);
         this.aiOffset = prefs.getFloat("aiOffset", 5);
         this.targetWidth = prefs.getFloat("targetWidth", 300);

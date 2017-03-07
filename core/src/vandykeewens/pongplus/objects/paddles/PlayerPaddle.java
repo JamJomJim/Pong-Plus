@@ -7,7 +7,7 @@ import vandykeewens.pongplus.main.Options;
 
 public class PlayerPaddle extends Paddle {
 
-    private static final float INPUT_CAPTURE_HEIGHT = 5; //this is half of the y-height (in meters) that input within (relative to this paddle's y-position) will be handled by this paddle
+    private static final float INPUT_CAPTURE_HEIGHT = 3; //this is half of the y-height (in meters) that input within (relative to this paddle's y-position) will be handled by this paddle
 
     private Vector3 touchPos, touchDraggedPos;
     private OrthographicCamera worldCam;

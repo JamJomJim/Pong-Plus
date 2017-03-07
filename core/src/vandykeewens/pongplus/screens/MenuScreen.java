@@ -325,7 +325,7 @@ public class MenuScreen extends InputAdapter implements Screen {
         ballSpeedIncreaseLabel.setAlignment(Align.center);
         final Slider ballSpeedIncreaseSlider = new Slider(0f, 9.9f, 0.5f, false, game.skin);
         ballSpeedIncreaseSlider.setValue(options.ballSpeedIncrease);
-        final Label ballSpeedIncreaseNumber = new Label(Integer.toString((int) ballSpeedIncreaseSlider.getValue()), game.skin, "LS90");
+        final Label ballSpeedIncreaseNumber = new Label(Float.toString(ballSpeedIncreaseSlider.getValue()), game.skin, "LS90");
 
         final Label ballAngleLabel = new Label("REBOUND\nANGLE", game.skin, "LS90");
         ballAngleLabel.setAlignment(Align.center);
@@ -420,10 +420,10 @@ public class MenuScreen extends InputAdapter implements Screen {
                 //note that these are hardcoded
                 scoreLimitSlider.setValue(5);
                 paddleWidthSlider.setValue(30);
-                ballSizeSlider.setValue(7);
+                ballSizeSlider.setValue(6);
                 ballInitialSpeedSlider.setValue(3);
                 ballSpeedIncreaseSlider.setValue(1);
-                ballAngleSlider.setValue(60);
+                ballAngleSlider.setValue(50);
             }
         });
         buttonBackOptions.addListener(new ClickListener() {
