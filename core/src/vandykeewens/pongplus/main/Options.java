@@ -66,7 +66,7 @@ public class Options {
     public void loadOptions() {
         this.paddleWidth = prefs.getFloat("paddleWidth", 300);
         this.scoreLimit = prefs.getFloat("scoreLimit", 5);
-        this.ballSize = prefs.getFloat("ballSize", 70);
+        this.ballSize = prefs.getFloat("ballSize", 60);
         this.ballInitialSpeed = prefs.getFloat("ballInitialSpeed", 3);
         this.ballSpeedIncrease = prefs.getFloat("ballSpeedIncrease", 1.0f);
         this.ballAngleMultiplier = prefs.getFloat("ballAngleMultiplier", 50);
