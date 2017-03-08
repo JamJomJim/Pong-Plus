@@ -85,6 +85,14 @@ public class ContactListener implements com.badlogic.gdx.physics.box2d.ContactLi
                 int amount = 3 - Math.round(Math.abs((bodyB.getPosition().x - bodyA.getPosition().x) / (options.targetWidth / 2 / PongPlus.PPM)) * 3);
                 if (amount <= 0) amount = 1;
                 screen.score("bot", amount);
+
+                /*
+                //rebound the ball appropriately so that hitting corners doesn't mess it up
+                if (objectA instanceof Ball)
+                    bodyA.setLinearVelocity(bodyA.getLinearVelocity().x, -bodyA.getLinearVelocity().y);
+                else if (objectB instanceof Ball)
+                    bodyB.setLinearVelocity(bodyB.getLinearVelocity().x, -bodyB.getLinearVelocity().y);
+                    */
             }
         }
     }

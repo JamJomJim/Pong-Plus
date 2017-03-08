@@ -87,6 +87,7 @@ public class PongPlus extends Game {
 
     @Override
     public void dispose() {
+        options.saveOptions();
         batch.dispose();
         skin.dispose();
         ls130.dispose();
